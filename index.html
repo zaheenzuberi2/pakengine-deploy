@@ -168,6 +168,11 @@
   #landing details > summary { list-style: none; }
   #landing details > summary::-webkit-details-marker { display: none; }
 
+  /* Homepage interactive sandbox */
+  #sandbox-card.is-active { border-color: rgba(16, 185, 129, 0.55); box-shadow: 0 0 0 1px rgba(16, 185, 129, 0.35); }
+  #sandbox-panel { opacity: 0; transform: translateY(6px); transition: opacity .35s ease, transform .35s ease; }
+  #sandbox-panel.is-open { opacity: 1; transform: none; }
+
   @media (prefers-reduced-motion: reduce) {
     .shimmer::after, .spin, .animate-ping { animation: none !important; }
     * { transition-duration: .01ms !important; }
@@ -479,6 +484,91 @@
             Zero cloud databases. Entire fleet availability timelines and cash logs reside strictly inside browser hardware memory, guaranteeing absolute data privacy.
           </p>
         </article>
+      </div>
+    </section>
+
+    <!-- ──────────────  LIVE INTERACTIVE SANDBOX / PROTOTYPE  ────────────── -->
+    <section class="border-b border-white/[0.06] py-14 sm:py-20">
+      <div class="mx-auto max-w-3xl text-center">
+        <div class="text-[10.5px] font-semibold uppercase tracking-[0.16em] text-emerald-400">Interactive prototype</div>
+        <h2 class="mt-3 font-display text-[22px] font-bold tracking-tight text-white [text-wrap:balance] sm:text-[32px]">
+          Experience PakEngine Live — Interactive Prototype
+        </h2>
+        <p class="mx-auto mt-3 max-w-xl text-[13px] leading-relaxed text-slate-400">
+          A working slice of the operator console. Nothing here is saved &mdash; it runs on an isolated demo state that never touches a real showroom ledger.
+        </p>
+      </div>
+
+      <!-- Mock dashboard frame -->
+      <div class="mx-auto mt-9 max-w-2xl overflow-hidden rounded-2xl border border-white/[0.08] bg-charcoal-900">
+        <div class="flex items-center justify-between border-b border-white/[0.06] px-4 py-2.5">
+          <div class="flex items-center gap-2 text-[10px] font-semibold uppercase tracking-[0.14em] text-slate-500">
+            <span class="flex gap-1">
+              <span class="h-2 w-2 rounded-full bg-white/15"></span>
+              <span class="h-2 w-2 rounded-full bg-white/15"></span>
+              <span class="h-2 w-2 rounded-full bg-white/15"></span>
+            </span>
+            PakEngine &middot; Fleet
+          </div>
+          <span class="inline-flex items-center rounded-full border border-white/10 bg-white/5 px-2 py-0.5 text-[9px] font-bold uppercase tracking-wide text-slate-400">Demo</span>
+        </div>
+
+        <div class="p-4 sm:p-5">
+          <!-- Demo vehicle card -->
+          <div id="sandbox-card" role="button" tabindex="0" aria-expanded="false"
+            class="group flex cursor-pointer items-center gap-4 rounded-xl border border-slate-200 bg-white p-4 text-left transition hover:border-emerald-400 active:scale-[0.995]">
+            <span class="grid h-10 w-10 shrink-0 place-items-center rounded-lg bg-slate-100 text-slate-600">
+              <i data-lucide="car-front" class="h-5 w-5"></i>
+            </span>
+            <div class="min-w-0 flex-1">
+              <div class="text-[13.5px] font-bold text-slate-900">Toyota Fortuner</div>
+              <div class="mt-1 flex flex-wrap items-center gap-x-2 gap-y-1">
+                <span class="inline-flex items-center rounded-md bg-slate-100 px-1.5 py-0.5 font-mono text-[10.5px] font-semibold text-slate-600">ICT-999</span>
+                <span class="text-[11.5px] font-semibold text-slate-800">Rs.&nbsp;25,000<span class="font-normal text-slate-400"> / day</span></span>
+              </div>
+            </div>
+            <span class="inline-flex shrink-0 items-center gap-1 text-[11px] font-semibold text-emerald-600">
+              <span class="hidden sm:inline">Open</span> <i data-lucide="chevron-right" class="h-4 w-4 transition group-hover:translate-x-0.5"></i>
+            </span>
+          </div>
+          <p class="mt-2 text-center text-[10.5px] text-slate-500">Tap the card to open the check-out sandbox</p>
+
+          <!-- Sandbox reveal (isolated demo state) -->
+          <div id="sandbox-panel" class="hidden">
+            <div class="mt-4 border-t border-white/[0.06] pt-4">
+              <div class="text-[10px] font-semibold uppercase tracking-[0.14em] text-slate-500">Check-out condition &mdash; tap panels with existing damage</div>
+              <div class="mt-3 rounded-xl border border-slate-200 bg-slate-50 p-3">
+                <div id="sandbox-map"></div>
+              </div>
+
+              <div class="mt-4">
+                <div class="text-[10px] font-semibold uppercase tracking-[0.14em] text-slate-500">Generated WhatsApp Slip Preview</div>
+                <div class="mt-2 flex">
+                  <div class="max-w-full rounded-2xl rounded-tl-sm bg-[#DCF8C6] px-3 py-2.5 shadow-sm">
+                    <pre id="sandbox-slip-text" class="whitespace-pre-wrap break-words font-sans text-[12px] leading-relaxed text-[#0b3b34]"></pre>
+                    <div class="mt-1 flex items-center justify-end gap-1 text-[9px] text-[#4a7c59]">
+                      now <i data-lucide="check-check" class="h-3 w-3"></i>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Trial upgrade conversion card -->
+      <div class="mx-auto mt-6 max-w-2xl rounded-2xl bg-emerald-600 p-5 sm:p-6">
+        <div class="flex flex-col items-start gap-4 sm:flex-row sm:items-center sm:justify-between">
+          <div>
+            <h3 class="text-[15px] font-bold leading-snug text-white sm:text-[16px]">Ready to digitalize your actual showroom?</h3>
+            <p class="mt-1 text-[12.5px] leading-relaxed text-emerald-50">Deploy this exact system for your entire fleet in 60 seconds.</p>
+          </div>
+          <button id="sandbox-cta" class="inline-flex w-full shrink-0 items-center justify-center gap-2 rounded-lg bg-white px-5 py-3 text-[13.5px] font-bold text-emerald-700 transition hover:bg-emerald-50 active:scale-[0.98] sm:w-auto">
+            Launch Your Full Free Trial
+            <i data-lucide="arrow-right" class="h-4 w-4"></i>
+          </button>
+        </div>
       </div>
     </section>
 
@@ -1050,7 +1140,7 @@
         </div>
         <div class="mt-3 space-y-1 text-[11.5px] text-slate-500">
           <div class="flex justify-between"><span>Application</span><span class="text-slate-400">PakEngine Rent Ledger</span></div>
-          <div class="flex justify-between"><span>Version</span><span class="font-mono text-slate-400" id="about-version">2.5.0</span></div>
+          <div class="flex justify-between"><span>Version</span><span class="font-mono text-slate-400" id="about-version">2.6.0</span></div>
           <div class="flex justify-between"><span>Domain</span><span class="text-slate-400">pakengine.com</span></div>
         </div>
       </section>
@@ -1075,7 +1165,7 @@
    * ========================================================== */
   var CONFIG = {
     APP_NAME: 'PakEngine Rent Ledger',
-    APP_VERSION: '2.5.0',
+    APP_VERSION: '2.6.0',
     DOMAIN: 'pakengine.com',
     LICENSE_PRICE_PKR: 4000,
     TRIAL_DAYS: 3,
@@ -1557,6 +1647,60 @@
     requestAnimationFrame(function () { _navScrollQueued = false; applyLandingNavShadow(); });
   }
 
+  /* ── Homepage interactive sandbox ────────────────────────────────
+     Runs entirely on an isolated in-memory array. It never reads or
+     writes Store / Fleet / Ledger / localStorage, so it cannot touch
+     the real operational dashboard state. */
+  var _sandboxSelected = [];
+  function renderSandboxSlip() {
+    var ordered = CAR_PANELS.filter(function (p) { return _sandboxSelected.indexOf(p) !== -1; });
+    var dmg = ordered.length ? ordered.join(', ') : 'None — vehicle clean at check-out';
+    var el = $('#sandbox-slip-text');
+    if (el) {
+      el.textContent =
+        'PakEngine — Rental Dispatch Slip\n' +
+        'Vehicle: Toyota Fortuner (ICT-999)\n' +
+        'Rate: Rs. 25,000 / day\n' +
+        '*Noted Pre-Rental Damage: ' + dmg + '*';
+    }
+  }
+  function wireSandboxMap() {
+    _sandboxSelected = [];
+    var mount = $('#sandbox-map');
+    if (!mount) return;
+    mount.innerHTML = carBlueprintSVG();
+    mount.querySelectorAll('.scratch-panel').forEach(function (p) {
+      var name = p.getAttribute('data-name');
+      p.addEventListener('click', function () {
+        var i = _sandboxSelected.indexOf(name);
+        if (i === -1) { _sandboxSelected.push(name); p.classList.add('is-hit'); }
+        else { _sandboxSelected.splice(i, 1); p.classList.remove('is-hit'); }
+        renderSandboxSlip();
+      });
+    });
+    renderSandboxSlip();
+    icons();
+  }
+  function openSandbox() {
+    var panel = $('#sandbox-panel'), card = $('#sandbox-card');
+    if (!panel) return;
+    if (panel.classList.contains('hidden')) {
+      wireSandboxMap();
+      panel.classList.remove('hidden');
+      requestAnimationFrame(function () { panel.classList.add('is-open'); });
+      card.classList.add('is-active');
+      card.setAttribute('aria-expanded', 'true');
+    }
+    setTimeout(function () { panel.scrollIntoView({ behavior: 'smooth', block: 'center' }); }, 60);
+  }
+  function resetSandbox() {
+    var panel = $('#sandbox-panel'), card = $('#sandbox-card'), map = $('#sandbox-map');
+    if (panel) { panel.classList.add('hidden'); panel.classList.remove('is-open'); }
+    if (map) map.innerHTML = '';
+    if (card) { card.classList.remove('is-active'); card.setAttribute('aria-expanded', 'false'); }
+    _sandboxSelected = [];
+  }
+
   function showLanding() {
     $('#onboarding').classList.add('hidden');
     $('#app-root').classList.add('hidden');
@@ -1564,6 +1708,7 @@
     var el = $('#landing');
     el.classList.remove('hidden');
     el.scrollTop = 0;
+    resetSandbox();
     paintLandingPreview();
     applyLandingNavShadow();
     icons();
@@ -2369,8 +2514,15 @@
     /* Public landing + onboarding routing */
     $('#cta-start-trial').addEventListener('click', startTrialFlow);
     $('#cta-start-trial-2').addEventListener('click', startTrialFlow);
+    $('#sandbox-cta').addEventListener('click', startTrialFlow);
     $('#nav-login').addEventListener('click', loginFromLanding);
     $('#footer-login').addEventListener('click', loginFromLanding);
+
+    /* Homepage sandbox — isolated demo, opens on card tap / keyboard */
+    $('#sandbox-card').addEventListener('click', openSandbox);
+    $('#sandbox-card').addEventListener('keydown', function (e) {
+      if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openSandbox(); }
+    });
     $('#onb-continue').addEventListener('click', completeOnboarding);
     $('#onb-name').addEventListener('keydown', function (e) { if (e.key === 'Enter') $('#onb-phone').focus(); });
     $('#onb-phone').addEventListener('keydown', function (e) { if (e.key === 'Enter') completeOnboarding(); });
