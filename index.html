@@ -154,21 +154,22 @@
   #landing:not(.is-in) { transform: translateY(-10px); pointer-events: none; }
   #onboarding:not(.is-in) { transform: translateY(14px); pointer-events: none; }
 
-  /* Glowing emerald call-to-action -------------------------------- */
-  .cta-glow {
-    box-shadow:
-      0 0 0 1px rgba(16, 185, 129, .45),
-      0 14px 40px -10px rgba(16, 185, 129, .6),
-      0 0 70px -14px rgba(16, 185, 129, .5);
-    animation: ctaGlow 3.2s ease-in-out infinite;
-  }
-  @keyframes ctaGlow {
-    0%, 100% { box-shadow: 0 0 0 1px rgba(16,185,129,.42), 0 14px 40px -12px rgba(16,185,129,.5), 0 0 58px -16px rgba(16,185,129,.42); }
-    50%      { box-shadow: 0 0 0 1px rgba(16,185,129,.62), 0 20px 52px -10px rgba(16,185,129,.72), 0 0 96px -12px rgba(16,185,129,.66); }
+  /* Sticky marketing navigation — premium shadow on scroll -------- */
+  #landing-nav { transition: background-color .25s ease, box-shadow .25s ease, border-color .25s ease; }
+  #landing-nav.is-scrolled {
+    background-color: rgba(11, 13, 16, 0.82);
+    -webkit-backdrop-filter: blur(14px);
+    backdrop-filter: blur(14px);
+    border-bottom-color: rgba(255, 255, 255, 0.09);
+    box-shadow: 0 12px 34px -14px rgba(0, 0, 0, 0.7);
   }
 
+  /* FAQ disclosure */
+  #landing details > summary { list-style: none; }
+  #landing details > summary::-webkit-details-marker { display: none; }
+
   @media (prefers-reduced-motion: reduce) {
-    .shimmer::after, .spin, .animate-ping, .cta-glow { animation: none !important; }
+    .shimmer::after, .spin, .animate-ping { animation: none !important; }
     * { transition-duration: .01ms !important; }
   }
 </style>
@@ -367,111 +368,184 @@
 
 <!-- ====================== PUBLIC MARKETING LANDING ====================== -->
 <div id="landing" class="hidden fixed inset-0 z-[70] overflow-y-auto bg-charcoal-950">
-  <div class="pointer-events-none absolute inset-x-0 top-0 h-[560px]" style="background: radial-gradient(720px circle at 50% -6%, rgba(16,185,129,0.18), transparent 66%);"></div>
+  <div class="pointer-events-none absolute inset-x-0 top-0 h-[440px]" style="background: radial-gradient(760px circle at 50% -8%, rgba(16,185,129,0.11), transparent 68%);"></div>
 
-  <div class="relative mx-auto w-full max-w-6xl px-5" style="padding-top: env(safe-area-inset-top);">
-    <!-- Nav -->
-    <nav class="flex h-[64px] items-center justify-between">
-      <div class="flex items-center space-x-3 select-none">
-        <svg class="w-8 h-8 text-emerald-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+  <!-- ─────────────────────────  STICKY NAVIGATION  ───────────────────────── -->
+  <header id="landing-nav" class="sticky top-0 z-30 border-b border-transparent">
+    <nav class="mx-auto flex h-[60px] w-full max-w-6xl items-center justify-between px-5" style="padding-top: env(safe-area-inset-top);" aria-label="Primary">
+      <a href="#landing-hero" class="flex items-center space-x-3 select-none">
+        <svg class="w-8 h-8 text-emerald-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
           <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
         </svg>
         <span class="text-xl font-black tracking-tight text-white">Pak<span class="text-emerald-500">Engine</span></span>
+      </a>
+      <div class="flex items-center gap-2 sm:gap-3">
+        <a id="nav-contact" href="#" class="hidden items-center gap-1.5 rounded-lg px-3 py-2 text-[12.5px] font-semibold text-slate-300 transition hover:text-white sm:inline-flex">
+          <i data-lucide="headset" class="h-3.5 w-3.5"></i> Contact Sales
+        </a>
+        <button id="nav-login" class="inline-flex items-center gap-1.5 rounded-lg border border-white/15 bg-white/5 px-3.5 py-2 text-[12.5px] font-semibold text-white transition hover:border-emerald-500/50 hover:bg-emerald-500/10 active:scale-[0.98]">
+          <i data-lucide="log-in" class="h-3.5 w-3.5"></i> Showroom Login
+        </button>
       </div>
-      <button id="nav-login" class="inline-flex items-center gap-1.5 rounded-lg border border-white/10 bg-white/5 px-3 py-2 text-[12px] font-semibold text-slate-200 transition hover:border-white/20 hover:text-white active:scale-95">
-        <i data-lucide="log-in" class="h-3.5 w-3.5"></i> Showroom Login
-      </button>
     </nav>
+  </header>
 
-    <!-- Hero -->
-    <div class="grid items-center gap-10 pb-14 pt-8 lg:grid-cols-[1.05fr_0.95fr] lg:gap-10 lg:pb-20 lg:pt-16">
-      <div>
-        <div class="inline-flex items-center gap-2 rounded-full border border-emerald-500/25 bg-emerald-500/10 px-3 py-1 text-[10.5px] font-semibold uppercase tracking-wider text-emerald-300">
-          <span class="h-1.5 w-1.5 rounded-full bg-emerald-400"></span> Built for Pakistan&rsquo;s rent-a-car showrooms
+  <main class="relative mx-auto w-full max-w-6xl px-5">
+    <!-- ─────────────────────────  HERO  ───────────────────────── -->
+    <section id="landing-hero" class="scroll-mt-20 border-b border-white/[0.06] py-14 sm:py-20 lg:py-24">
+      <div class="mx-auto max-w-3xl text-center">
+        <div class="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.03] px-3 py-1 text-[10.5px] font-semibold uppercase tracking-[0.16em] text-slate-400">
+          <span class="h-1.5 w-1.5 rounded-full bg-emerald-400"></span> Engineered for the Pakistani automotive ecosystem
         </div>
 
-        <h1 class="mt-5 font-display text-[30px] font-bold leading-[1.12] tracking-tight text-white [text-wrap:balance] sm:text-[38px] lg:text-[44px]">
-          Digitalize Your Rent-A-Car Showroom.
-          <span class="text-emerald-400">Stop Paperwork Losses.</span>
+        <h1 class="mt-6 font-display text-[27px] font-bold leading-[1.14] tracking-tight text-white [text-wrap:balance] sm:text-[38px] lg:text-[46px]">
+          The Complete Operations &amp; Fleet Ledger for
+          <span class="text-emerald-400">Enterprise Car Rentals.</span>
         </h1>
 
-        <p class="mt-4 max-w-[520px] text-[14px] leading-relaxed text-slate-400 sm:text-[15px]">
-          One tap to dispatch a car, map its condition, and hand the renter a WhatsApp slip. No servers, no monthly software bill &mdash; your whole fleet ledger lives on your phone.
+        <p class="mx-auto mt-5 max-w-2xl text-[14px] leading-relaxed text-slate-400 sm:text-[15.5px]">
+          Eliminate asset disputes, automate digital rental agreements, and secure your showroom&rsquo;s cash flow with zero infrastructure overhead. Engineered specifically for the Pakistani automotive ecosystem.
         </p>
 
-        <div class="mt-7 space-y-3.5">
-          <div class="flex items-start gap-3">
-            <span class="grid h-9 w-9 shrink-0 place-items-center rounded-xl bg-emerald-500/10 text-[16px] ring-1 ring-inset ring-emerald-400/20">🚗</span>
-            <div>
-              <div class="text-[13.5px] font-semibold text-white">Interactive Visual Damage Mapping</div>
-              <div class="text-[12.5px] leading-snug text-slate-400">Tap the panels with scratches at check-out. Stop fights over dents at return.</div>
-            </div>
-          </div>
-          <div class="flex items-start gap-3">
-            <span class="grid h-9 w-9 shrink-0 place-items-center rounded-xl bg-emerald-500/10 text-[16px] ring-1 ring-inset ring-emerald-400/20">💬</span>
-            <div>
-              <div class="text-[13.5px] font-semibold text-white">10-Second WhatsApp Slips &amp; Digital Receipts</div>
-              <div class="text-[12.5px] leading-snug text-slate-400">Every rental and return documented and shareable before the car leaves the gate.</div>
-            </div>
-          </div>
-          <div class="flex items-start gap-3">
-            <span class="grid h-9 w-9 shrink-0 place-items-center rounded-xl bg-emerald-500/10 text-[16px] ring-1 ring-inset ring-emerald-400/20">📊</span>
-            <div>
-              <div class="text-[13.5px] font-semibold text-white">Zero-Cost Fleet Ledger &amp; Overtime Calculator</div>
-              <div class="text-[12.5px] leading-snug text-slate-400">Track who&rsquo;s out, what&rsquo;s due back, and exactly what you&rsquo;re owed &mdash; automatically.</div>
-            </div>
-          </div>
-        </div>
-
-        <div class="mt-8">
-          <button id="cta-start-trial" class="cta-glow group inline-flex w-full items-center justify-center gap-2 rounded-2xl bg-gradient-to-b from-emerald-500 to-emerald-600 px-7 py-4 text-[15px] font-bold text-white transition hover:from-emerald-400 hover:to-emerald-500 active:scale-[0.98] sm:w-auto sm:text-[16px]">
-            🚀 Start Your 3-Day Free Trial Instantly
-            <i data-lucide="arrow-right" class="h-4 w-4 transition group-hover:translate-x-0.5"></i>
+        <div class="mt-8 flex flex-col items-stretch justify-center gap-3 sm:flex-row sm:items-center">
+          <button id="cta-start-trial" class="inline-flex items-center justify-center gap-2 rounded-lg bg-emerald-600 px-6 py-3.5 text-[14px] font-semibold text-white transition hover:bg-emerald-500 active:scale-[0.98]">
+            Deploy Free 3-Day Trial
+            <i data-lucide="arrow-right" class="h-4 w-4"></i>
           </button>
-          <p class="mt-3 text-[11.5px] text-slate-500">No card required &middot; Rs.&nbsp;4,000/month after your trial &middot; Your data stays on your device</p>
+          <a id="hero-consult" href="#" class="inline-flex items-center justify-center gap-2 rounded-lg border border-white/25 px-6 py-3.5 text-[14px] font-semibold text-white transition hover:border-white/45 hover:bg-white/5 active:scale-[0.98]">
+            <i data-lucide="calendar-clock" class="h-4 w-4"></i>
+            Schedule Fleet Consultation
+          </a>
+        </div>
+
+        <p class="mt-4 text-[11.5px] text-slate-500">No credit card &middot; Data stays on-device &middot; Works fully offline</p>
+      </div>
+
+      <!-- Product preview -->
+      <div class="mx-auto mt-12 max-w-sm rounded-2xl border border-white/[0.08] bg-charcoal-900 p-4 shadow-[0_40px_110px_-40px_rgba(0,0,0,0.85)]">
+        <div class="flex items-center justify-between px-1 pb-3">
+          <span class="text-[10.5px] font-semibold uppercase tracking-[0.14em] text-slate-500">Vehicle condition — check-out</span>
+          <span class="inline-flex items-center gap-1 rounded-full bg-emerald-500/[0.12] px-2 py-0.5 text-[9.5px] font-bold uppercase tracking-wide text-emerald-400">
+            <span class="h-1 w-1 rounded-full bg-emerald-400"></span> Recording
+          </span>
+        </div>
+        <div class="rounded-xl border border-slate-200 bg-slate-50 p-3">
+          <div id="landing-map"></div>
+        </div>
+        <div class="mt-3 flex flex-wrap items-center gap-1.5">
+          <span class="mr-0.5 text-[9.5px] font-semibold uppercase tracking-wide text-slate-500">Logged blemishes</span>
+          <span class="inline-flex items-center rounded-full bg-slate-100 px-2 py-0.5 text-[10.5px] font-semibold text-rose-700 ring-1 ring-rose-200">Left Rear Door</span>
+          <span class="inline-flex items-center rounded-full bg-slate-100 px-2 py-0.5 text-[10.5px] font-semibold text-rose-700 ring-1 ring-rose-200">Front Bumper</span>
         </div>
       </div>
+    </section>
 
-      <!-- Product visual -->
-      <div class="relative">
-        <div class="mx-auto max-w-[340px] rounded-3xl border border-white/[0.08] bg-charcoal-900 p-4 shadow-[0_40px_110px_-35px_rgba(0,0,0,0.85)]">
-          <div class="flex items-center justify-between px-1 pb-3">
-            <span class="text-[11px] font-semibold uppercase tracking-wider text-slate-500">Check-out condition</span>
-            <span class="rounded-full bg-emerald-500/15 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wide text-emerald-400">Live</span>
-          </div>
-          <div class="rounded-2xl border border-slate-200 bg-slate-50 p-3">
-            <div id="landing-map"></div>
-          </div>
-          <div class="mt-3 flex flex-wrap gap-1.5">
-            <span class="mr-0.5 text-[10px] font-semibold uppercase tracking-wide text-slate-500">Noted:</span>
-            <span class="inline-flex items-center rounded-full bg-slate-100 px-2 py-0.5 text-[10.5px] font-semibold text-rose-700 ring-1 ring-rose-200">Left Rear Door</span>
-            <span class="inline-flex items-center rounded-full bg-slate-100 px-2 py-0.5 text-[10.5px] font-semibold text-rose-700 ring-1 ring-rose-200">Front Bumper</span>
-          </div>
+    <!-- ────────────────  CORE ADVANCED CAPABILITIES  ──────────────── -->
+    <section class="border-b border-white/[0.06] py-14 sm:py-20">
+      <div class="mx-auto max-w-3xl text-center">
+        <div class="text-[10.5px] font-semibold uppercase tracking-[0.16em] text-emerald-400">Core capabilities</div>
+        <h2 class="mt-3 font-display text-[23px] font-bold tracking-tight text-white [text-wrap:balance] sm:text-[32px]">
+          Engineered to Protect Your Fleet and Your Profits.
+        </h2>
+      </div>
+
+      <div class="mx-auto mt-10 grid max-w-5xl gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        <article class="flex flex-col rounded-xl border border-white/[0.08] bg-white/[0.02] p-5">
+          <span class="grid h-10 w-10 place-items-center rounded-lg border border-emerald-500/25 bg-emerald-500/10 text-emerald-400">
+            <i data-lucide="shield-check" class="h-5 w-5"></i>
+          </span>
+          <h3 class="mt-4 text-[14px] font-semibold text-white">Visual Asset Protection</h3>
+          <p class="mt-2 text-[12.5px] leading-relaxed text-slate-400">
+            Symmetrical vector wireframe mapping allows operators to log pre-existing chassis blemishes instantly, halting returned-vehicle damage disputes permanently.
+          </p>
+        </article>
+
+        <article class="flex flex-col rounded-xl border border-white/[0.08] bg-white/[0.02] p-5">
+          <span class="grid h-10 w-10 place-items-center rounded-lg border border-emerald-500/25 bg-emerald-500/10 text-emerald-400">
+            <i data-lucide="file-text" class="h-5 w-5"></i>
+          </span>
+          <h3 class="mt-4 text-[14px] font-semibold text-white">Instant Digital Agreements</h3>
+          <p class="mt-2 text-[12.5px] leading-relaxed text-slate-400">
+            Generates automated, perfectly formatted legal dispatch slips natively routed to the renter&rsquo;s WhatsApp in under 10 seconds.
+          </p>
+        </article>
+
+        <article class="flex flex-col rounded-xl border border-white/[0.08] bg-white/[0.02] p-5 sm:col-span-2 lg:col-span-1">
+          <span class="grid h-10 w-10 place-items-center rounded-lg border border-emerald-500/25 bg-emerald-500/10 text-emerald-400">
+            <i data-lucide="hard-drive" class="h-5 w-5"></i>
+          </span>
+          <h3 class="mt-4 text-[14px] font-semibold text-white">Offline Local-First Ledger</h3>
+          <p class="mt-2 text-[12.5px] leading-relaxed text-slate-400">
+            Zero cloud databases. Entire fleet availability timelines and cash logs reside strictly inside browser hardware memory, guaranteeing absolute data privacy.
+          </p>
+        </article>
+      </div>
+    </section>
+
+    <!-- ─────────────────────────  FAQ  ───────────────────────── -->
+    <section class="border-b border-white/[0.06] py-14 sm:py-20">
+      <div class="mx-auto max-w-3xl">
+        <h2 class="text-center font-display text-[23px] font-bold tracking-tight text-white sm:text-[30px]">Frequently Asked Questions</h2>
+        <div class="mt-8 divide-y divide-white/[0.06] border-y border-white/[0.06]">
+          <details class="group">
+            <summary class="flex cursor-pointer items-center justify-between gap-4 py-4 text-[14px] font-semibold text-white">
+              Where is my showroom data stored?
+              <i data-lucide="plus" class="h-4 w-4 shrink-0 text-slate-500 transition group-open:rotate-45"></i>
+            </summary>
+            <p class="pb-4 pr-8 text-[13px] leading-relaxed text-slate-400">
+              PakEngine uses a local-first storage architecture. Your active rentals, client details, and revenue sheets stay exclusively on your device&rsquo;s browser memory. No third party or server can access your business insights.
+            </p>
+          </details>
+          <details class="group">
+            <summary class="flex cursor-pointer items-center justify-between gap-4 py-4 text-[14px] font-semibold text-white">
+              How do I upgrade after the 3-day trial?
+              <i data-lucide="plus" class="h-4 w-4 shrink-0 text-slate-500 transition group-open:rotate-45"></i>
+            </summary>
+            <p class="pb-4 pr-8 text-[13px] leading-relaxed text-slate-400">
+              Upon trial completion, simply transfer the monthly flat rate of 4,000 PKR via Bank Transfer using your automatically generated Showroom ID as the reference memo to unlock instant activation.
+            </p>
+          </details>
         </div>
       </div>
-    </div>
+    </section>
 
-    <!-- Trust band -->
-    <div class="grid gap-4 border-t border-white/[0.06] py-8 sm:grid-cols-3">
-      <div class="text-center sm:text-left">
-        <div class="font-display text-[20px] font-bold text-white">3 days</div>
-        <div class="text-[12px] text-slate-500">Full access, free. No card.</div>
-      </div>
-      <div class="text-center sm:text-left">
-        <div class="font-display text-[20px] font-bold text-white">Rs.&nbsp;4,000<span class="text-[12px] font-medium text-slate-500"> / month</span></div>
-        <div class="text-[12px] text-slate-500">Flat rate. Unlimited vehicles.</div>
-      </div>
-      <div class="text-center sm:text-left">
-        <div class="font-display text-[20px] font-bold text-white">0 servers</div>
-        <div class="text-[12px] text-slate-500">Works offline, on any phone.</div>
-      </div>
-    </div>
+    <!-- ───────────────────────  CLOSING CTA  ─────────────────────── -->
+    <section class="py-14 text-center sm:py-16">
+      <h2 class="font-display text-[19px] font-bold tracking-tight text-white sm:text-[24px]">Bring your showroom online today.</h2>
+      <p class="mx-auto mt-2 max-w-md text-[13px] text-slate-400">Full access for three days. No card, no install, and no data leaves your device.</p>
+      <button id="cta-start-trial-2" class="mt-6 inline-flex items-center justify-center gap-2 rounded-lg bg-emerald-600 px-6 py-3.5 text-[14px] font-semibold text-white transition hover:bg-emerald-500 active:scale-[0.98]">
+        Deploy Free 3-Day Trial <i data-lucide="arrow-right" class="h-4 w-4"></i>
+      </button>
+    </section>
+  </main>
 
-    <div class="flex flex-col items-center justify-between gap-3 border-t border-white/[0.06] py-6 text-[11px] text-slate-600 sm:flex-row">
-      <span>PakEngine Rent Ledger &middot; pakengine.com</span>
-      <button id="landing-login-2" class="font-semibold text-slate-400 transition hover:text-white">Showroom Login &rarr;</button>
+  <!-- ────────────────  INSTITUTIONAL FOOTER  ──────────────── -->
+  <footer class="border-t border-white/[0.08] bg-charcoal-950">
+    <div class="mx-auto w-full max-w-6xl px-5 py-10">
+      <div class="flex flex-col gap-6 sm:flex-row sm:items-start sm:justify-between">
+        <div>
+          <div class="flex items-center space-x-3 select-none">
+            <svg class="w-7 h-7 text-emerald-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
+            </svg>
+            <span class="text-lg font-black tracking-tight text-white">Pak<span class="text-emerald-500">Engine</span></span>
+          </div>
+          <p class="mt-3 max-w-xs text-[11.5px] leading-relaxed text-slate-500">
+            Local-first operations &amp; fleet ledger software for car rental showrooms. pakengine.com
+          </p>
+        </div>
+        <nav class="flex flex-wrap gap-x-6 gap-y-2 text-[12px]" aria-label="Footer">
+          <a id="footer-contact" href="#" class="font-medium text-slate-400 transition hover:text-white">Customer Support</a>
+          <button id="footer-login" class="font-medium text-slate-400 transition hover:text-white">Showroom Login</button>
+          <button id="footer-privacy" class="font-medium text-slate-400 transition hover:text-white">Privacy Policy</button>
+          <button id="footer-terms" class="font-medium text-slate-400 transition hover:text-white">Terms &amp; Conditions</button>
+        </nav>
+      </div>
+      <div class="mt-8 border-t border-white/[0.06] pt-5 text-[11px] text-slate-600">
+        &copy; <span id="footer-year">2026</span> PakEngine. All rights reserved. &middot; Built for the Pakistani automotive ecosystem.
+      </div>
     </div>
-  </div>
+  </footer>
 </div>
 
 <!-- ========================= ONBOARDING SETUP ========================= -->
@@ -791,6 +865,76 @@
   </div>
 </div>
 
+<!-- ======================= PRIVACY POLICY MODAL ======================= -->
+<div id="privacy-modal" class="modal fixed inset-0 z-[95] hidden items-center justify-center overflow-y-auto bg-charcoal-950/80 px-4 py-8 backdrop-blur-md">
+  <div data-close class="absolute inset-0"></div>
+  <div class="modal-card relative max-h-[86vh] w-full max-w-[560px] overflow-y-auto rounded-2xl bg-white shadow-[0_30px_80px_-20px_rgba(0,0,0,0.7)] ring-1 ring-slate-950/[0.06]">
+    <div class="sticky top-0 z-10 flex items-center justify-between border-b border-slate-200 bg-white/95 px-6 py-4 backdrop-blur">
+      <h2 class="font-display text-[15px] font-bold text-slate-900">Privacy Policy</h2>
+      <button data-close aria-label="Close" class="grid h-8 w-8 place-items-center rounded-lg border border-slate-200 text-slate-500 transition hover:bg-slate-50 hover:text-slate-900">
+        <i data-lucide="x" class="h-4 w-4"></i>
+      </button>
+    </div>
+    <div class="space-y-4 px-6 py-5 text-[13px] leading-relaxed text-slate-600">
+      <p class="text-[11px] font-medium uppercase tracking-wide text-slate-400">Last updated: September 2026</p>
+      <p>PakEngine Rent Ledger (&ldquo;PakEngine&rdquo;, &ldquo;we&rdquo;) is a local-first web application. This policy explains what data the application handles and where it is kept.</p>
+      <div>
+        <h3 class="font-semibold text-slate-900">1. Data stored on your device</h3>
+        <p class="mt-1">Everything you enter &mdash; showroom name and contact number, vehicle records, rental and return logs, damage notes, revenue figures, and your licence key &mdash; is written only to your browser&rsquo;s local storage on the device you are using. It is never transmitted to PakEngine or to any server we operate. We keep no database and have no ability to read your records.</p>
+      </div>
+      <div>
+        <h3 class="font-semibold text-slate-900">2. Your Showroom ID</h3>
+        <p class="mt-1">On first use the application generates a random Showroom ID (for example <span class="font-mono text-slate-800">PES-XXXXXX</span>) and stores it locally alongside a structured record that pairs the ID with the contact number you register. This record exists so that, when you choose to upgrade, you can quote the ID with your bank transfer. It is held on your device and is shared only if you send it to us yourself.</p>
+      </div>
+      <div>
+        <h3 class="font-semibold text-slate-900">3. Third-party content delivery networks</h3>
+        <p class="mt-1">To render the interface, the page loads styling, icon, and font files from Cloudflare, jsDelivr, and Google Fonts. When your browser requests those files, the providers receive standard request metadata such as your IP address and browser user-agent. PakEngine sets no analytics, advertising, or tracking cookies, and runs no third-party trackers or session recording.</p>
+      </div>
+      <div>
+        <h3 class="font-semibold text-slate-900">4. Payments</h3>
+        <p class="mt-1">Upgrades are completed by direct bank transfer that you initiate with your own bank. PakEngine does not collect or process card or account details through the application.</p>
+      </div>
+      <div>
+        <h3 class="font-semibold text-slate-900">5. Deleting your data</h3>
+        <p class="mt-1">You can export a full backup at any time from Settings. Clearing your browser&rsquo;s site data for pakengine.com permanently removes every record. Because the data lives only on your device, this cannot be undone and we cannot recover it for you.</p>
+      </div>
+      <div>
+        <h3 class="font-semibold text-slate-900">6. Contact</h3>
+        <p class="mt-1">Questions about this policy: <a id="privacy-contact" href="#" class="font-medium text-emerald-700 underline">support@pakengine.com</a>.</p>
+      </div>
+    </div>
+    <div class="sticky bottom-0 border-t border-slate-200 bg-white px-6 py-3.5">
+      <button data-close class="w-full rounded-lg bg-slate-900 px-4 py-2.5 text-[13px] font-semibold text-white transition hover:bg-slate-800">Close</button>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== TERMS & CONDITIONS MODAL ==================== -->
+<div id="terms-modal" class="modal fixed inset-0 z-[95] hidden items-center justify-center overflow-y-auto bg-charcoal-950/80 px-4 py-8 backdrop-blur-md">
+  <div data-close class="absolute inset-0"></div>
+  <div class="modal-card relative max-h-[86vh] w-full max-w-[560px] overflow-y-auto rounded-2xl bg-white shadow-[0_30px_80px_-20px_rgba(0,0,0,0.7)] ring-1 ring-slate-950/[0.06]">
+    <div class="sticky top-0 z-10 flex items-center justify-between border-b border-slate-200 bg-white/95 px-6 py-4 backdrop-blur">
+      <h2 class="font-display text-[15px] font-bold text-slate-900">Terms &amp; Conditions</h2>
+      <button data-close aria-label="Close" class="grid h-8 w-8 place-items-center rounded-lg border border-slate-200 text-slate-500 transition hover:bg-slate-50 hover:text-slate-900">
+        <i data-lucide="x" class="h-4 w-4"></i>
+      </button>
+    </div>
+    <div class="space-y-4 px-6 py-5 text-[13px] leading-relaxed text-slate-600">
+      <p class="text-[11px] font-medium uppercase tracking-wide text-slate-400">Last updated: September 2026</p>
+      <p>By using PakEngine Rent Ledger you agree to the following terms.</p>
+      <div><h3 class="font-semibold text-slate-900">1. Licence</h3><p class="mt-1">PakEngine grants you a non-exclusive, non-transferable right to use the application to operate your own car rental business. A free trial runs for three days from first launch. Continued use after the trial requires an active monthly licence, currently a flat 4,000 PKR per calendar month, paid by bank transfer. A licence key is valid only for the calendar month it is issued for.</p></div>
+      <div><h3 class="font-semibold text-slate-900">2. Your responsibilities</h3><p class="mt-1">You are responsible for the accuracy of the records you enter, for keeping your own backups (Settings &rarr; Export Fleet Backup), and for the security of the device the data is stored on. You must not resell, sublicense, or redistribute the application, and must not use it for unlawful activity.</p></div>
+      <div><h3 class="font-semibold text-slate-900">3. Data and availability</h3><p class="mt-1">The application stores all data locally in your browser and operates without a server. PakEngine cannot access, restore, or migrate your records. Loss of the device, or clearing of browser data, results in permanent loss of any records you have not exported.</p></div>
+      <div><h3 class="font-semibold text-slate-900">4. No warranty</h3><p class="mt-1">The application is provided &ldquo;as is&rdquo;, without warranty of any kind. To the maximum extent permitted by law, PakEngine is not liable for any loss of data, revenue, or business arising from use of, or inability to use, the application.</p></div>
+      <div><h3 class="font-semibold text-slate-900">5. Changes</h3><p class="mt-1">These terms and the monthly rate may be updated from time to time. Continued use after a change constitutes acceptance of the revised terms.</p></div>
+      <div><h3 class="font-semibold text-slate-900">6. Contact</h3><p class="mt-1"><a id="terms-contact" href="#" class="font-medium text-emerald-700 underline">support@pakengine.com</a></p></div>
+    </div>
+    <div class="sticky bottom-0 border-t border-slate-200 bg-white px-6 py-3.5">
+      <button data-close class="w-full rounded-lg bg-slate-900 px-4 py-2.5 text-[13px] font-semibold text-white transition hover:bg-slate-800">Close</button>
+    </div>
+  </div>
+</div>
+
 <!-- =========================== SETTINGS DRAWER =========================== -->
 <div id="drawer-root" class="fixed inset-0 z-[90]">
   <div id="drawer-backdrop" class="absolute inset-0 bg-charcoal-950/70 backdrop-blur-sm"></div>
@@ -906,7 +1050,7 @@
         </div>
         <div class="mt-3 space-y-1 text-[11.5px] text-slate-500">
           <div class="flex justify-between"><span>Application</span><span class="text-slate-400">PakEngine Rent Ledger</span></div>
-          <div class="flex justify-between"><span>Version</span><span class="font-mono text-slate-400" id="about-version">2.4.1</span></div>
+          <div class="flex justify-between"><span>Version</span><span class="font-mono text-slate-400" id="about-version">2.5.0</span></div>
           <div class="flex justify-between"><span>Domain</span><span class="text-slate-400">pakengine.com</span></div>
         </div>
       </section>
@@ -931,13 +1075,17 @@
    * ========================================================== */
   var CONFIG = {
     APP_NAME: 'PakEngine Rent Ledger',
-    APP_VERSION: '2.4.1',
+    APP_VERSION: '2.5.0',
     DOMAIN: 'pakengine.com',
     LICENSE_PRICE_PKR: 4000,
     TRIAL_DAYS: 3,
     TRIAL_MS: 3 * 24 * 60 * 60 * 1000,   // 72 hours, in milliseconds
     PAYMENT_NUMBER: '03461223692',
     WHATSAPP_URL: 'https://wa.me',
+    CONTACT: {
+      SALES: 'sales@pakengine.com',
+      SUPPORT: 'support@pakengine.com'
+    },
     BANK: {
       TITLE: 'Muhammad Zaheen Zubairi',
       NAME: 'Meezan Bank — Meezan Digital Centre',
@@ -1395,13 +1543,29 @@
     });
     icons();
   }
+
+  /* Sticky-nav shadow while the marketing page scrolls (rAF-throttled). */
+  var _navScrollQueued = false;
+  function applyLandingNavShadow() {
+    var nav = document.getElementById('landing-nav');
+    var wrap = document.getElementById('landing');
+    if (nav && wrap) nav.classList.toggle('is-scrolled', (wrap.scrollTop || 0) > 4);
+  }
+  function queueLandingNavShadow() {
+    if (_navScrollQueued) return;
+    _navScrollQueued = true;
+    requestAnimationFrame(function () { _navScrollQueued = false; applyLandingNavShadow(); });
+  }
+
   function showLanding() {
     $('#onboarding').classList.add('hidden');
     $('#app-root').classList.add('hidden');
     document.body.style.overflow = '';
     var el = $('#landing');
     el.classList.remove('hidden');
+    el.scrollTop = 0;
     paintLandingPreview();
+    applyLandingNavShadow();
     icons();
     requestAnimationFrame(function () { el.classList.add('is-in'); });
   }
@@ -2204,11 +2368,27 @@
 
     /* Public landing + onboarding routing */
     $('#cta-start-trial').addEventListener('click', startTrialFlow);
+    $('#cta-start-trial-2').addEventListener('click', startTrialFlow);
     $('#nav-login').addEventListener('click', loginFromLanding);
-    $('#landing-login-2').addEventListener('click', loginFromLanding);
+    $('#footer-login').addEventListener('click', loginFromLanding);
     $('#onb-continue').addEventListener('click', completeOnboarding);
     $('#onb-name').addEventListener('keydown', function (e) { if (e.key === 'Enter') $('#onb-phone').focus(); });
     $('#onb-phone').addEventListener('keydown', function (e) { if (e.key === 'Enter') completeOnboarding(); });
+
+    /* Marketing: contact routing, legal modals, sticky-nav shadow, footer year */
+    var salesMail = 'mailto:' + CONFIG.CONTACT.SALES + '?subject=' + encodeURIComponent('PakEngine — Sales enquiry');
+    var consultMail = 'mailto:' + CONFIG.CONTACT.SALES + '?subject=' + encodeURIComponent('PakEngine — Fleet consultation request');
+    var supportMail = 'mailto:' + CONFIG.CONTACT.SUPPORT + '?subject=' + encodeURIComponent('PakEngine — Support request');
+    var setHref = function (id, href) { var el = $(id); if (el) el.setAttribute('href', href); };
+    setHref('#nav-contact', salesMail);
+    setHref('#hero-consult', consultMail);
+    setHref('#footer-contact', supportMail);
+    setHref('#privacy-contact', supportMail);
+    setHref('#terms-contact', supportMail);
+    $('#footer-privacy').addEventListener('click', function () { openModal($('#privacy-modal')); });
+    $('#footer-terms').addEventListener('click', function () { openModal($('#terms-modal')); });
+    $('#landing').addEventListener('scroll', queueLandingNavShadow, { passive: true });
+    var _fy = $('#footer-year'); if (_fy) _fy.textContent = String(new Date().getFullYear());
 
     $('#save-settings').addEventListener('click', saveSettings);
     $('#export-btn').addEventListener('click', exportBackup);

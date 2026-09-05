@@ -1,0 +1,11 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "pakengine-static",
+      "runtimeExecutable": "npx",
+      "runtimeArgs": ["-y", "serve", "--no-clipboard", "-l", "4177", "."],
+      "port": 4177
+    }
+  ]
+}
