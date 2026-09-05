@@ -186,6 +186,18 @@
 <!-- ============================ APP COLUMN ============================ -->
 <div id="app-root" class="hidden relative mx-auto flex min-h-screen w-full max-w-[480px] flex-col border-white/[0.06] sm:border-x lg:max-w-5xl">
 
+  <!-- --------------------------- DEMO MODE BAR --------------------------- -->
+  <div id="demo-bar" class="hidden">
+    <div class="flex flex-wrap items-center justify-center gap-x-3 gap-y-1 border-b border-emerald-500/25 bg-emerald-500/[0.09] px-4 py-2 text-center text-[11.5px]">
+      <span class="inline-flex items-center gap-1.5 font-bold uppercase tracking-wider text-emerald-300">
+        <span class="h-1.5 w-1.5 rounded-full bg-emerald-400"></span> Demo Mode
+      </span>
+      <span class="text-slate-400">Sample data &middot; nothing is saved &middot; refresh to reset</span>
+      <button id="demo-start" class="font-semibold text-emerald-300 underline underline-offset-2 transition hover:text-emerald-200">Start your real trial &rarr;</button>
+      <button id="demo-exit" class="font-medium text-slate-500 transition hover:text-white">Exit demo</button>
+    </div>
+  </div>
+
   <!-- --------------------------- TOP NAVIGATION --------------------------- -->
   <header class="sticky top-0 z-40 border-b border-white/[0.06] bg-charcoal-950/80 backdrop-blur-xl">
     <div class="flex h-[60px] items-center justify-between px-4" style="padding-top: env(safe-area-inset-top);">
@@ -384,7 +396,10 @@
         </svg>
         <span class="text-xl font-black tracking-tight text-white">Pak<span class="text-emerald-500">Engine</span></span>
       </a>
-      <div class="flex items-center gap-2 sm:gap-3">
+      <div class="flex items-center gap-1 sm:gap-3">
+        <a href="/demo" class="hidden items-center gap-1.5 rounded-lg px-3 py-2 text-[12.5px] font-semibold text-slate-300 transition hover:text-white sm:inline-flex">
+          <i data-lucide="play-circle" class="h-3.5 w-3.5"></i> Live Demo
+        </a>
         <a id="nav-contact" href="#" class="hidden items-center gap-1.5 rounded-lg px-3 py-2 text-[12.5px] font-semibold text-slate-300 transition hover:text-white sm:inline-flex">
           <i data-lucide="headset" class="h-3.5 w-3.5"></i> Contact Sales
         </a>
@@ -570,6 +585,11 @@
           </button>
         </div>
       </div>
+
+      <p class="mx-auto mt-4 max-w-2xl text-center text-[12px] text-slate-500">
+        Want the whole picture first?
+        <a href="/demo" class="font-semibold text-emerald-400 underline underline-offset-2 transition hover:text-emerald-300">Open the full interactive dashboard demo &rarr;</a>
+      </p>
     </section>
 
     <!-- ─────────────────────────  FAQ  ───────────────────────── -->
@@ -1140,7 +1160,7 @@
         </div>
         <div class="mt-3 space-y-1 text-[11.5px] text-slate-500">
           <div class="flex justify-between"><span>Application</span><span class="text-slate-400">PakEngine Rent Ledger</span></div>
-          <div class="flex justify-between"><span>Version</span><span class="font-mono text-slate-400" id="about-version">2.6.0</span></div>
+          <div class="flex justify-between"><span>Version</span><span class="font-mono text-slate-400" id="about-version">2.7.0</span></div>
           <div class="flex justify-between"><span>Domain</span><span class="text-slate-400">pakengine.com</span></div>
         </div>
       </section>
@@ -1165,7 +1185,7 @@
    * ========================================================== */
   var CONFIG = {
     APP_NAME: 'PakEngine Rent Ledger',
-    APP_VERSION: '2.6.0',
+    APP_VERSION: '2.7.0',
     DOMAIN: 'pakengine.com',
     LICENSE_PRICE_PKR: 4000,
     TRIAL_DAYS: 3,
@@ -1272,21 +1292,33 @@
     catch (e) { return false; }
   })();
 
+  /* DEMO mode (/demo route) swaps the whole persistence layer to a throwaway
+     in-memory object. It never reads or writes localStorage, so a demo visitor
+     cannot see or corrupt a real showroom's saved data, and refresh = fresh. */
+  var DEMO = false;
+  var __demoMem = {};
+
   var Store = {
     get: function (key, fb) {
       var raw;
-      try { raw = __lsOK ? localStorage.getItem(key) : (key in __mem ? __mem[key] : null); }
-      catch (e) { raw = (key in __mem ? __mem[key] : null); }
+      if (DEMO) {
+        raw = Object.prototype.hasOwnProperty.call(__demoMem, key) ? __demoMem[key] : null;
+      } else {
+        try { raw = __lsOK ? localStorage.getItem(key) : (key in __mem ? __mem[key] : null); }
+        catch (e) { raw = (key in __mem ? __mem[key] : null); }
+      }
       if (raw == null) return fb === undefined ? null : fb;
       try { return JSON.parse(raw); } catch (e) { return fb === undefined ? null : fb; }
     },
     set: function (key, val) {
       var raw = JSON.stringify(val);
+      if (DEMO) { __demoMem[key] = raw; return true; }
       try { if (__lsOK) localStorage.setItem(key, raw); else __mem[key] = raw; }
       catch (e) { __mem[key] = raw; }
       return true;
     },
     remove: function (key) {
+      if (DEMO) { delete __demoMem[key]; return; }
       try { if (__lsOK) localStorage.removeItem(key); } catch (e) {}
       delete __mem[key];
     },
@@ -1511,6 +1543,7 @@
     var text = $('#status-text'), core = $('#status-core'), ping = $('#status-ping');
     var map = {
       checking: { label: 'Checking', dot: 'bg-slate-400', ping: false },
+      demo:     { label: 'Demo',     dot: 'bg-sky-400', ping: true },
       active:   { label: 'Active',   dot: 'bg-emerald-400', ping: true },
       trial:    { label: 'Trial',    dot: 'bg-emerald-400', ping: true },
       locked:   { label: 'Locked',   dot: 'bg-amber-400', ping: false },
@@ -2384,6 +2417,13 @@
 
   /* Single source of truth for what the viewer may see. */
   function gateAccess(opts) {
+    if (DEMO) {                               // /demo is always open, no gate
+      hideTrialBanner();
+      $('#app-shell').classList.remove('blurred');
+      $('#gear-btn').classList.remove('hidden');
+      setStatus('demo');
+      return 'demo';
+    }
     var silent = !!(opts && opts.silent);
     var lic = License.status();
     var paywallOpen = $('#paywall').classList.contains('is-open');
@@ -2428,6 +2468,7 @@
   /* Cheap once-a-minute check: pure epoch-ms math, no rAF, no per-second timers. */
   var trialTimer = null;
   function trialTick() {
+    if (DEMO) return;                                          // demo mode has no trial clock
     if ($('#app-root').classList.contains('hidden')) return;   // on the landing / onboarding screen
     if ($('#paywall').classList.contains('is-open')) return;   // viewer must act on the open gate
     var lic = License.status();
@@ -2605,10 +2646,15 @@
     /* Re-check the gate on tab focus (handles trial expiry + month rollover) */
     document.addEventListener('visibilitychange', function () {
       if (document.visibilityState !== 'visible') return;
+      if (DEMO) return;
       if ($('#app-root').classList.contains('hidden')) return;   // on landing / onboarding, no gate to run
       if ($('#paywall').classList.contains('is-open')) return;
       gateAccess({ silent: true });
     });
+
+    /* Demo bar actions */
+    $('#demo-start').addEventListener('click', function () { exitDemo('trial'); });
+    $('#demo-exit').addEventListener('click', function () { exitDemo('home'); });
   }
 
   /* ============================================================
@@ -2630,13 +2676,84 @@
     showroomId: function () { return getShowroomId(); }
   };
 
+  /* ============================================================
+   *  DEMO MODE  — /demo route: full dashboard on a throwaway store
+   * ========================================================== */
+  function isDemoRoute() {
+    try {
+      return /(^|\/)demo\/?$/i.test(location.pathname) ||
+             /(^|[?&])demo(=[^&]*)?(&|$)/i.test(location.search) ||
+             /^#\/?demo\/?$/i.test(location.hash);
+    } catch (e) { return false; }
+  }
+
+  function seedDemoData() {
+    var now = Date.now();
+    function iso(d) { return new Date(now - d * 86400000).toISOString(); }
+
+    Store.set(CONFIG.STORAGE_KEYS.SETTINGS, { name: 'Karachi Elite Rentals (Demo)', phone: '0300-0000000', updatedAt: iso(0) });
+    Store.set(CONFIG.STORAGE_KEYS.FIRST_LAUNCH, { launchedAt: iso(120), launchTs: now - 120 * 86400000, trialDays: CONFIG.TRIAL_DAYS, showroomId: 'PES-DEMO01' });
+
+    Store.set(CONFIG.STORAGE_KEYS.FLEET, [
+      { id: uid('v'), make: 'Toyota Fortuner Sigma 4', plate: 'ICT-999', rate: 25000, status: 'available', rental: null, addedAt: iso(90) },
+      { id: uid('v'), make: 'Toyota Corolla Altis 1.8', plate: 'LEB-19-4471', rate: 7500, status: 'rented', addedAt: iso(120),
+        rental: { renter: 'Bilal Ahmed', phone: '0301-2345678', days: 4, rate: 7500, total: 30000, checkoutAt: iso(2), checkoutDamage: ['Front Bumper'] } },
+      { id: uid('v'), make: 'Honda Civic RS Turbo', plate: 'ISB-21-8890', rate: 11000, status: 'available', rental: null, addedAt: iso(75) },
+      { id: uid('v'), make: 'Suzuki Cultus VXL', plate: 'RIU-20-1123', rate: 4500, status: 'rented', addedAt: iso(60),
+        rental: { renter: 'Hamza Sheikh', phone: '0321-9876543', days: 7, rate: 4500, total: 31500, checkoutAt: iso(3), checkoutDamage: ['Left Rear Door', 'Boot'] } },
+      { id: uid('v'), make: 'Kia Sportage AWD', plate: 'LEA-21-5567', rate: 14000, status: 'available', rental: null, addedAt: iso(45) },
+      { id: uid('v'), make: 'Toyota Hiace Grand Cabin', plate: 'ICT-455', rate: 18000, status: 'rented', addedAt: iso(150),
+        rental: { renter: 'Usman Tariq', phone: '0345-1112223', days: 3, rate: 18000, total: 54000, checkoutAt: iso(1), checkoutDamage: [] } },
+      { id: uid('v'), make: 'Suzuki Alto VXL AGS', plate: 'LEC-22-7781', rate: 3800, status: 'available', rental: null, addedAt: iso(30) },
+      { id: uid('v'), make: 'Toyota Land Cruiser ZX', plate: 'ISB-23-0001', rate: 45000, status: 'available', rental: null, addedAt: iso(20) }
+    ]);
+
+    Store.set(CONFIG.STORAGE_KEYS.LEDGER, [
+      { id: uid('l'), type: 'checkout', make: 'Toyota Hiace Grand Cabin', plate: 'ICT-455', renter: 'Usman Tariq', days: 3, total: 54000, damage: [], at: iso(1) },
+      { id: uid('l'), type: 'checkin', make: 'Honda Civic RS Turbo', plate: 'ISB-21-8890', renter: 'Ayesha Khan', returnDamage: ['Windscreen'], newDamage: ['Windscreen'], at: iso(1) },
+      { id: uid('l'), type: 'checkout', make: 'Toyota Corolla Altis 1.8', plate: 'LEB-19-4471', renter: 'Bilal Ahmed', days: 4, total: 30000, damage: ['Front Bumper'], at: iso(2) },
+      { id: uid('l'), type: 'checkout', make: 'Suzuki Cultus VXL', plate: 'RIU-20-1123', renter: 'Hamza Sheikh', days: 7, total: 31500, damage: ['Left Rear Door', 'Boot'], at: iso(3) },
+      { id: uid('l'), type: 'checkin', make: 'Kia Sportage AWD', plate: 'LEA-21-5567', renter: 'Faisal Malik', returnDamage: [], newDamage: [], at: iso(4) }
+    ]);
+  }
+
+  function startDemo() {
+    DEMO = true;
+    __demoMem = {};
+    seedDemoData();
+    $('#demo-bar').classList.remove('hidden');
+    $('#landing').classList.add('hidden');
+    $('#onboarding').classList.add('hidden');
+    $('#app-root').classList.remove('hidden');
+    $('#skeleton').classList.add('hidden');
+    $('#dashboard').classList.remove('hidden');
+    refreshLicenseUI();
+    renderDashboard();
+    gateAccess({ silent: true });   // DEMO branch: unlock + "Demo" status, no paywall
+    icons();
+  }
+
+  function exitDemo(target) {
+    DEMO = false;
+    __demoMem = {};
+    $('#demo-bar').classList.add('hidden');
+    $('#app-root').classList.add('hidden');
+    try { history.replaceState({}, '', '/'); } catch (e) {}
+    if (target === 'trial') { startTrialFlow(); return; }
+    if (Trial.record()) enterApp({ boot: false });   // real returning user
+    else showLanding();
+  }
+
   function boot() {
     installPwaMeta();
     $('#about-version').textContent = CONFIG.APP_VERSION;
     wireEvents();
     icons();
 
-    if (Trial.record()) {
+    if (isDemoRoute()) {
+      /* /demo — full working dashboard on an isolated in-memory store. */
+      startDemo();
+    } else if (Trial.record()) {
       /* Returning showroom (trial or premium) — straight into the app with the boot skeleton. */
       enterApp({ boot: true });
     } else {
