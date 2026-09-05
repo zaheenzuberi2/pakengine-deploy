@@ -1,2 +1,5 @@
 User-agent: *
 Allow: /
+Disallow: /?demo=1
+
+Sitemap: https://pakengine.com/sitemap.xml
