@@ -18,7 +18,13 @@
       ]
     },
     {
-      "source": "/(features|pricing|faq|contact|privacy|terms)",
+      "source": "/(features|pricing|faq|contact|privacy|terms|guides|islamabad|lahore|karachi|peshawar)",
+      "headers": [
+        { "key": "Cache-Control", "value": "public, max-age=0, must-revalidate" }
+      ]
+    },
+    {
+      "source": "/guides/(.*)",
       "headers": [
         { "key": "Cache-Control", "value": "public, max-age=0, must-revalidate" }
       ]

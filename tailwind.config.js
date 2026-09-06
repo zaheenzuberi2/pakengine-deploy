@@ -4,6 +4,7 @@ module.exports = {
     './index.html',
     './demo.html',
     './*.html',
+    './guides/*.html',
     './_build/build.mjs',
   ],
   theme: {

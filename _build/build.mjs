@@ -2,7 +2,7 @@
    Run:  node _build/build.mjs   (also compiles Tailwind -> /styles.css)
    Emits <slug>.html into the deploy root; Vercel cleanUrls serves them at /<slug>. */
 
-import { writeFileSync } from 'node:fs';
+import { writeFileSync, mkdirSync } from 'node:fs';
 import { dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { execFileSync } from 'node:child_process';
@@ -34,12 +34,13 @@ const LOGO = (h = 8) => `
 const NAV_LINKS = [
   ['/features', 'Features'],
   ['/pricing', 'Pricing'],
+  ['/guides', 'Guides'],
   ['/faq', 'FAQ'],
   ['/demo', 'Live Demo'],
   ['/contact', 'Contact'],
 ];
 
-function header(active) {
+function header(active, back = { href: '/', label: 'Back to home' }) {
   const link = ([href, label], cls) =>
     `<a href="${href}" class="${cls} ${active === href ? 'text-white' : 'text-slate-300 hover:text-white'}">${label}</a>`;
   return `
@@ -73,8 +74,8 @@ function header(active) {
 </header>
 
 <div class="mx-auto w-full max-w-6xl px-5">
-  <a href="/" class="mt-4 inline-flex items-center gap-1.5 rounded-lg px-2 py-1.5 text-[12px] font-semibold text-slate-400 transition hover:text-white active:scale-95">
-    <i data-lucide="arrow-left" class="h-3.5 w-3.5"></i> Back to home
+  <a href="${back.href}" class="mt-4 inline-flex items-center gap-1.5 rounded-lg px-2 py-1.5 text-[12px] font-semibold text-slate-400 transition hover:text-white active:scale-95">
+    <i data-lucide="arrow-left" class="h-3.5 w-3.5"></i> ${back.label}
   </a>
 </div>`;
 }
@@ -96,6 +97,7 @@ const FOOTER = `
           <span class="text-[10px] font-semibold uppercase tracking-wider text-slate-600">Product</span>
           <a href="/features" class="font-medium text-slate-400 transition hover:text-white">Features</a>
           <a href="/pricing" class="font-medium text-slate-400 transition hover:text-white">Pricing</a>
+          <a href="/guides" class="font-medium text-slate-400 transition hover:text-white">Guides</a>
           <a href="/faq" class="font-medium text-slate-400 transition hover:text-white">FAQ</a>
           <a href="/demo" class="font-medium text-slate-400 transition hover:text-white">Live demo</a>
         </nav>
@@ -155,20 +157,20 @@ const FOOTER = `
  *  Page template
  * ------------------------------------------------------------------ */
 
-function page({ slug, title, description, ogTitle, ogDesc, keywords, jsonld = [], body, noindex = false }) {
+function page({ slug, title, description, ogTitle, ogDesc, keywords, jsonld = [], body, noindex = false, ogImage, back, crumbs }) {
   const url = `${SITE}/${slug}`;
-  const og = noindex ? `${SITE}/og.jpg` : `${SITE}/og-${slug}.jpg`;
+  const og = ogImage || (noindex ? `${SITE}/og.jpg` : `${SITE}/og-${slug}.jpg`);
   const ogT = ogTitle || title;
   const ogD = ogDesc || description;
+  const trail = crumbs || [['Home', SITE + '/'], [ogT, url]];
   const graph = noindex
     ? [...jsonld]
     : [
         {
           '@type': 'BreadcrumbList',
-          itemListElement: [
-            { '@type': 'ListItem', position: 1, name: 'Home', item: SITE + '/' },
-            { '@type': 'ListItem', position: 2, name: ogT, item: url },
-          ],
+          itemListElement: trail.map(([name, item], i) => ({
+            '@type': 'ListItem', position: i + 1, name, item,
+          })),
         },
         ...jsonld,
       ];
@@ -246,7 +248,7 @@ ${JSON.stringify({ '@context': 'https://schema.org', '@graph': graph }, null, 2)
 <body class="min-h-screen text-slate-100 antialiased">
 <a href="#main" class="skip-link">Skip to content</a>
 <div id="ambient"></div>
-${header('/' + slug)}
+${header('/' + slug, back)}
 <main id="main" class="mx-auto w-full max-w-6xl px-5 pb-4">
 ${body}
 </main>
@@ -480,6 +482,388 @@ ${featureBlock(
   </div>
 </section>
 ${CTA(`Start your ${c.name} showroom on PakEngine.`, 'Three days of full access. No card, no install commitment, and no data leaves your device.')}
+`,
+  });
+}
+
+/* ------------------------------------------------------------------ *
+ *  Guides
+ * ------------------------------------------------------------------ */
+
+const PUBLISHED = '2026-09-06';
+const UPDATED_ISO = '2026-09-06';
+
+const GUIDES = [
+  {
+    slug: 'stop-rental-damage-disputes',
+    title: 'How to stop damage disputes when a rental car comes back',
+    dek: 'The argument at return is almost always about who caused a mark that was already there. Here is the routine that ends it.',
+    description:
+      'A step-by-step routine for car rental showrooms to record pre-existing vehicle damage at check-out so returned-car disputes cannot happen: a signed condition record, a panel diagram, and a matching check at return.',
+    keywords: 'rent a car damage dispute, pre-rental damage record, vehicle condition report, car rental check-out process',
+    readMin: 5,
+    related: [['/features', 'The visual damage map, in detail'], ['/guides/pre-rental-inspection-checklist', 'The pre-rental inspection checklist']],
+    body: `
+<p>Almost every dispute at return follows the same shape. The renter says the scratch on the rear door was there when they took the car. The operator is fairly sure it was not, but has nothing written down. Neither side can prove it, so the showroom either eats the repair or loses a customer.</p>
+<p>The fix is not a better argument at return. It is a record made <em>before</em> the keys change hands, that both people looked at and agreed to.</p>
+
+<h2>1. Walk the car with the renter, not alone</h2>
+<p>Do the check-out inspection standing next to the renter. This is the single most important step. When the renter has personally pointed at the existing marks, there is no dispute to have later. Doing it alone and handing them a form to sign changes nothing.</p>
+
+<h2>2. Record every existing mark against a fixed diagram</h2>
+<p>Use the same outline of a car every time: bonnet, roof, boot, both bumpers, all four doors, both wings. For each panel, note whether it already carries a scratch, a dent or a crack. A picture beats a paragraph, because at return you are comparing two pictures, not reading two descriptions.</p>
+<ul>
+  <li>Mark existing damage, not general wear. Kerbed alloys and stone chips on the bonnet are normal; note the ones that matter.</li>
+  <li>Photograph anything significant, with the number plate in frame so the photo is tied to that vehicle and that day.</li>
+  <li>Check the spare, the jack and the tools, and write down the fuel level.</li>
+</ul>
+
+<h2>3. Attach the record to that specific rental</h2>
+<p>The condition record is worth nothing if you cannot find it in three weeks. It has to be filed against the rental, with the renter's name, the dates and the vehicle, so that when the car comes back you pull up <em>that</em> record, not last month's.</p>
+
+<h2>4. Repeat the same walk at return</h2>
+<p>At check-in, walk the car again, against the same diagram, with the renter present. Any panel that was clean at check-out and is marked now is new damage, and it is obvious to both of you. Because the renter agreed to the original marks, the only thing to discuss is the new one.</p>
+
+<h2>What this looks like without paper</h2>
+<p>PakEngine runs this exact routine on a phone. At check-out the operator taps each panel that already has a mark on a symmetrical car diagram; the renter sees it and agrees; the record is saved with the rental. At return the same diagram comes back up, pre-marked, and the operator taps anything new. The comparison is done for you.</p>`,
+  },
+
+  {
+    slug: 'paper-register-vs-digital',
+    title: 'Paper register vs digital ledger for a rent-a-car showroom',
+    dek: 'A paper register is cheap and familiar. It also quietly costs a showroom money every month. Here is where.',
+    description:
+      'A practical comparison of the paper rental register and a digital rental ledger for Pakistani car rental showrooms: what each costs in disputes, lost overtime, availability mistakes and reconciliation time.',
+    keywords: 'rent a car register, car rental record keeping, rental ledger software, digital vs paper rental log',
+    readMin: 6,
+    related: [['/pricing', 'What PakEngine costs'], ['/guides/calculate-rental-overtime', 'Calculating overtime and late fees']],
+    body: `
+<p>The paper register works. Showrooms have run on it for decades. But "it works" hides a set of small, recurring losses that add up to real money over a year. It is worth seeing them clearly before deciding they do not matter.</p>
+
+<h2>Disputes you cannot win</h2>
+<p>A handwritten line that says "minor scratches" does not settle an argument about a specific scratch on a specific panel. Without a condition record both people agreed to, the showroom loses the disputed repairs, one at a time, all year.</p>
+
+<h2>Overtime that never gets charged</h2>
+<p>When a car comes back four hours late during a busy afternoon, the staff member at the counter is doing three things at once. Working out "two days plus four hours at what rate" by hand is the task that gets skipped. Each skipped late fee is a few thousand rupees that was owed and never collected.</p>
+
+<h2>Double bookings and idle cars</h2>
+<p>A register is a list of past events, not a picture of what is available right now. Knowing whether the white Corolla is free on Thursday means flipping back through pages. Sometimes the answer is wrong, and a car is promised twice; sometimes a free car sits in the yard because nobody was sure.</p>
+
+<h2>The nightly reconciliation</h2>
+<p>Adding up the day's cash from a register means reading every line for that day. A digital log shows the day's dispatches, returns and amounts in one view, already totalled.</p>
+
+<h2>What a digital ledger actually changes</h2>
+<ul>
+  <li><strong>Condition on record.</strong> A panel-by-panel damage map saved with each rental, shown again at return.</li>
+  <li><strong>Charges computed.</strong> Set the daily rate once; the days and late hours are counted for you.</li>
+  <li><strong>Availability at a glance.</strong> Every vehicle shows as available or out, with the due-back date.</li>
+  <li><strong>Backups.</strong> A register that is lost or burnt is gone. A one-file export restores the whole showroom onto a new device.</li>
+</ul>
+
+<h2>The honest downsides</h2>
+<p>A digital tool needs a charged phone and a few days of the staff getting used to it. If it depends on a live internet connection or a monthly-growing subscription per car, it can cost more hassle than it saves. That is why PakEngine is local-first, works offline after the first load, and is a flat monthly fee for the whole showroom rather than per vehicle.</p>`,
+  },
+
+  {
+    slug: 'calculate-rental-overtime',
+    title: 'How to calculate car rental overtime and late fees',
+    dek: 'A simple, consistent method for charging extra hours and extra days, so staff apply it the same way every time.',
+    description:
+      'How car rental showrooms should calculate overtime, late-return fees and extra-day charges: a clear grace-period and hourly-rate method, worked examples, and how to communicate it to renters up front.',
+    keywords: 'car rental overtime charges, rent a car late fee, rental extra day charge, how to calculate rental hours',
+    readMin: 5,
+    related: [['/features', 'The overtime calculator'], ['/guides/rent-a-car-agreement-template', 'The rent-a-car agreement template']],
+    body: `
+<p>Overtime charges cause friction for one reason: the renter did not know the rule before they were late. Fix that by deciding the rule, writing it on the agreement, and applying it the same way every time.</p>
+
+<h2>Set three numbers, once</h2>
+<ul>
+  <li><strong>The daily rate</strong> per vehicle. You already have this.</li>
+  <li><strong>The grace period</strong> — how late is "still on time". One hour is common and fair.</li>
+  <li><strong>The hourly overtime rate</strong> — usually the daily rate divided by a number between 6 and 10. Dividing by 8 is a clean choice: an eight-hour overrun costs a full extra day, which is the right incentive.</li>
+</ul>
+
+<h2>The method</h2>
+<p>At return, work out the total time the car was out, in whole days plus leftover hours.</p>
+<ol>
+  <li>Charge the agreed daily rate for each full 24-hour day.</li>
+  <li>If the leftover time is within the grace period, charge nothing extra.</li>
+  <li>Otherwise, charge the hourly overtime rate for each leftover hour (round up part-hours).</li>
+  <li>If leftover hours reach a full day's worth, charge a full day instead — never more than a day for a day.</li>
+</ol>
+
+<h2>Worked example</h2>
+<p>Daily rate Rs 8,000. Grace period 1 hour. Hourly rate Rs 8,000 ÷ 8 = Rs 1,000. The car goes out Monday 9:00 a.m. and comes back Wednesday 2:30 p.m.</p>
+<ul>
+  <li>Monday 9:00 to Wednesday 9:00 is 2 full days = Rs 16,000.</li>
+  <li>Leftover time is 5.5 hours. Past the 1-hour grace, so 5 hours (rounding 5.5 up to 6, then capping at the sensible whole) — charge 6 × Rs 1,000 = Rs 6,000.</li>
+  <li>Total: Rs 22,000.</li>
+</ul>
+<p>Six hours of overtime is close to a full day; some showrooms would simply charge the third full day (Rs 24,000). Either is defensible — pick one and stay consistent.</p>
+
+<h2>Tell the renter first</h2>
+<p>Put the daily rate, the grace period and the hourly overtime rate on the dispatch slip the renter receives at check-out. When the rule was in their hand before they were late, the charge at return is arithmetic, not an argument. PakEngine does this calculation automatically at return and prints the breakdown on the receipt.</p>`,
+  },
+
+  {
+    slug: 'pre-rental-inspection-checklist',
+    title: 'The pre-rental vehicle inspection checklist',
+    dek: 'A short, repeatable check to run before every car leaves the yard. Copy it, print it, or work through it on a phone.',
+    description:
+      'A complete pre-rental vehicle inspection checklist for car rental showrooms: exterior panels, tyres, lights, interior, documents, fuel and the condition record the renter should sign.',
+    keywords: 'car rental inspection checklist, pre-rental vehicle check, rent a car handover checklist, vehicle condition report',
+    readMin: 4,
+    related: [['/guides/stop-rental-damage-disputes', 'How to stop damage disputes'], ['/features', 'The visual damage map']],
+    body: `
+<p>Run the same check before every rental. It takes three or four minutes with the renter standing next to you, and it is the record that protects the showroom if the car comes back damaged.</p>
+
+<h2>Exterior</h2>
+<ul>
+  <li>Walk the full body: bonnet, roof, boot lid, both bumpers, all four doors, both front wings, both rear quarters.</li>
+  <li>Mark every existing scratch, dent, crack or repaint on a car diagram.</li>
+  <li>Windscreen and windows: chips or cracks.</li>
+  <li>Lights and indicators front and rear: all working, none cracked.</li>
+  <li>Mirrors: intact, both fold and adjust.</li>
+  <li>Wheels: kerb damage on the alloys, and hub caps present.</li>
+</ul>
+
+<h2>Tyres</h2>
+<ul>
+  <li>Tread on all four, and visible condition of the spare.</li>
+  <li>Pressure looks correct; no bulges or cuts on the sidewalls.</li>
+  <li>Jack, wheel brace and wheel-lock key present.</li>
+</ul>
+
+<h2>Interior</h2>
+<ul>
+  <li>Seats and mats: existing tears, burns or heavy stains.</li>
+  <li>Dashboard warning lights: none on after start-up.</li>
+  <li>Air conditioning blows cold.</li>
+  <li>Infotainment, wipers, horn, all windows: working.</li>
+  <li>Odometer reading, written down.</li>
+</ul>
+
+<h2>Documents and fuel</h2>
+<ul>
+  <li>Registration book or a copy, and a valid token, in the car.</li>
+  <li>Fuel level, noted. Agree the return level (return-as-received is simplest).</li>
+  <li>Renter's CNIC and licence seen and recorded.</li>
+</ul>
+
+<h2>Close the check</h2>
+<p>The renter looks at the completed condition record and agrees to it, in person. Keep it filed against this rental so you can pull it up at return. PakEngine turns this list into a two-minute tap-through on a phone and stores the result with the booking.</p>`,
+  },
+
+  {
+    slug: 'rent-a-car-agreement-template',
+    title: 'How to write a rent-a-car agreement (with a template)',
+    dek: 'The clauses a showroom rental agreement should contain, and a plain template you can adapt.',
+    description:
+      'What to put in a car rental agreement for a Pakistani showroom: parties, vehicle, period, charges, deposit, fuel, mileage, damage, insurance, and a plain-language template to adapt.',
+    keywords: 'rent a car agreement format, car rental agreement Pakistan, vehicle rental contract template, showroom rental agreement',
+    readMin: 6,
+    related: [['/guides/calculate-rental-overtime', 'Calculating overtime and late fees'], ['/guides/showroom-record-keeping', 'What records to keep']],
+    body: `
+<p>A rental agreement does two jobs: it sets out what both sides agreed, and it gives the showroom something to point to if things go wrong. It does not need to be long. It needs to be clear and consistent.</p>
+<p>This is general information, not legal advice. Have a lawyer review your final wording, especially the liability and insurance clauses.</p>
+
+<h2>What every rental agreement should cover</h2>
+<ul>
+  <li><strong>Parties.</strong> Showroom name and contact; renter's full name, CNIC number, licence number, address and phone.</li>
+  <li><strong>Vehicle.</strong> Make, model, year, registration number, colour, odometer at check-out, fuel level at check-out.</li>
+  <li><strong>Period.</strong> Date and time out, date and time due back.</li>
+  <li><strong>Charges.</strong> Daily rate, number of days, total; the grace period and the hourly overtime rate; any delivery or driver charges.</li>
+  <li><strong>Security deposit.</strong> Amount, form (cash or held CNIC), and exactly what it can be deducted for.</li>
+  <li><strong>Fuel.</strong> Return-as-received, or full-to-full, stated plainly.</li>
+  <li><strong>Mileage.</strong> Unlimited, or a daily allowance with a per-kilometre charge over it.</li>
+  <li><strong>Condition.</strong> A reference to the attached check-out condition record that the renter has signed.</li>
+  <li><strong>Damage and loss.</strong> Who pays for new damage, and how it is assessed; what happens if the vehicle is not returned.</li>
+  <li><strong>Use restrictions.</strong> Named drivers only; no sub-letting; no use for hire without permission; no off-road unless it is a 4x4 hire; no driving under the influence.</li>
+  <li><strong>Insurance.</strong> What cover exists, the excess the renter is liable for, and what voids it.</li>
+  <li><strong>Signatures.</strong> Both parties, with date, at check-out.</li>
+</ul>
+
+<h2>A plain template</h2>
+<p>Adapt the bracketed parts.</p>
+<p style="white-space:pre-wrap; border-left:2px solid rgba(16,185,129,.4); padding-left:1rem; color:#94a3b8; font-size:12.5px; line-height:1.7">VEHICLE RENTAL AGREEMENT
+
+This agreement is between [Showroom name], [address], phone [number] ("the Showroom") and [Renter name], CNIC [number], licence [number], address [address], phone [number] ("the Renter").
+
+1. Vehicle: [make/model/year], registration [number], colour [colour]. Odometer at check-out: [reading]. Fuel at check-out: [level].
+2. Period: from [date, time] to [date, time].
+3. Charges: daily rate Rs [amount] x [n] days = Rs [total]. Grace period [1] hour; overtime Rs [amount] per hour thereafter. Additional charges: [delivery / driver / none].
+4. Security deposit: Rs [amount] / [CNIC held]. Deductible only for: new damage, traffic fines, missing fuel, late return, missing accessories.
+5. Fuel: return [as received / full]. Mileage: [unlimited / [n] km per day, Rs [amount] per extra km].
+6. Condition: the Renter has inspected the Vehicle with the Showroom and agrees the attached condition record is accurate.
+7. Damage and loss: the Renter is liable for damage occurring during the period that is not on the condition record, and for the insurance excess of Rs [amount]. If the Vehicle is not returned by [date, time] and no extension is agreed, the Showroom may report it as such.
+8. Use: only the Renter and named drivers [names] may drive. No sub-letting, no use for paid carriage without written permission, no off-road use [unless 4x4 hire], no driving under the influence.
+9. Insurance: [summary of cover]. Cover does not apply if clause 8 is breached.
+
+Signed, [date]:
+Showroom: ____________________   Renter: ____________________</p>
+
+<h2>Send it, do not just file it</h2>
+<p>The renter should leave with a copy. A photo or a WhatsApp message of the completed agreement means both sides have the same document. PakEngine builds this slip from the booking and hands it to the renter on WhatsApp at check-out.</p>`,
+  },
+
+  {
+    slug: 'showroom-record-keeping',
+    title: 'Rent-a-car record keeping: what to keep and for how long',
+    dek: 'The documents a showroom should be able to produce months later, and a simple way to keep them without a filing room.',
+    description:
+      'A record-keeping guide for car rental showrooms: which rental, financial and vehicle records to keep, roughly how long to keep them, and how to store them so they survive a lost phone or register.',
+    keywords: 'rent a car record keeping, car rental business records, showroom bookkeeping Pakistan, rental documents retention',
+    readMin: 5,
+    related: [['/guides/rent-a-car-agreement-template', 'The rent-a-car agreement template'], ['/pricing', 'What PakEngine costs']],
+    body: `
+<p>Good records are not about being audited. They are about being able to answer a question — from a renter, an insurer, a bank or the tax office — that arrives three months after the rental ended. If the answer is in a stack of paper or a lost phone, it is not an answer.</p>
+<p>This is general guidance, not tax or legal advice. Confirm retention periods with your accountant.</p>
+
+<h2>Per-rental records</h2>
+<ul>
+  <li>The signed rental agreement.</li>
+  <li>The check-out and check-in condition records, with photos.</li>
+  <li>Renter identification: CNIC and licence copies.</li>
+  <li>Payment record: amount, date, method, and the reference for any bank transfer.</li>
+  <li>Any incident notes: accidents, fines, disputes and how they were resolved.</li>
+</ul>
+<p>Keep these for at least as long as a dispute or claim could realistically arise — a few years is a safe default, longer if an incident is unresolved.</p>
+
+<h2>Financial records</h2>
+<ul>
+  <li>Daily takings, ideally reconciled each night.</li>
+  <li>Monthly income and expense summaries.</li>
+  <li>Invoices and receipts for fuel, maintenance, insurance and licence fees.</li>
+  <li>Records tied to any tax filing.</li>
+</ul>
+<p>Tax-related records are usually kept for around six years; your accountant will confirm the period that applies to you.</p>
+
+<h2>Per-vehicle records</h2>
+<ul>
+  <li>Registration and token history.</li>
+  <li>Service and repair history with odometer readings.</li>
+  <li>Insurance policies and claims.</li>
+  <li>Purchase and, eventually, sale documents.</li>
+</ul>
+<p>Keep these for as long as you own the vehicle, plus a few years after you sell it.</p>
+
+<h2>Storing it so it survives</h2>
+<p>One physical copy in a drawer is a single point of failure. The practical minimum is: the paper original where you need it, and a digital copy somewhere else.</p>
+<ul>
+  <li>Photograph signed agreements and condition records the day they are made.</li>
+  <li>Keep the day's rental log in a form you can export as one file.</li>
+  <li>Back that file up weekly, and after any busy period, to a second device or a drive you control.</li>
+</ul>
+<p>PakEngine keeps the rental log, condition records and payment notes together on the device, and Export Fleet Backup writes the whole showroom to a single file you can copy anywhere. Nothing is uploaded on your behalf; the backup is yours to place.</p>`,
+  },
+];
+
+function articleShell(g) {
+  return `
+<article class="prose-pk mx-auto max-w-2xl py-8">
+  <div class="text-[10.5px] font-semibold uppercase tracking-[0.16em] text-emerald-400">Guide</div>
+  <h1 class="mt-3 font-display text-[25px] font-bold leading-[1.16] tracking-tight text-white [text-wrap:balance] sm:text-[33px]">${g.title}</h1>
+  <p class="mt-4 text-[14px] leading-relaxed text-slate-400">${g.dek}</p>
+  <p class="mt-3 text-[11px] text-slate-600">PakEngine &middot; Updated ${UPDATED} &middot; ${g.readMin} min read</p>
+  <div class="mt-8 text-[13.5px] leading-relaxed text-slate-300">
+    ${g.body}
+  </div>
+  ${
+    g.related && g.related.length
+      ? `<div class="mt-10 rounded-2xl border border-white/[0.08] bg-white/[0.02] p-5">
+    <div class="text-[10px] font-semibold uppercase tracking-wider text-slate-500">Keep reading</div>
+    <ul class="mt-3 space-y-2">${g.related
+      .map(
+        ([href, label]) =>
+          `<li><a href="${href}" class="text-[13px] font-semibold text-emerald-400 underline underline-offset-2 hover:text-emerald-300">${label}</a></li>`
+      )
+      .join('')}</ul>
+  </div>`
+      : ''
+  }
+</article>
+${CTA('Put this on one screen.', 'PakEngine keeps the damage map, the agreement and the day&rsquo;s cash together on a phone that works offline. Three days free, no card.')}`;
+}
+
+function guideArticle(g) {
+  return page({
+    slug: `guides/${g.slug}`,
+    title: `${g.title} — PakEngine Guides`,
+    description: g.description,
+    ogTitle: g.title,
+    ogImage: `${SITE}/og.jpg`,
+    keywords: g.keywords,
+    back: { href: '/guides', label: 'All guides' },
+    crumbs: [
+      ['Home', SITE + '/'],
+      ['Guides', SITE + '/guides'],
+      [g.title, `${SITE}/guides/${g.slug}`],
+    ],
+    jsonld: [
+      {
+        '@type': 'Article',
+        headline: g.title,
+        description: g.description,
+        datePublished: PUBLISHED,
+        dateModified: UPDATED_ISO,
+        author: { '@type': 'Organization', name: 'PakEngine', url: SITE + '/' },
+        publisher: {
+          '@type': 'Organization',
+          name: 'PakEngine',
+          logo: { '@type': 'ImageObject', url: `${SITE}/icon-512.png` },
+        },
+        mainEntityOfPage: `${SITE}/guides/${g.slug}`,
+        image: `${SITE}/og.jpg`,
+        inLanguage: 'en',
+      },
+    ],
+    body: articleShell(g),
+  });
+}
+
+function guidesIndex() {
+  return page({
+    slug: 'guides',
+    title: 'Guides for Rent-a-Car Showrooms — PakEngine',
+    description:
+      'Practical guides for running a car rental showroom in Pakistan: stopping damage disputes, charging overtime, pre-rental inspections, rental agreements and record keeping.',
+    ogTitle: 'PakEngine Guides',
+    ogImage: `${SITE}/og.jpg`,
+    keywords:
+      'rent a car guides Pakistan, car rental showroom management, rental damage dispute, rent a car agreement format, pre-rental inspection checklist',
+    jsonld: [
+      {
+        '@type': 'Blog',
+        name: 'PakEngine Guides',
+        url: `${SITE}/guides`,
+        publisher: { '@type': 'Organization', name: 'PakEngine', url: SITE + '/' },
+        blogPost: GUIDES.map((g) => ({
+          '@type': 'BlogPosting',
+          headline: g.title,
+          url: `${SITE}/guides/${g.slug}`,
+          datePublished: PUBLISHED,
+          dateModified: UPDATED_ISO,
+        })),
+      },
+    ],
+    body: `
+${H1(
+  'Guides',
+  'Running a rent-a-car showroom, in practice.',
+  'Short, specific guides on the parts of the job that cost showrooms money: damage at return, overtime, inspections, agreements and records.'
+)}
+<section class="py-8">
+  <div class="grid gap-4 sm:grid-cols-2">
+    ${GUIDES.map(
+      (g) => `<a href="/guides/${g.slug}" class="group flex flex-col rounded-2xl border border-white/[0.08] bg-white/[0.02] p-5 transition hover:border-emerald-500/40 hover:bg-emerald-500/[0.04]">
+      <h2 class="text-[15px] font-bold leading-snug text-white">${g.title}</h2>
+      <p class="mt-2 flex-1 text-[12.5px] leading-relaxed text-slate-400">${g.dek}</p>
+      <span class="mt-4 inline-flex items-center gap-1 text-[11.5px] font-semibold text-emerald-400">Read the guide <i data-lucide="arrow-right" class="h-3.5 w-3.5 transition group-hover:translate-x-0.5"></i></span>
+    </a>`
+    ).join('\n    ')}
+  </div>
+</section>
+${CTA('Or just start the trial.', 'See how PakEngine handles all of this on one screen. Three days free, no card.')}
 `,
   });
 }
@@ -786,6 +1170,9 @@ ${H1('Legal', 'Terms &amp; Conditions', 'Last updated ' + UPDATED + '.')}
 
   ...Object.fromEntries(CITIES.map((c) => [c.slug, cityPage(c)])),
 
+  guides: guidesIndex(),
+  ...Object.fromEntries(GUIDES.map((g) => [`guides/${g.slug}`, guideArticle(g)])),
+
   404: page({
     slug: '404',
     noindex: true,
@@ -823,6 +1210,7 @@ ${H1('Legal', 'Terms &amp; Conditions', 'Last updated ' + UPDATED + '.')}
 const slugs = Object.keys(PAGES);
 for (const slug of slugs) {
   const out = resolve(ROOT, `${slug}.html`);
+  mkdirSync(dirname(out), { recursive: true });
   writeFileSync(out, PAGES[slug], 'utf8');
   console.log('wrote', `${slug}.html`, `(${PAGES[slug].length} bytes)`);
 }
@@ -833,6 +1221,8 @@ const sm = [
   ['/', 'weekly', '1.0'],
   ['/features', 'monthly', '0.8'],
   ['/pricing', 'monthly', '0.8'],
+  ['/guides', 'weekly', '0.7'],
+  ...GUIDES.map((g) => [`/guides/${g.slug}`, 'monthly', '0.6']),
   ['/faq', 'monthly', '0.7'],
   ...CITIES.map((c) => [`/${c.slug}`, 'monthly', '0.7']),
   ['/contact', 'yearly', '0.5'],
