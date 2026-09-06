@@ -482,13 +482,14 @@
         <span class="text-xl font-black tracking-tight text-white">Pak<span class="text-emerald-500">Engine</span></span>
       </a>
       <div class="flex items-center gap-1 sm:gap-3">
-        <a href="#capabilities" class="hidden rounded-lg px-3 py-2 text-[12.5px] font-semibold text-slate-300 transition hover:text-white lg:inline-flex">Capabilities</a>
-        <a href="#faq" class="hidden rounded-lg px-3 py-2 text-[12.5px] font-semibold text-slate-300 transition hover:text-white lg:inline-flex">FAQ</a>
+        <a href="/features" class="hidden rounded-lg px-3 py-2 text-[12.5px] font-semibold text-slate-300 transition hover:text-white lg:inline-flex">Features</a>
+        <a href="/pricing" class="hidden rounded-lg px-3 py-2 text-[12.5px] font-semibold text-slate-300 transition hover:text-white lg:inline-flex">Pricing</a>
+        <a href="/faq" class="hidden rounded-lg px-3 py-2 text-[12.5px] font-semibold text-slate-300 transition hover:text-white lg:inline-flex">FAQ</a>
         <a href="/demo" class="hidden items-center gap-1.5 rounded-lg px-3 py-2 text-[12.5px] font-semibold text-slate-300 transition hover:text-white sm:inline-flex">
           <i data-lucide="play-circle" class="h-3.5 w-3.5"></i> Live Demo
         </a>
-        <a id="nav-contact" href="#" class="hidden items-center gap-1.5 rounded-lg px-3 py-2 text-[12.5px] font-semibold text-slate-300 transition hover:text-white sm:inline-flex">
-          <i data-lucide="headset" class="h-3.5 w-3.5"></i> Contact Sales
+        <a href="/contact" class="hidden items-center gap-1.5 rounded-lg px-3 py-2 text-[12.5px] font-semibold text-slate-300 transition hover:text-white sm:inline-flex">
+          <i data-lucide="headset" class="h-3.5 w-3.5"></i> Contact
         </a>
         <button id="nav-login" class="hidden items-center gap-1.5 rounded-lg border border-white/15 bg-white/5 px-3.5 py-2 text-[12.5px] font-semibold text-white transition hover:border-emerald-500/50 hover:bg-emerald-500/10 active:scale-[0.98] sm:inline-flex">
           <i data-lucide="log-in" class="h-3.5 w-3.5"></i> Showroom Login
@@ -503,11 +504,11 @@
     <!-- Mobile menu -->
     <div id="mobile-menu" class="hidden border-t border-white/[0.06] bg-charcoal-950/95 backdrop-blur-xl sm:hidden">
       <nav class="mx-auto flex w-full max-w-6xl flex-col px-5 py-2 text-[13.5px] font-semibold" aria-label="Mobile">
-        <a href="#capabilities" data-mnav class="rounded-lg px-2 py-3 text-slate-300 transition hover:bg-white/5 hover:text-white">Capabilities</a>
-        <a href="#prototype" data-mnav class="rounded-lg px-2 py-3 text-slate-300 transition hover:bg-white/5 hover:text-white">Interactive prototype</a>
-        <a href="#faq" data-mnav class="rounded-lg px-2 py-3 text-slate-300 transition hover:bg-white/5 hover:text-white">FAQ</a>
+        <a href="/features" class="rounded-lg px-2 py-3 text-slate-300 transition hover:bg-white/5 hover:text-white">Features</a>
+        <a href="/pricing" class="rounded-lg px-2 py-3 text-slate-300 transition hover:bg-white/5 hover:text-white">Pricing</a>
+        <a href="/faq" class="rounded-lg px-2 py-3 text-slate-300 transition hover:bg-white/5 hover:text-white">FAQ</a>
         <a href="/demo" class="rounded-lg px-2 py-3 text-slate-300 transition hover:bg-white/5 hover:text-white">Live Demo</a>
-        <a id="m-contact" href="#" data-mnav class="rounded-lg px-2 py-3 text-slate-300 transition hover:bg-white/5 hover:text-white">Contact Sales</a>
+        <a href="/contact" class="rounded-lg px-2 py-3 text-slate-300 transition hover:bg-white/5 hover:text-white">Contact</a>
         <button id="m-login" class="mt-1 mb-2 inline-flex items-center justify-center gap-1.5 rounded-lg bg-emerald-600 px-4 py-2.5 text-white transition hover:bg-emerald-500 active:scale-[0.98]">
           <i data-lucide="log-in" class="h-4 w-4"></i> Showroom Login
         </button>
@@ -757,6 +758,10 @@
             </p>
           </details>
         </div>
+        <p class="mt-6 text-center text-[12.5px] text-slate-500">
+          More questions?
+          <a href="/faq" class="font-semibold text-emerald-400 underline underline-offset-2 transition hover:text-emerald-300">Read the full FAQ &rarr;</a>
+        </p>
       </div>
     </section>
 
@@ -786,10 +791,13 @@
           </p>
         </div>
         <nav class="flex flex-wrap gap-x-6 gap-y-2 text-[12px]" aria-label="Footer">
-          <a id="footer-contact" href="#" class="font-medium text-slate-400 transition hover:text-white">Customer Support</a>
+          <a href="/features" class="font-medium text-slate-400 transition hover:text-white">Features</a>
+          <a href="/pricing" class="font-medium text-slate-400 transition hover:text-white">Pricing</a>
+          <a href="/faq" class="font-medium text-slate-400 transition hover:text-white">FAQ</a>
+          <a href="/contact" class="font-medium text-slate-400 transition hover:text-white">Contact</a>
           <button id="footer-login" class="font-medium text-slate-400 transition hover:text-white">Showroom Login</button>
-          <button id="footer-privacy" class="font-medium text-slate-400 transition hover:text-white">Privacy Policy</button>
-          <button id="footer-terms" class="font-medium text-slate-400 transition hover:text-white">Terms &amp; Conditions</button>
+          <a href="/privacy" class="font-medium text-slate-400 transition hover:text-white">Privacy Policy</a>
+          <a href="/terms" class="font-medium text-slate-400 transition hover:text-white">Terms &amp; Conditions</a>
         </nav>
       </div>
       <div class="mt-8 flex flex-col gap-1.5 border-t border-white/[0.06] pt-5 text-[11px] text-slate-600 sm:flex-row sm:items-center sm:justify-between">
@@ -1340,7 +1348,7 @@
    * ========================================================== */
   var CONFIG = {
     APP_NAME: 'PakEngine Rent Ledger',
-    APP_VERSION: '2.8.0',
+    APP_VERSION: '2.9.0',
     DOMAIN: 'pakengine.com',
     LICENSE_PRICE_PKR: 4000,
     TRIAL_DAYS: 3,
@@ -2755,8 +2763,8 @@
     setHref('#footer-contact', supportMail);
     setHref('#privacy-contact', supportMail);
     setHref('#terms-contact', supportMail);
-    $('#footer-privacy').addEventListener('click', function () { openModal($('#privacy-modal')); });
-    $('#footer-terms').addEventListener('click', function () { openModal($('#terms-modal')); });
+    var _fp = $('#footer-privacy'); if (_fp) _fp.addEventListener('click', function () { openModal($('#privacy-modal')); });
+    var _ft = $('#footer-terms'); if (_ft) _ft.addEventListener('click', function () { openModal($('#terms-modal')); });
     $('#landing').addEventListener('scroll', queueLandingNavShadow, { passive: true });
     var _fy = $('#footer-year'); if (_fy) _fy.textContent = String(new Date().getFullYear());
 
