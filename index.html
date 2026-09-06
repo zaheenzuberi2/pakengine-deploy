@@ -14,7 +14,6 @@
 <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
 <link rel="manifest" href="/manifest.webmanifest" />
-<link rel="preconnect" href="https://cdn.tailwindcss.com" crossorigin />
 <link rel="dns-prefetch" href="https://cdn.jsdelivr.net" />
 
 <meta property="og:type" content="website" />
@@ -106,23 +105,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Sora:wght@600;700;800&family=JetBrains+Mono:wght@500;600&display=swap" rel="stylesheet" />
 
-<script src="https://cdn.tailwindcss.com"></script>
-<script>
-  tailwind.config = {
-    theme: {
-      extend: {
-        colors: {
-          charcoal: { DEFAULT: '#0B0D10', 950: '#0B0D10', 900: '#0F1216', 800: '#14181E', 700: '#1A1F26', 600: '#222831' },
-        },
-        fontFamily: {
-          sans: ['Inter', 'system-ui', '-apple-system', 'Segoe UI', 'Roboto', 'sans-serif'],
-          display: ['Sora', 'Inter', 'system-ui', 'sans-serif'],
-          mono: ['"JetBrains Mono"', 'ui-monospace', 'SFMono-Regular', 'monospace'],
-        },
-      },
-    },
-  };
-</script>
+<link rel="stylesheet" href="/styles.css" />
 
 <style>
   :root { color-scheme: dark; }
@@ -1390,7 +1373,7 @@
    * ========================================================== */
   var CONFIG = {
     APP_NAME: 'PakEngine Rent Ledger',
-    APP_VERSION: '2.11.0',
+    APP_VERSION: '2.12.0',
     DOMAIN: 'pakengine.com',
     LICENSE_PRICE_PKR: 4000,
     TRIAL_DAYS: 3,

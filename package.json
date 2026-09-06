@@ -1,0 +1,13 @@
+{
+  "name": "pakengine-deploy",
+  "version": "0.0.0",
+  "private": true,
+  "description": "PakEngine Rent Ledger — static site + PWA (pakengine.com)",
+  "scripts": {
+    "build": "node _build/build.mjs",
+    "css": "tailwindcss -i _build/tailwind.src.css -o styles.css --minify"
+  },
+  "devDependencies": {
+    "tailwindcss": "3.4.17"
+  }
+}

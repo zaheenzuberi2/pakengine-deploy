@@ -1,10 +1,11 @@
 /* PakEngine Rent Ledger — static marketing page builder
-   No dependencies. Run:  node _build/build.mjs
+   Run:  node _build/build.mjs   (also compiles Tailwind -> /styles.css)
    Emits <slug>.html into the deploy root; Vercel cleanUrls serves them at /<slug>. */
 
 import { writeFileSync } from 'node:fs';
 import { dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { execFileSync } from 'node:child_process';
 
 const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const SITE = 'https://pakengine.com';
@@ -196,23 +197,10 @@ ${JSON.stringify({ '@context': 'https://schema.org', '@graph': graph }, null, 2)
 
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link rel="preconnect" href="https://cdn.tailwindcss.com" crossorigin />
 <link rel="dns-prefetch" href="https://cdn.jsdelivr.net" />
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Sora:wght@600;700;800&family=JetBrains+Mono:wght@500;600&display=swap" rel="stylesheet" />
 
-<script src="https://cdn.tailwindcss.com"></script>
-<script>
-  tailwind.config = {
-    theme: { extend: {
-      colors: { charcoal: { DEFAULT: '#0B0D10', 950: '#0B0D10', 900: '#0F1216', 800: '#14181E', 700: '#1A1F26', 600: '#222831' } },
-      fontFamily: {
-        sans: ['Inter', 'system-ui', '-apple-system', 'Segoe UI', 'Roboto', 'sans-serif'],
-        display: ['Sora', 'Inter', 'system-ui', 'sans-serif'],
-        mono: ['"JetBrains Mono"', 'ui-monospace', 'SFMono-Regular', 'monospace'],
-      },
-    } },
-  };
-</script>
+<link rel="stylesheet" href="/styles.css" />
 <style>
   :root { color-scheme: dark; }
   html, body { background: #0B0D10; }
@@ -701,3 +689,11 @@ ${sm
 `;
 writeFileSync(resolve(ROOT, 'sitemap.xml'), sitemap, 'utf8');
 console.log('wrote sitemap.xml', `(${sm.length} urls)`);
+
+/* Tailwind -> /styles.css  (pages must exist first so the scanner sees them) */
+const twCli = resolve(ROOT, 'node_modules', 'tailwindcss', 'lib', 'cli.js');
+execFileSync(process.execPath, [twCli, '-i', '_build/tailwind.src.css', '-o', 'styles.css', '--minify'], {
+  cwd: ROOT,
+  stdio: 'inherit',
+});
+console.log('compiled styles.css');
