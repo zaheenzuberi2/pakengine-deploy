@@ -2,7 +2,7 @@
    No dependencies. Run:  node _build/build.mjs
    Emits <slug>.html into the deploy root; Vercel cleanUrls serves them at /<slug>. */
 
-import { writeFileSync, mkdirSync } from 'node:fs';
+import { writeFileSync } from 'node:fs';
 import { dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
@@ -12,6 +12,14 @@ const WA = 'https://wa.me/923461223692';
 const SALES = 'sales@pakengine.com';
 const SUPPORT = 'support@pakengine.com';
 const UPDATED = 'September 2026';
+
+/* Escape text for use in HTML text nodes and double-quoted attributes. */
+const h = (s) =>
+  String(s == null ? '' : s)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;');
 
 /* ------------------------------------------------------------------ *
  *  Shared chrome
@@ -135,12 +143,14 @@ const FOOTER = `
 function page({ slug, title, description, ogTitle, ogDesc, keywords, jsonld = [], body }) {
   const url = `${SITE}/${slug}`;
   const og = `${SITE}/og-${slug}.jpg`;
+  const ogT = ogTitle || title;
+  const ogD = ogDesc || description;
   const graph = [
     {
       '@type': 'BreadcrumbList',
       itemListElement: [
         { '@type': 'ListItem', position: 1, name: 'Home', item: SITE + '/' },
-        { '@type': 'ListItem', position: 2, name: ogTitle || title, item: url },
+        { '@type': 'ListItem', position: 2, name: ogT, item: url },
       ],
     },
     ...jsonld,
@@ -151,9 +161,9 @@ function page({ slug, title, description, ogTitle, ogDesc, keywords, jsonld = []
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
 <meta name="theme-color" content="#0B0D10" />
-<title>${title}</title>
-<meta name="description" content="${description}" />
-<meta name="keywords" content="${keywords}" />
+<title>${h(title)}</title>
+<meta name="description" content="${h(description)}" />
+<meta name="keywords" content="${h(keywords)}" />
 <meta name="author" content="Zaheen Zuberi" />
 <link rel="canonical" href="${url}" />
 <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1" />
@@ -161,16 +171,16 @@ function page({ slug, title, description, ogTitle, ogDesc, keywords, jsonld = []
 
 <meta property="og:type" content="website" />
 <meta property="og:site_name" content="PakEngine Rent Ledger" />
-<meta property="og:title" content="${ogTitle || title}" />
-<meta property="og:description" content="${ogDesc || description}" />
+<meta property="og:title" content="${h(ogT)}" />
+<meta property="og:description" content="${h(ogD)}" />
 <meta property="og:url" content="${url}" />
 <meta property="og:image" content="${og}" />
 <meta property="og:image:type" content="image/jpeg" />
 <meta property="og:image:width" content="1200" />
 <meta property="og:image:height" content="630" />
 <meta name="twitter:card" content="summary_large_image" />
-<meta name="twitter:title" content="${ogTitle || title}" />
-<meta name="twitter:description" content="${ogDesc || description}" />
+<meta name="twitter:title" content="${h(ogT)}" />
+<meta name="twitter:description" content="${h(ogD)}" />
 <meta name="twitter:image" content="${og}" />
 
 <script type="application/ld+json">
@@ -626,12 +636,12 @@ for (const slug of slugs) {
 }
 
 /* sitemap ---------------------------------------------------------- */
+// /demo is intentionally excluded — it is a noindex redirect stub, not a rankable page.
 const sm = [
   ['/', 'weekly', '1.0'],
   ['/features', 'monthly', '0.8'],
   ['/pricing', 'monthly', '0.8'],
   ['/faq', 'monthly', '0.7'],
-  ['/demo', 'monthly', '0.7'],
   ['/contact', 'yearly', '0.5'],
   ['/privacy', 'yearly', '0.3'],
   ['/terms', 'yearly', '0.3'],

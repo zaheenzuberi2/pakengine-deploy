@@ -1,7 +1,7 @@
 /* PakEngine Rent Ledger — offline service worker
    Network-first for the app shell so updates land immediately,
    with a cached fallback so the app opens with no connection. */
-var CACHE = 'pakengine-2.10.0';
+var CACHE = 'pakengine-2.10.1';
 var SHELL = ['./', './index.html'];
 
 self.addEventListener('install', function (e) {

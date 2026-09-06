@@ -844,12 +844,12 @@
     <div class="mt-6 space-y-3.5">
       <div>
         <label for="onb-name" class="text-[11.5px] font-medium text-slate-400">Showroom Name</label>
-        <input id="onb-name" type="text" autocomplete="organization" placeholder="e.g. Elite Motors Islamabad"
+        <input id="onb-name" type="text" maxlength="80" autocomplete="organization" placeholder="e.g. Elite Motors Islamabad"
           class="mt-1.5 w-full rounded-xl border border-white/10 bg-white/[0.03] px-3.5 py-2.5 text-[14px] text-white outline-none transition placeholder:text-slate-600 focus:border-emerald-500/60 focus:bg-white/[0.05] focus:ring-2 focus:ring-emerald-500/15" />
       </div>
       <div>
         <label for="onb-phone" class="text-[11.5px] font-medium text-slate-400">Contact Phone Number</label>
-        <input id="onb-phone" type="tel" inputmode="tel" autocomplete="tel" placeholder="e.g. 0300-1234567"
+        <input id="onb-phone" type="tel" maxlength="20" inputmode="tel" autocomplete="tel" placeholder="e.g. 0300-1234567"
           class="mt-1.5 w-full rounded-xl border border-white/10 bg-white/[0.03] px-3.5 py-2.5 text-[14px] text-white outline-none transition placeholder:text-slate-600 focus:border-emerald-500/60 focus:bg-white/[0.05] focus:ring-2 focus:ring-emerald-500/15" />
         <p class="mt-1 text-[10.5px] text-slate-600">Used to match your payment when you upgrade to Premium.</p>
       </div>
@@ -991,12 +991,12 @@
     <div class="space-y-3.5 px-6 py-5">
       <div>
         <label for="veh-make" class="text-[11.5px] font-medium text-slate-500">Vehicle Make / Model</label>
-        <input id="veh-make" type="text" autocomplete="off" placeholder="e.g. Toyota Corolla Altis 1.6"
+        <input id="veh-make" type="text" maxlength="60" autocomplete="off" placeholder="e.g. Toyota Corolla Altis 1.6"
           class="mt-1.5 w-full rounded-xl border border-slate-200 bg-slate-50 px-3.5 py-2.5 text-[13.5px] text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-emerald-500 focus:bg-white focus:ring-2 focus:ring-emerald-500/15" />
       </div>
       <div>
         <label for="veh-plate" class="text-[11.5px] font-medium text-slate-500">Plate Number</label>
-        <input id="veh-plate" type="text" autocomplete="off" autocapitalize="characters" spellcheck="false" placeholder="e.g. LEB-19-4471"
+        <input id="veh-plate" type="text" maxlength="16" autocomplete="off" autocapitalize="characters" spellcheck="false" placeholder="e.g. LEB-19-4471"
           class="key-input mt-1.5 w-full rounded-xl border border-slate-200 bg-slate-50 px-3.5 py-2.5 font-mono text-[13px] font-semibold text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-emerald-500 focus:bg-white focus:ring-2 focus:ring-emerald-500/15" />
       </div>
       <div>
@@ -1038,7 +1038,7 @@
       <div class="grid grid-cols-2 gap-3">
         <div>
           <label for="dsp-renter" class="text-[11.5px] font-medium text-slate-500">Renter Name</label>
-          <input id="dsp-renter" type="text" autocomplete="off" placeholder="Full name"
+          <input id="dsp-renter" type="text" maxlength="60" autocomplete="off" placeholder="Full name"
             class="mt-1.5 w-full rounded-xl border border-slate-200 bg-slate-50 px-3 py-2.5 text-[13px] text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-emerald-500 focus:bg-white focus:ring-2 focus:ring-emerald-500/15" />
         </div>
         <div>
@@ -1083,7 +1083,7 @@
           <label for="dsp-advance" class="text-[11.5px] font-medium text-slate-500">Advance Received</label>
           <div class="mt-1.5 flex items-center rounded-xl border border-slate-200 bg-slate-50 pl-3 transition focus-within:border-emerald-500 focus-within:bg-white focus-within:ring-2 focus-within:ring-emerald-500/15">
             <span class="text-[12px] font-semibold text-slate-400">Rs.</span>
-            <input id="dsp-advance" type="text" inputmode="numeric" autocomplete="off" value="0"
+            <input id="dsp-advance" type="text" maxlength="12" inputmode="numeric" autocomplete="off" value="0"
               class="w-full bg-transparent px-2 py-2.5 text-[13px] font-semibold text-slate-900 outline-none" />
           </div>
         </div>
@@ -1383,7 +1383,7 @@
    * ========================================================== */
   var CONFIG = {
     APP_NAME: 'PakEngine Rent Ledger',
-    APP_VERSION: '2.10.0',
+    APP_VERSION: '2.10.1',
     DOMAIN: 'pakengine.com',
     LICENSE_PRICE_PKR: 4000,
     TRIAL_DAYS: 3,
@@ -2545,7 +2545,7 @@
     var err = $('#dsp-error');
     if (!$('#dsp-renter').value.trim()) { err.textContent = 'Enter the renter’s name.'; shake($('#dsp-renter')); return false; }
     var pd = String($('#dsp-phone').value || '').replace(/\D/g, '');
-    if (pd.length !== 11) { err.textContent = 'Invalid number — enter an 11-digit phone (e.g. 03xxxxxxxxx).'; shake($('#dsp-phone')); return false; }
+    if (!/^0\d{10}$/.test(pd)) { err.textContent = 'Invalid number — enter an 11-digit phone starting 0 (e.g. 03001234567).'; shake($('#dsp-phone')); return false; }
     err.textContent = '';
     return true;
   }
