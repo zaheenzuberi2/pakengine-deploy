@@ -106,6 +106,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Sora:wght@600;700;800&family=JetBrains+Mono:wght@500;600&display=swap" rel="stylesheet" />
 
 <link rel="stylesheet" href="/styles.css" />
+<script defer data-domain="pakengine.com" src="https://plausible.io/js/script.js"></script>
 
 <style>
   :root { color-scheme: dark; }
@@ -780,15 +781,29 @@
             Local-first operations &amp; fleet ledger software for car rental showrooms. pakengine.com
           </p>
         </div>
-        <nav class="flex flex-wrap gap-x-6 gap-y-2 text-[12px]" aria-label="Footer">
-          <a href="/features" class="font-medium text-slate-400 transition hover:text-white">Features</a>
-          <a href="/pricing" class="font-medium text-slate-400 transition hover:text-white">Pricing</a>
-          <a href="/faq" class="font-medium text-slate-400 transition hover:text-white">FAQ</a>
-          <a href="/contact" class="font-medium text-slate-400 transition hover:text-white">Contact</a>
-          <button id="footer-login" class="font-medium text-slate-400 transition hover:text-white">Showroom Login</button>
-          <a href="/privacy" class="font-medium text-slate-400 transition hover:text-white">Privacy Policy</a>
-          <a href="/terms" class="font-medium text-slate-400 transition hover:text-white">Terms &amp; Conditions</a>
-        </nav>
+        <div class="flex flex-col gap-6 sm:flex-row sm:gap-12">
+          <nav class="flex flex-col gap-2 text-[12px]" aria-label="Product">
+            <span class="text-[10px] font-semibold uppercase tracking-wider text-slate-600">Product</span>
+            <a href="/features" class="font-medium text-slate-400 transition hover:text-white">Features</a>
+            <a href="/pricing" class="font-medium text-slate-400 transition hover:text-white">Pricing</a>
+            <a href="/faq" class="font-medium text-slate-400 transition hover:text-white">FAQ</a>
+            <a href="/demo" class="font-medium text-slate-400 transition hover:text-white">Live demo</a>
+          </nav>
+          <nav class="flex flex-col gap-2 text-[12px]" aria-label="Coverage">
+            <span class="text-[10px] font-semibold uppercase tracking-wider text-slate-600">Coverage</span>
+            <a href="/islamabad" class="font-medium text-slate-400 transition hover:text-white">Islamabad</a>
+            <a href="/lahore" class="font-medium text-slate-400 transition hover:text-white">Lahore</a>
+            <a href="/karachi" class="font-medium text-slate-400 transition hover:text-white">Karachi</a>
+            <a href="/peshawar" class="font-medium text-slate-400 transition hover:text-white">Peshawar</a>
+          </nav>
+          <nav class="flex flex-col gap-2 text-[12px]" aria-label="Company">
+            <span class="text-[10px] font-semibold uppercase tracking-wider text-slate-600">Company</span>
+            <a href="/contact" class="font-medium text-slate-400 transition hover:text-white">Contact</a>
+            <button id="footer-login" class="text-left font-medium text-slate-400 transition hover:text-white">Showroom Login</button>
+            <a href="/privacy" class="font-medium text-slate-400 transition hover:text-white">Privacy Policy</a>
+            <a href="/terms" class="font-medium text-slate-400 transition hover:text-white">Terms &amp; Conditions</a>
+          </nav>
+        </div>
       </div>
       <div class="mt-8 flex flex-col gap-1.5 border-t border-white/[0.06] pt-5 text-[11px] text-slate-600 sm:flex-row sm:items-center sm:justify-between">
         <span>&copy; <span id="footer-year">2026</span> PakEngine. All rights reserved. &middot; Built for the Pakistani automotive ecosystem.</span>
@@ -1373,7 +1388,7 @@
    * ========================================================== */
   var CONFIG = {
     APP_NAME: 'PakEngine Rent Ledger',
-    APP_VERSION: '2.12.0',
+    APP_VERSION: '2.13.0',
     DOMAIN: 'pakengine.com',
     LICENSE_PRICE_PKR: 4000,
     TRIAL_DAYS: 3,

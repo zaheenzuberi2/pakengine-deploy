@@ -91,14 +91,28 @@ const FOOTER = `
           Local-first operations &amp; fleet ledger software for car rental showrooms. pakengine.com
         </p>
       </div>
-      <nav class="flex flex-wrap gap-x-6 gap-y-2 text-[12px]" aria-label="Footer">
-        <a href="/features" class="font-medium text-slate-400 transition hover:text-white">Features</a>
-        <a href="/pricing" class="font-medium text-slate-400 transition hover:text-white">Pricing</a>
-        <a href="/faq" class="font-medium text-slate-400 transition hover:text-white">FAQ</a>
-        <a href="/contact" class="font-medium text-slate-400 transition hover:text-white">Contact</a>
-        <a href="/privacy" class="font-medium text-slate-400 transition hover:text-white">Privacy Policy</a>
-        <a href="/terms" class="font-medium text-slate-400 transition hover:text-white">Terms &amp; Conditions</a>
-      </nav>
+      <div class="flex flex-col gap-6 sm:flex-row sm:gap-12">
+        <nav class="flex flex-col gap-2 text-[12px]" aria-label="Product">
+          <span class="text-[10px] font-semibold uppercase tracking-wider text-slate-600">Product</span>
+          <a href="/features" class="font-medium text-slate-400 transition hover:text-white">Features</a>
+          <a href="/pricing" class="font-medium text-slate-400 transition hover:text-white">Pricing</a>
+          <a href="/faq" class="font-medium text-slate-400 transition hover:text-white">FAQ</a>
+          <a href="/demo" class="font-medium text-slate-400 transition hover:text-white">Live demo</a>
+        </nav>
+        <nav class="flex flex-col gap-2 text-[12px]" aria-label="Coverage">
+          <span class="text-[10px] font-semibold uppercase tracking-wider text-slate-600">Coverage</span>
+          <a href="/islamabad" class="font-medium text-slate-400 transition hover:text-white">Islamabad</a>
+          <a href="/lahore" class="font-medium text-slate-400 transition hover:text-white">Lahore</a>
+          <a href="/karachi" class="font-medium text-slate-400 transition hover:text-white">Karachi</a>
+          <a href="/peshawar" class="font-medium text-slate-400 transition hover:text-white">Peshawar</a>
+        </nav>
+        <nav class="flex flex-col gap-2 text-[12px]" aria-label="Company">
+          <span class="text-[10px] font-semibold uppercase tracking-wider text-slate-600">Company</span>
+          <a href="/contact" class="font-medium text-slate-400 transition hover:text-white">Contact</a>
+          <a href="/privacy" class="font-medium text-slate-400 transition hover:text-white">Privacy Policy</a>
+          <a href="/terms" class="font-medium text-slate-400 transition hover:text-white">Terms &amp; Conditions</a>
+        </nav>
+      </div>
     </div>
     <div class="mt-8 flex flex-col gap-1.5 border-t border-white/[0.06] pt-5 text-[11px] text-slate-600 sm:flex-row sm:items-center sm:justify-between">
       <span>&copy; <span id="year">2026</span> PakEngine. All rights reserved. &middot; Built for the Pakistani automotive ecosystem.</span>
@@ -201,6 +215,7 @@ ${JSON.stringify({ '@context': 'https://schema.org', '@graph': graph }, null, 2)
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Sora:wght@600;700;800&family=JetBrains+Mono:wght@500;600&display=swap" rel="stylesheet" />
 
 <link rel="stylesheet" href="/styles.css" />
+<script defer data-domain="pakengine.com" src="https://plausible.io/js/script.js"></script>
 <style>
   :root { color-scheme: dark; }
   html, body { background: #0B0D10; }
@@ -325,6 +340,149 @@ const featureBlock = (icon, title, copy, points) => `
       .join('\n    ')}
   </ul>
 </article>`;
+
+/* ------------------------------------------------------------------ *
+ *  City landing pages
+ * ------------------------------------------------------------------ */
+
+const CITIES = [
+  {
+    slug: 'islamabad',
+    name: 'Islamabad',
+    lead:
+      'Showrooms across Blue Area and the F-sectors run heavy corporate accounts and airport transfers, often handing the same vehicle to a different renter within hours. PakEngine keeps the availability board, the pre-rental damage record and the day’s cash straight without a single paper slip.',
+    reasons: [
+      'Airport-run turnarounds logged in seconds so a car is never double-booked',
+      'One WhatsApp dispatch slip per corporate booking, formatted the same every time',
+      'Twin-city operators can run one showroom licence across staff phones in Islamabad and Rawalpindi',
+    ],
+    faqs: [
+      ['Does PakEngine need internet at the Islamabad airport pickup point?',
+       'No. After the first load it runs as an installed app that works fully offline, so the operator can record the check-out and hand over the WhatsApp slip even with no signal in the arrivals area.'],
+      ['Can two branches in Islamabad and Rawalpindi share one account?',
+       'The flat 4,000 PKR licence covers one showroom and every staff device in it. If the two branches operate as one business with a shared fleet, one licence and a shared backup file keeps them in sync; genuinely separate fleets need a licence each.'],
+    ],
+  },
+  {
+    slug: 'lahore',
+    name: 'Lahore',
+    lead:
+      'Lahore runs the largest private rental fleets in Punjab, and wedding season turns a steady operation into a queue at the counter. PakEngine lets the counter staff check a car out, compute the overtime and message the renter the agreement in under a minute, so the queue keeps moving.',
+    reasons: [
+      'Peak-season check-outs done in under a minute, damage map included',
+      'Overtime and extra-day charges calculated automatically at return',
+      'Every dispatch and return kept in a local activity log for the day’s reconciliation',
+    ],
+    faqs: [
+      ['How does PakEngine handle wedding-season overtime charges?',
+       'Set the daily rate once per vehicle. At return PakEngine counts the days and any late hours and shows the amount due, so counter staff never work it out by hand or lose a late fee during a rush.'],
+      ['Is my Lahore showroom’s client list stored on a server?',
+       'No. Client names, numbers, CNICs and rental history stay in the browser storage on your own device. Nothing is uploaded, so no third party can see your booking volumes or customer list.'],
+    ],
+  },
+  {
+    slug: 'karachi',
+    name: 'Karachi',
+    lead:
+      'Karachi showrooms mix short city hires with long interior-Sindh trips and standing corporate contracts, and a returned vehicle is where the arguments start. PakEngine records the exact condition of every panel at check-out and shows the same diagram again at return, so pre-existing damage is never disputed.',
+    reasons: [
+      'Symmetrical damage map locked to each rental, re-shown at check-in',
+      'Long-trip and corporate contracts tracked with a clear due-back list',
+      'One-file backup so a lost or stolen counter phone never means a lost ledger',
+    ],
+    faqs: [
+      ['A renter says the scratch was already there. How does PakEngine settle it?',
+       'At check-out the operator taps every panel that already carries a scratch or dent, the renter sees and agrees to it, and that record is saved with the rental. At return the same diagram is shown, so any new damage is unmistakable.'],
+      ['What happens to my Karachi showroom data if a staff phone is lost?',
+       'Run Export Fleet Backup regularly (weekly, and after big return batches). If a device is lost, install PakEngine on a new phone and run Import Fleet Backup to restore the fleet, history and damage records exactly.'],
+    ],
+  },
+  {
+    slug: 'peshawar',
+    name: 'Peshawar',
+    lead:
+      'Peshawar is the staging point for trips into KP and the northern valleys, where 4x4 hires go out for days at a time and come back dusty. PakEngine gives the showroom a clean digital record of who took which vehicle, for how long, with how much advance paid and how much still due on return.',
+    reasons: [
+      'Multi-day mountain hires tracked with advance paid and balance due on return',
+      'Pre-rental condition recorded before a vehicle leaves for rough routes',
+      'Works fully offline, so returns can be logged the moment a vehicle reaches the yard',
+    ],
+    faqs: [
+      ['Can PakEngine record a part-payment when a 4x4 leaves for several days?',
+       'Yes. Enter the advance received at check-out and PakEngine shows the balance due on return on the dispatch slip and again on the return screen, so nothing is forgotten after a long trip.'],
+      ['Does it work without signal on northern routes?',
+       'The renter’s copy is sent over WhatsApp, which needs signal, but every check-out, return and payment is written to the device offline. You record on the spot and the WhatsApp slip goes out whenever a connection is available.'],
+    ],
+  },
+];
+
+function cityPage(c) {
+  const kw = `car rental software ${c.name}, rent a car management ${c.name}, fleet ledger ${c.name}, vehicle damage record app ${c.name}, rent a car software Pakistan`;
+  return page({
+    slug: c.slug,
+    title: `Car Rental Management Software in ${c.name} — PakEngine`,
+    description: `PakEngine is a local-first fleet ledger for car rental showrooms in ${c.name}: visual pre-rental damage records, 10-second WhatsApp dispatch slips, an offline rental log and an overtime calculator. Flat 4,000 PKR/month, 3-day free trial.`,
+    ogTitle: `PakEngine for ${c.name}`,
+    ogDesc: `Fleet ledger, damage mapping and WhatsApp dispatch slips for car rental showrooms in ${c.name}.`,
+    keywords: kw,
+    jsonld: [
+      {
+        '@type': 'Service',
+        serviceType: 'Car rental management software',
+        name: `PakEngine Rent Ledger — ${c.name}`,
+        provider: { '@type': 'Organization', name: 'PakEngine', url: SITE + '/' },
+        areaServed: { '@type': 'City', name: c.name, containedInPlace: { '@type': 'Country', name: 'Pakistan' } },
+        offers: { '@type': 'Offer', price: '4000', priceCurrency: 'PKR' },
+        url: `${SITE}/${c.slug}`,
+      },
+      faqSchema([...c.faqs, FAQS[0], FAQS[2]]),
+    ],
+    body: `
+${H1(
+  `Serving car rental showrooms in ${c.name}`,
+  `Run your ${c.name} rental fleet from one local dashboard.`,
+  c.lead
+)}
+<section class="border-b border-white/[0.06] py-10">
+  <h2 class="font-display text-[18px] font-bold tracking-tight text-white sm:text-[22px]">Why showrooms in ${c.name} use PakEngine</h2>
+  <ul class="mt-5 grid gap-3 sm:grid-cols-3">
+    ${c.reasons
+      .map(
+        (r) => `<li class="flex gap-2.5 rounded-xl border border-white/[0.08] bg-white/[0.02] p-4 text-[12.5px] leading-relaxed text-slate-300">
+      <i data-lucide="check" class="mt-0.5 h-4 w-4 shrink-0 text-emerald-400"></i><span>${r}</span>
+    </li>`
+      )
+      .join('\n    ')}
+  </ul>
+</section>
+${featureBlock(
+  'shield-check',
+  'Visual asset protection',
+  'A symmetrical vector diagram of the vehicle lets the operator tap every panel that already carries a scratch or dent before the keys are handed over. The record is stored with the rental and shown again at return.',
+  ['Nine-panel map, one-thumb operation', 'Damage snapshot locked to each rental', 'Same map re-shown at check-in', 'Renter agrees to the marks at hand-over']
+)}
+${featureBlock(
+  'file-text',
+  'Instant digital agreements',
+  'PakEngine builds a clean dispatch slip with the vehicle, plate, rate, dates, advance, balance and agreed damage notes, then hands it to the renter on WhatsApp in under ten seconds.',
+  ['Pre-filled from the vehicle record', 'Sent to the renter’s WhatsApp in one tap', 'Return receipt shows base, overtime and total', 'Every slip kept in the local log']
+)}
+${featureBlock(
+  'hard-drive',
+  'Offline local-first ledger',
+  'No cloud database, no account. Your entire fleet list, availability timeline, rental history and cash log live in the browser storage on your own device, and the app runs with no connection after the first load.',
+  ['Installs as an app on Android, iPhone and desktop', 'Works fully offline at the counter and the gate', 'No server can read your rentals or revenue', 'One-file backup and restore between devices']
+)}
+<section class="py-8 sm:py-10">
+  <h2 class="text-center font-display text-[20px] font-bold tracking-tight text-white sm:text-[26px]">${c.name} showroom questions</h2>
+  <div class="mx-auto mt-6 max-w-3xl">
+    ${faqList([...c.faqs, FAQS[0], FAQS[2]])}
+  </div>
+</section>
+${CTA(`Start your ${c.name} showroom on PakEngine.`, 'Three days of full access. No card, no install commitment, and no data leaves your device.')}
+`,
+  });
+}
 
 const PAGES = {
   features: page({
@@ -553,10 +711,10 @@ ${CTA('Or just start the trial.', 'You do not need to talk to us first. Three da
     slug: 'privacy',
     title: 'Privacy Policy — PakEngine Rent Ledger',
     description:
-      'How PakEngine handles data. Your showroom records never leave your device. No trackers, no analytics, no accounts. This page explains the only data that touches a network: CDN request logs.',
+      'How PakEngine handles data. Your showroom records never leave your device. No cookies, no cross-site tracking, no accounts. This page covers the only data that touches a network: CDN request logs and cookieless page-visit counts.',
     ogTitle: 'PakEngine Privacy Policy',
-    ogDesc: 'Your showroom data never leaves your device. No trackers, no analytics, no accounts.',
-    keywords: 'PakEngine privacy policy, local-first data, no tracking rental software, car rental data protection',
+    ogDesc: 'Your showroom data never leaves your device. No cookies, no cross-site tracking, no accounts.',
+    keywords: 'PakEngine privacy policy, local-first data, cookieless analytics rental software, car rental data protection',
     body: `
 ${H1('Legal', 'Privacy Policy', 'Last updated ' + UPDATED + '.')}
 <section class="prose-pk max-w-2xl py-8 text-[13px] text-slate-400">
@@ -569,14 +727,16 @@ ${H1('Legal', 'Privacy Policy', 'Last updated ' + UPDATED + '.')}
   <h2 class="font-display text-[16px] font-bold text-white">Data that touches a network</h2>
   <ul>
     <li><strong>Static file delivery.</strong> The app, its fonts and its icon library are served over a content delivery network (Vercel, jsDelivr, Google Fonts). Those providers log ordinary web-request metadata such as your IP address, timestamp and user agent to deliver files and defend against abuse. We do not receive or store those logs.</li>
+    <li><strong>Website analytics.</strong> Pages on pakengine.com load Plausible Analytics, a cookieless, privacy-first tool. It records aggregate page-visit counts, referrer and rough country and device type. It sets no cookies, stores no persistent identifier, does not track you across other websites, and cannot be used to identify an individual. Your showroom data inside the app is never sent to it. Plausible processes this data in the EU. See plausible.io/privacy.</li>
     <li><strong>Upgrade payments.</strong> When you choose to upgrade you send a bank transfer and a WhatsApp message yourself. That interaction is governed by your bank’s and WhatsApp’s own policies. We store only your Showroom ID, showroom name and the contact number you provide, to match the payment and issue a licence key.</li>
   </ul>
 
   <h2 class="font-display text-[16px] font-bold text-white">What we do not do</h2>
   <ul>
-    <li>No analytics, pixels, session recording or advertising trackers.</li>
-    <li>No account system and no cloud database.</li>
-    <li>No selling, sharing or profiling of any data.</li>
+    <li>No cookies, no fingerprinting, no session or screen recording, no advertising trackers.</li>
+    <li>No cross-site tracking and no profiling of individuals.</li>
+    <li>No account system and no cloud database for your showroom data.</li>
+    <li>No selling or sharing of any data.</li>
   </ul>
 
   <h2 class="font-display text-[16px] font-bold text-white">Contact</h2>
@@ -623,6 +783,8 @@ ${H1('Legal', 'Terms &amp; Conditions', 'Last updated ' + UPDATED + '.')}
 </section>
 `,
   }),
+
+  ...Object.fromEntries(CITIES.map((c) => [c.slug, cityPage(c)])),
 
   404: page({
     slug: '404',
@@ -672,6 +834,7 @@ const sm = [
   ['/features', 'monthly', '0.8'],
   ['/pricing', 'monthly', '0.8'],
   ['/faq', 'monthly', '0.7'],
+  ...CITIES.map((c) => [`/${c.slug}`, 'monthly', '0.7']),
   ['/contact', 'yearly', '0.5'],
   ['/privacy', 'yearly', '0.3'],
   ['/terms', 'yearly', '0.3'],
