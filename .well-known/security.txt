@@ -1,0 +1,5 @@
+# PakEngine Rent Ledger — security contact
+Contact: mailto:support@pakengine.com
+Expires: 2027-09-06T00:00:00.000Z
+Preferred-Languages: en, ur
+Canonical: https://pakengine.com/.well-known/security.txt

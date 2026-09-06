@@ -1,0 +1,20 @@
+{
+  "name": "PakEngine Rent Ledger",
+  "short_name": "PakEngine",
+  "description": "Local-first operations and fleet ledger for car rental showrooms in Pakistan. Visual pre-rental damage records, instant overtime, and daily cash-flow protection with zero server overhead.",
+  "id": "/",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "background_color": "#0B0D10",
+  "theme_color": "#0B0D10",
+  "lang": "en",
+  "dir": "ltr",
+  "categories": ["business", "productivity", "utilities"],
+  "icons": [
+    { "src": "/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "/icon-512-maskable.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
+}

@@ -11,6 +11,11 @@
 <link rel="canonical" href="https://pakengine.com/faq" />
 <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1" />
 <link rel="sitemap" type="application/xml" href="/sitemap.xml" />
+<link rel="icon" href="/favicon.ico" sizes="32x32" />
+<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+<link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+<link rel="manifest" href="/manifest.webmanifest" />
+<meta name="apple-mobile-web-app-title" content="PakEngine" />
 
 <meta property="og:type" content="website" />
 <meta property="og:site_name" content="PakEngine Rent Ledger" />
@@ -122,6 +127,8 @@
 
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link rel="preconnect" href="https://cdn.tailwindcss.com" crossorigin />
+<link rel="dns-prefetch" href="https://cdn.jsdelivr.net" />
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Sora:wght@600;700;800&family=JetBrains+Mono:wght@500;600&display=swap" rel="stylesheet" />
 
 <script src="https://cdn.tailwindcss.com"></script>
@@ -158,10 +165,14 @@
   .prose-pk h2 { margin-top: 2rem; }
   .prose-pk ul { margin-top: .85rem; }
   .prose-pk li { margin-top: .4rem; }
+  .skip-link { position: absolute; left: -9999px; top: 0; z-index: 100; }
+  .skip-link:focus { left: 1rem; top: 1rem; padding: .5rem .9rem; border-radius: .5rem; background: #10b981; color: #05261c; font-weight: 700; font-size: 13px; }
+  :focus-visible { outline: 2px solid #34d399; outline-offset: 2px; border-radius: 4px; }
   @media (prefers-reduced-motion: reduce) { * { transition-duration: .01ms !important; } }
 </style>
 </head>
 <body class="min-h-screen text-slate-100 antialiased">
+<a href="#main" class="skip-link">Skip to content</a>
 <div id="ambient"></div>
 
 <header id="nav" class="sticky top-0 z-30 border-b border-transparent">
@@ -206,7 +217,7 @@
     <i data-lucide="arrow-left" class="h-3.5 w-3.5"></i> Back to home
   </a>
 </div>
-<main class="mx-auto w-full max-w-6xl px-5 pb-4">
+<main id="main" class="mx-auto w-full max-w-6xl px-5 pb-4">
 
 
 <section class="border-b border-white/[0.06] py-10 sm:py-14">

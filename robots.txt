@@ -1,5 +1,6 @@
+# https://pakengine.com/robots.txt
 User-agent: *
 Allow: /
-Disallow: /?demo=1
+Disallow: /*?demo=
 
 Sitemap: https://pakengine.com/sitemap.xml

@@ -140,21 +140,23 @@ const FOOTER = `
  *  Page template
  * ------------------------------------------------------------------ */
 
-function page({ slug, title, description, ogTitle, ogDesc, keywords, jsonld = [], body }) {
+function page({ slug, title, description, ogTitle, ogDesc, keywords, jsonld = [], body, noindex = false }) {
   const url = `${SITE}/${slug}`;
-  const og = `${SITE}/og-${slug}.jpg`;
+  const og = noindex ? `${SITE}/og.jpg` : `${SITE}/og-${slug}.jpg`;
   const ogT = ogTitle || title;
   const ogD = ogDesc || description;
-  const graph = [
-    {
-      '@type': 'BreadcrumbList',
-      itemListElement: [
-        { '@type': 'ListItem', position: 1, name: 'Home', item: SITE + '/' },
-        { '@type': 'ListItem', position: 2, name: ogT, item: url },
-      ],
-    },
-    ...jsonld,
-  ];
+  const graph = noindex
+    ? [...jsonld]
+    : [
+        {
+          '@type': 'BreadcrumbList',
+          itemListElement: [
+            { '@type': 'ListItem', position: 1, name: 'Home', item: SITE + '/' },
+            { '@type': 'ListItem', position: 2, name: ogT, item: url },
+          ],
+        },
+        ...jsonld,
+      ];
   return `<!DOCTYPE html>
 <html lang="en">
 <head>
@@ -165,9 +167,14 @@ function page({ slug, title, description, ogTitle, ogDesc, keywords, jsonld = []
 <meta name="description" content="${h(description)}" />
 <meta name="keywords" content="${h(keywords)}" />
 <meta name="author" content="Zaheen Zuberi" />
-<link rel="canonical" href="${url}" />
-<meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1" />
+${noindex ? '' : `<link rel="canonical" href="${url}" />`}
+<meta name="robots" content="${noindex ? 'noindex, follow' : 'index, follow, max-image-preview:large, max-snippet:-1'}" />
 <link rel="sitemap" type="application/xml" href="/sitemap.xml" />
+<link rel="icon" href="/favicon.ico" sizes="32x32" />
+<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+<link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+<link rel="manifest" href="/manifest.webmanifest" />
+<meta name="apple-mobile-web-app-title" content="PakEngine" />
 
 <meta property="og:type" content="website" />
 <meta property="og:site_name" content="PakEngine Rent Ledger" />
@@ -183,12 +190,14 @@ function page({ slug, title, description, ogTitle, ogDesc, keywords, jsonld = []
 <meta name="twitter:description" content="${h(ogD)}" />
 <meta name="twitter:image" content="${og}" />
 
-<script type="application/ld+json">
+${graph.length ? `<script type="application/ld+json">
 ${JSON.stringify({ '@context': 'https://schema.org', '@graph': graph }, null, 2)}
-</script>
+</script>` : ''}
 
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link rel="preconnect" href="https://cdn.tailwindcss.com" crossorigin />
+<link rel="dns-prefetch" href="https://cdn.jsdelivr.net" />
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Sora:wght@600;700;800&family=JetBrains+Mono:wght@500;600&display=swap" rel="stylesheet" />
 
 <script src="https://cdn.tailwindcss.com"></script>
@@ -225,13 +234,17 @@ ${JSON.stringify({ '@context': 'https://schema.org', '@graph': graph }, null, 2)
   .prose-pk h2 { margin-top: 2rem; }
   .prose-pk ul { margin-top: .85rem; }
   .prose-pk li { margin-top: .4rem; }
+  .skip-link { position: absolute; left: -9999px; top: 0; z-index: 100; }
+  .skip-link:focus { left: 1rem; top: 1rem; padding: .5rem .9rem; border-radius: .5rem; background: #10b981; color: #05261c; font-weight: 700; font-size: 13px; }
+  :focus-visible { outline: 2px solid #34d399; outline-offset: 2px; border-radius: 4px; }
   @media (prefers-reduced-motion: reduce) { * { transition-duration: .01ms !important; } }
 </style>
 </head>
 <body class="min-h-screen text-slate-100 antialiased">
+<a href="#main" class="skip-link">Skip to content</a>
 <div id="ambient"></div>
 ${header('/' + slug)}
-<main class="mx-auto w-full max-w-6xl px-5 pb-4">
+<main id="main" class="mx-auto w-full max-w-6xl px-5 pb-4">
 ${body}
 </main>
 ${FOOTER}
@@ -619,6 +632,35 @@ ${H1('Legal', 'Terms &amp; Conditions', 'Last updated ' + UPDATED + '.')}
 
   <h2 class="font-display text-[16px] font-bold text-white">7. Contact</h2>
   <p>Questions about these terms: <a href="mailto:${SUPPORT}" class="font-semibold text-emerald-400 underline underline-offset-2 hover:text-emerald-300">${SUPPORT}</a>.</p>
+</section>
+`,
+  }),
+
+  404: page({
+    slug: '404',
+    noindex: true,
+    title: 'Page not found — PakEngine Rent Ledger',
+    description: 'That page could not be found on pakengine.com.',
+    keywords: '',
+    body: `
+<section class="py-16 text-center sm:py-24">
+  <div class="text-[11px] font-semibold uppercase tracking-[0.16em] text-emerald-400">Error 404</div>
+  <h1 class="mt-3 font-display text-[28px] font-bold tracking-tight text-white [text-wrap:balance] sm:text-[38px]">This road doesn't lead anywhere.</h1>
+  <p class="mx-auto mt-4 max-w-md text-[14px] leading-relaxed text-slate-400">The page you asked for isn't here. It may have moved, or the link was mistyped.</p>
+  <div class="mt-8 flex flex-col items-center justify-center gap-3 sm:flex-row">
+    <a href="/" class="inline-flex items-center justify-center gap-2 rounded-lg bg-emerald-600 px-6 py-3.5 text-[14px] font-semibold text-white transition hover:bg-emerald-500 active:scale-[0.98]">
+      <i data-lucide="arrow-left" class="h-4 w-4"></i> Back to home
+    </a>
+    <a href="/features" class="inline-flex items-center justify-center gap-2 rounded-lg border border-white/25 px-6 py-3.5 text-[14px] font-semibold text-white transition hover:border-white/45 hover:bg-white/5">
+      See what PakEngine does
+    </a>
+  </div>
+  <nav class="mt-10 flex flex-wrap justify-center gap-x-5 gap-y-2 text-[12.5px] font-medium text-slate-500" aria-label="Helpful links">
+    <a href="/pricing" class="transition hover:text-white">Pricing</a>
+    <a href="/faq" class="transition hover:text-white">FAQ</a>
+    <a href="/demo" class="transition hover:text-white">Live demo</a>
+    <a href="/contact" class="transition hover:text-white">Contact</a>
+  </nav>
 </section>
 `,
   }),

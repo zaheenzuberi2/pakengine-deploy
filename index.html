@@ -10,6 +10,13 @@
 <meta name="description" content="Local-first operations and fleet ledger for car rental showrooms. Visual pre-rental damage records, instant overtime, and daily cash-flow protection with zero server overhead." />
 <title>PakEngine Rent Ledger</title>
 
+<link rel="icon" href="/favicon.ico" sizes="32x32" />
+<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+<link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+<link rel="manifest" href="/manifest.webmanifest" />
+<link rel="preconnect" href="https://cdn.tailwindcss.com" crossorigin />
+<link rel="dns-prefetch" href="https://cdn.jsdelivr.net" />
+
 <meta property="og:type" content="website" />
 <meta property="og:site_name" content="PakEngine Rent Ledger" />
 <meta property="og:title" content="Stop Showroom Leakage. Automate Your Rental Ledger." />
@@ -1383,7 +1390,7 @@
    * ========================================================== */
   var CONFIG = {
     APP_NAME: 'PakEngine Rent Ledger',
-    APP_VERSION: '2.10.2',
+    APP_VERSION: '2.11.0',
     DOMAIN: 'pakengine.com',
     LICENSE_PRICE_PKR: 4000,
     TRIAL_DAYS: 3,
@@ -2768,24 +2775,9 @@
    *  PWA META
    * ========================================================== */
   function installPwaMeta() {
-    var svgIcon = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%230B0D10'/%3E%3Crect x='7' y='7' width='50' height='50' rx='12' fill='none' stroke='%2310B981' stroke-width='3'/%3E%3Ctext x='32' y='41' font-family='Arial,Helvetica,sans-serif' font-size='24' font-weight='700' fill='%2310B981' text-anchor='middle'%3EPE%3C/text%3E%3C/svg%3E";
-    ['icon', 'apple-touch-icon'].forEach(function (rel) {
-      var l = document.createElement('link'); l.rel = rel; l.href = svgIcon; document.head.appendChild(l);
-    });
-    var manifest = {
-      name: CONFIG.APP_NAME, short_name: 'PakEngine',
-      description: 'Zero-overhead rental ledger for elite Pakistani rent-a-car showrooms.',
-      start_url: '.', scope: '.', display: 'standalone', orientation: 'portrait',
-      background_color: '#0B0D10', theme_color: '#0B0D10',
-      icons: [{ src: svgIcon, sizes: '512x512', type: 'image/svg+xml', purpose: 'any maskable' }]
-    };
-    try {
-      var mBlob = new Blob([JSON.stringify(manifest)], { type: 'application/manifest+json' });
-      var link = document.createElement('link');
-      link.rel = 'manifest';
-      link.href = URL.createObjectURL(mBlob);
-      document.head.appendChild(link);
-    } catch (e) {}
+    /* Favicons, apple-touch-icon and the web app manifest are static files
+       referenced in <head> (see /favicon.svg, /manifest.webmanifest). Here we
+       only register the service worker for offline use. */
     if ('serviceWorker' in navigator) {
       navigator.serviceWorker.register('sw.js').catch(function () {});
     }
