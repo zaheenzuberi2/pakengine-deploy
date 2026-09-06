@@ -1043,8 +1043,21 @@
         </div>
         <div>
           <label for="dsp-phone" class="text-[11.5px] font-medium text-slate-500">Renter Phone</label>
-          <input id="dsp-phone" type="tel" inputmode="tel" autocomplete="off" placeholder="03xx-xxxxxxx"
+          <input id="dsp-phone" type="tel" inputmode="numeric" autocomplete="off" maxlength="13" placeholder="03xxxxxxxxx"
             class="mt-1.5 w-full rounded-xl border border-slate-200 bg-slate-50 px-3 py-2.5 text-[13px] text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-emerald-500 focus:bg-white focus:ring-2 focus:ring-emerald-500/15" />
+        </div>
+      </div>
+
+      <div class="mt-3 grid grid-cols-2 gap-3">
+        <div>
+          <label for="dsp-cnic" class="text-[11.5px] font-medium text-slate-500">CNIC Number <span class="text-slate-400">(optional)</span></label>
+          <input id="dsp-cnic" type="text" inputmode="numeric" autocomplete="off" maxlength="15" placeholder="xxxxx-xxxxxxx-x"
+            class="mt-1.5 w-full rounded-xl border border-slate-200 bg-slate-50 px-3 py-2.5 text-[13px] text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-emerald-500 focus:bg-white focus:ring-2 focus:ring-emerald-500/15" />
+        </div>
+        <div>
+          <label for="dsp-rtime" class="text-[11.5px] font-medium text-slate-500">Time of Return <span class="text-slate-400">(optional)</span></label>
+          <input id="dsp-rtime" type="time" autocomplete="off"
+            class="mt-1.5 w-full rounded-xl border border-slate-200 bg-slate-50 px-3 py-2.5 text-[13px] text-slate-900 outline-none transition focus:border-emerald-500 focus:bg-white focus:ring-2 focus:ring-emerald-500/15" />
         </div>
       </div>
 
@@ -1065,6 +1078,21 @@
         </div>
       </div>
 
+      <div class="mt-3 grid grid-cols-2 gap-2">
+        <div>
+          <label for="dsp-advance" class="text-[11.5px] font-medium text-slate-500">Advance Received</label>
+          <div class="mt-1.5 flex items-center rounded-xl border border-slate-200 bg-slate-50 pl-3 transition focus-within:border-emerald-500 focus-within:bg-white focus-within:ring-2 focus-within:ring-emerald-500/15">
+            <span class="text-[12px] font-semibold text-slate-400">Rs.</span>
+            <input id="dsp-advance" type="text" inputmode="numeric" autocomplete="off" value="0"
+              class="w-full bg-transparent px-2 py-2.5 text-[13px] font-semibold text-slate-900 outline-none" />
+          </div>
+        </div>
+        <div class="rounded-xl bg-amber-50 p-3">
+          <div class="text-[10px] font-semibold uppercase tracking-wide text-amber-700">Balance Due on Return</div>
+          <div id="dsp-balance" class="mt-1 font-display text-[14px] font-bold text-amber-700">Rs. 0</div>
+        </div>
+      </div>
+
       <div class="mt-4">
         <div class="text-[11px] font-semibold uppercase tracking-wider text-slate-500">Pre-Rental Condition</div>
         <p class="mt-0.5 text-[11px] text-slate-400">Tap each panel that already has a scratch or dent.</p>
@@ -1075,7 +1103,14 @@
       </div>
 
       <p id="dsp-error" class="mt-3 min-h-[16px] text-[11.5px] font-medium text-rose-500"></p>
-      <div class="flex gap-2">
+
+      <button id="dsp-send" type="button" disabled
+        class="flex w-full flex-col items-center justify-center gap-0.5 rounded-xl bg-[#25D366] px-4 py-2.5 text-white transition hover:bg-[#20bd5a] active:scale-[0.985] disabled:cursor-not-allowed disabled:bg-slate-200 disabled:text-slate-400">
+        <span class="inline-flex items-center gap-2 text-[13px] font-semibold"><i data-lucide="send" class="h-4 w-4"></i> Send details to renter</span>
+        <span id="dsp-send-foot" class="text-[10.5px] font-medium opacity-90">Add renter name &amp; an 11-digit number</span>
+      </button>
+
+      <div class="mt-2 flex gap-2">
         <button data-close class="flex-1 rounded-xl border border-slate-200 bg-white px-4 py-2.5 text-[13px] font-semibold text-slate-600 transition hover:bg-slate-50 active:scale-[0.985]">Cancel</button>
         <button id="dsp-confirm" class="inline-flex flex-[1.4] items-center justify-center gap-2 rounded-xl bg-emerald-600 px-4 py-2.5 text-[13px] font-semibold text-white transition hover:bg-emerald-500 active:scale-[0.985]">
           <i data-lucide="check" class="h-4 w-4"></i> Confirm Dispatch
@@ -1348,7 +1383,7 @@
    * ========================================================== */
   var CONFIG = {
     APP_NAME: 'PakEngine Rent Ledger',
-    APP_VERSION: '2.9.0',
+    APP_VERSION: '2.10.0',
     DOMAIN: 'pakengine.com',
     LICENSE_PRICE_PKR: 4000,
     TRIAL_DAYS: 3,
@@ -2467,39 +2502,106 @@
     $('#dsp-title-sub').textContent = v.make + ' · ' + v.plate;
     $('#dsp-renter').value = '';
     $('#dsp-phone').value = '';
+    $('#dsp-cnic').value = '';
+    $('#dsp-rtime').value = '';
+    $('#dsp-advance').value = '0';
     $('#dsp-days').value = '1';
     $('#dsp-rate').textContent = money(v.rate);
     $('#dsp-error').textContent = '';
     updateDispatchTotal();
+    refreshSendBtn();
     dispatchMapper = mountScratchMapper($('#dsp-map'), $('#dsp-pills'), [], null);
     openModal($('#dispatch-modal'));
   }
+  function dispatchDays() { return Math.max(1, parseNum($('#dsp-days').value) || 1); }
   function updateDispatchTotal() {
     var v = Fleet.get(activeVehicleId);
     if (!v) return;
-    var d = Math.max(1, parseNum($('#dsp-days').value) || 1);
-    $('#dsp-total').textContent = money(v.rate * d);
+    var total = v.rate * dispatchDays();
+    var adv = Math.min(total, parseNum($('#dsp-advance').value) || 0);
+    $('#dsp-total').textContent = money(total);
+    $('#dsp-balance').textContent = money(total - adv);
+  }
+  function fmt12(hhmm) {
+    if (!hhmm) return '';
+    var p = String(hhmm).split(':'), h = parseInt(p[0], 10), m = p[1] || '00';
+    if (isNaN(h)) return '';
+    var ap = h >= 12 ? 'PM' : 'AM', h12 = h % 12; if (h12 === 0) h12 = 12;
+    return h12 + ':' + m + ' ' + ap;
+  }
+  function renterWaNumber() {
+    var d = String($('#dsp-phone').value || '').replace(/\D/g, '');
+    return (d.length === 11 && d.charAt(0) === '0') ? '92' + d.slice(1) : null;
+  }
+  function refreshSendBtn() {
+    var btn = $('#dsp-send'), foot = $('#dsp-send-foot');
+    if (!btn) return;
+    var wa = renterWaNumber();
+    var ok = !!$('#dsp-renter').value.trim() && !!wa;
+    btn.disabled = !ok;
+    foot.textContent = ok ? ('WhatsApp · +' + wa) : 'Add renter name & an 11-digit number';
+  }
+  function validateDispatch() {
+    var err = $('#dsp-error');
+    if (!$('#dsp-renter').value.trim()) { err.textContent = 'Enter the renter’s name.'; shake($('#dsp-renter')); return false; }
+    var pd = String($('#dsp-phone').value || '').replace(/\D/g, '');
+    if (pd.length !== 11) { err.textContent = 'Invalid number — enter an 11-digit phone (e.g. 03xxxxxxxxx).'; shake($('#dsp-phone')); return false; }
+    err.textContent = '';
+    return true;
+  }
+  function buildDispatchData(v) {
+    var days = dispatchDays();
+    var total = v.rate * days;
+    var adv = Math.min(total, parseNum($('#dsp-advance').value) || 0);
+    return {
+      renter: $('#dsp-renter').value.trim(),
+      phone: $('#dsp-phone').value.trim(),
+      cnic: $('#dsp-cnic').value.trim(),
+      days: days, rate: v.rate, total: total,
+      advance: adv, balance: total - adv,
+      returnTime: $('#dsp-rtime').value || '',
+      dueDate: new Date(Date.now() + days * 86400000).toISOString(),
+      checkoutAt: new Date().toISOString(),
+      checkoutDamage: dispatchMapper ? dispatchMapper.get() : []
+    };
+  }
+  function commitDispatch(v, r) {
+    Fleet.update(v.id, { status: 'rented', rental: r });
+    Ledger.add({ type: 'checkout', vehicleId: v.id, make: v.make, plate: v.plate, renter: r.renter, days: r.days, total: r.total, damage: r.checkoutDamage, at: r.checkoutAt });
+    renderFleet();
+  }
+  function dispatchSlipText(v, r) {
+    var dmg = (r.checkoutDamage && r.checkoutDamage.length) ? r.checkoutDamage.join(', ') : 'None — vehicle clean at check-out';
+    var lines = ['PakEngine — Rental Dispatch Slip', '', 'Vehicle: ' + v.make + ' (' + v.plate + ')', 'Renter: ' + r.renter];
+    if (r.cnic) lines.push('CNIC: ' + r.cnic);
+    lines.push('Rate: ' + money(r.rate) + ' / day');
+    lines.push('Rental Days: ' + r.days);
+    lines.push('Estimated Total: ' + money(r.total));
+    lines.push('Advance Received: ' + money(r.advance));
+    lines.push('Balance Due on Return: ' + money(r.balance));
+    lines.push('Return By: ' + dateShort(r.dueDate) + (r.returnTime ? (' at ' + fmt12(r.returnTime)) : ''));
+    lines.push('Noted Pre-Rental Damage: ' + dmg);
+    lines.push('', 'Issued via PakEngine · pakengine.com');
+    return lines.join('\n');
   }
   function confirmDispatch() {
-    var v = Fleet.get(activeVehicleId);
-    if (!v) return;
-    var renter = $('#dsp-renter').value.trim();
-    var phone = $('#dsp-phone').value.trim();
-    var days = Math.max(1, parseNum($('#dsp-days').value) || 0);
-    var err = $('#dsp-error');
-    if (!renter) { err.textContent = 'Enter the renter’s name.'; shake($('#dsp-renter')); return; }
-    if (!days) { err.textContent = 'Enter the number of rental days.'; shake($('#dsp-days')); return; }
-
-    var damage = dispatchMapper ? dispatchMapper.get() : [];
-    var rental = {
-      renter: renter, phone: phone, days: days, rate: v.rate, total: v.rate * days,
-      checkoutAt: new Date().toISOString(), checkoutDamage: damage
-    };
-    Fleet.update(v.id, { status: 'rented', rental: rental });
-    Ledger.add({ type: 'checkout', vehicleId: v.id, make: v.make, plate: v.plate, renter: renter, days: days, total: rental.total, damage: damage, at: rental.checkoutAt });
+    if (!validateDispatch()) return;
+    var v = Fleet.get(activeVehicleId); if (!v) return;
+    var r = buildDispatchData(v);
+    commitDispatch(v, r);
     closeModal($('#dispatch-modal'));
-    renderFleet();
-    toast(v.make + ' dispatched to ' + renter);
+    toast(v.make + ' dispatched to ' + r.renter);
+  }
+  function sendDispatchToRenter() {
+    if (!validateDispatch()) return;
+    var v = Fleet.get(activeVehicleId); if (!v) return;
+    var wa = renterWaNumber();
+    if (!wa) { $('#dsp-error').textContent = 'Invalid number — enter an 11-digit phone (e.g. 03xxxxxxxxx).'; shake($('#dsp-phone')); return; }
+    var r = buildDispatchData(v);
+    commitDispatch(v, r);
+    closeModal($('#dispatch-modal'));
+    toast('Details sent to ' + r.renter + ' on WhatsApp');
+    window.open('https://wa.me/' + wa + '?text=' + encodeURIComponent(dispatchSlipText(v, r)), '_blank', 'noopener');
   }
 
   function openReturn(v) {
@@ -2507,7 +2609,7 @@
     $('#rtn-title-sub').textContent = v.make + ' · ' + v.plate;
     $('#rtn-renter').textContent = r.renter || '—';
     $('#rtn-phone').textContent = r.phone || '—';
-    $('#rtn-terms').textContent = (r.days || 0) + ' day' + ((r.days || 0) === 1 ? '' : 's') + ' · ' + money(r.total || 0);
+    $('#rtn-terms').textContent = (r.days || 0) + ' day' + ((r.days || 0) === 1 ? '' : 's') + ' · ' + money(r.total || 0) + (r.balance ? ' · Balance ' + money(r.balance) : '');
     $('#rtn-since').textContent = r.checkoutAt ? dateShort(r.checkoutAt) : '—';
 
     var out = (r.checkoutDamage || []).slice();
@@ -2753,14 +2855,15 @@
     $('#onb-phone').addEventListener('keydown', function (e) { if (e.key === 'Enter') completeOnboarding(); });
 
     /* Marketing: contact routing, legal modals, sticky-nav shadow, footer year */
-    var salesMail = 'mailto:' + CONFIG.CONTACT.SALES + '?subject=' + encodeURIComponent('PakEngine — Sales enquiry');
-    var consultMail = 'mailto:' + CONFIG.CONTACT.SALES + '?subject=' + encodeURIComponent('PakEngine — Fleet consultation request');
     var supportMail = 'mailto:' + CONFIG.CONTACT.SUPPORT + '?subject=' + encodeURIComponent('PakEngine — Support request');
-    var setHref = function (id, href) { var el = $(id); if (el) el.setAttribute('href', href); };
-    setHref('#nav-contact', salesMail);
-    setHref('#m-contact', salesMail);
-    setHref('#hero-consult', consultMail);
-    setHref('#footer-contact', supportMail);
+    var consultWa = CONFIG.WHATSAPP_URL + '?text=' + encodeURIComponent('Assalam-o-Alaikum, I run a car rental showroom and would like a PakEngine fleet consultation.');
+    var setHref = function (id, href) {
+      var el = $(id);
+      if (!el) return;
+      el.setAttribute('href', href);
+      if (href.indexOf('http') === 0) { el.setAttribute('target', '_blank'); el.setAttribute('rel', 'noopener'); }
+    };
+    setHref('#hero-consult', consultWa);
     setHref('#privacy-contact', supportMail);
     setHref('#terms-contact', supportMail);
     var _fp = $('#footer-privacy'); if (_fp) _fp.addEventListener('click', function () { openModal($('#privacy-modal')); });
@@ -2806,7 +2909,11 @@
 
     /* Dispatch modal */
     $('#dsp-days').addEventListener('input', updateDispatchTotal);
+    $('#dsp-advance').addEventListener('input', updateDispatchTotal);
+    $('#dsp-renter').addEventListener('input', refreshSendBtn);
+    $('#dsp-phone').addEventListener('input', refreshSendBtn);
     $('#dsp-confirm').addEventListener('click', confirmDispatch);
+    $('#dsp-send').addEventListener('click', sendDispatchToRenter);
 
     /* Return modal */
     $('#rtn-confirm').addEventListener('click', confirmReturn);
