@@ -957,7 +957,7 @@
       <div class="mt-2 flex items-center gap-2 rounded-xl border border-slate-200 bg-slate-50 px-3 py-2.5 transition focus-within:border-emerald-500 focus-within:bg-white focus-within:ring-2 focus-within:ring-emerald-500/15">
         <i data-lucide="key-round" class="h-4 w-4 shrink-0 text-slate-400"></i>
         <input id="license-input" type="text" autocomplete="off" autocapitalize="characters" spellcheck="false"
-          placeholder="PAK-ISB-XXXXX"
+          placeholder="PE1.&hellip;"
           class="key-input w-full bg-transparent font-mono text-[14px] font-semibold text-slate-900 outline-none placeholder:text-slate-400" />
       </div>
       <p id="license-error" class="mt-2 min-h-[16px] text-[11.5px] font-medium text-rose-500"></p>
@@ -978,7 +978,7 @@
           <div class="mt-1 text-[10px] text-slate-400">Include this ID with your transfer receipt.</div>
         </div>
         <p class="text-[11px] leading-relaxed text-slate-400">
-          Monthly keys cover one calendar month; annual keys cover 12 months.<br />
+          Each key is issued for the Showroom ID above &mdash; monthly keys cover one calendar month, annual keys cover 12.<br />
           Current period: <span id="pw-period" class="font-semibold text-slate-500">—</span>
         </p>
       </div>
@@ -1329,7 +1329,7 @@
           <div id="lic-form" class="mt-3 hidden">
             <div class="flex items-center gap-2 rounded-lg border border-white/10 bg-charcoal-950 px-3 py-2 focus-within:border-emerald-500/60">
               <input id="lic-input" type="text" autocomplete="off" autocapitalize="characters" spellcheck="false"
-                placeholder="PAK-ISB-XXXXX"
+                placeholder="PE1.&hellip;"
                 class="key-input w-full bg-transparent font-mono text-[13px] font-semibold text-white outline-none placeholder:text-slate-600" />
             </div>
             <p id="lic-msg" class="mt-1.5 min-h-[14px] text-[11px] font-medium"></p>
@@ -1408,7 +1408,7 @@
    * ========================================================== */
   var CONFIG = {
     APP_NAME: 'PakEngine Rent Ledger',
-    APP_VERSION: '2.16.0',
+    APP_VERSION: '2.17.0',
     DOMAIN: 'pakengine.com',
     LICENSE_PRICE_PKR: 4000,
     ANNUAL_PRICE_PKR: 40000,
@@ -1427,7 +1427,6 @@
       ACCOUNT: '00300114712815',
       IBAN: 'PK15MEZN0000300114712815'
     },
-    LICENSE_PREFIX: 'PAK-ISB',
     BOOT_SIMULATION_MS: 1400,
     VERIFY_SIMULATION_MS: 650,
     STORAGE_KEYS: {
@@ -1440,25 +1439,33 @@
     }
   };
 
-  var MONTH_CODES = ['JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN', 'JUL', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC'];
   var MONTH_NAMES = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
 
-  var VALID_LICENSE_KEYS = [
-    'PAK-ISB-SEP26', 'PAK-ISB-OCT26', 'PAK-ISB-NOV26', 'PAK-ISB-DEC26',
-    'PAK-ISB-JAN27', 'PAK-ISB-FEB27', 'PAK-ISB-MAR27', 'PAK-ISB-APR27',
-    'PAK-ISB-MAY27', 'PAK-ISB-JUN27', 'PAK-ISB-JUL27', 'PAK-ISB-AUG27',
-    'PAK-ISB-SEP27', 'PAK-ISB-OCT27', 'PAK-ISB-NOV27', 'PAK-ISB-DEC27'
-  ];
-
-  /* Annual keys: PAK-ISB-Y-<MMM><YY>, valid for 12 consecutive months
-     from their start month. Allowlist covers every start month 2026–2029. */
-  var VALID_ANNUAL_KEYS = (function () {
-    var out = [];
-    for (var y = 26; y <= 29; y++) {
-      for (var mi = 0; mi < 12; mi++) out.push('PAK-ISB-Y-' + MONTH_CODES[mi] + y);
+  /* Public half of the licence signing key. The private half lives only on the
+     operator's machine (_build/license-private.jwk, gitignored) and is used by
+     _build/mint-key.mjs to issue keys. Keys are ECDSA P-256 signatures over
+     "<SHOWROOM-ID>|<startOrd>|<span>", so a key cannot be guessed, and one
+     issued to a showroom will not verify against any other Showroom ID. */
+  var LICENSE_PUBKEY_JWK = {
+    kty: 'EC', crv: 'P-256',
+    x: 'ocyVwdhybn4zjjLhB60g-3Te_OitLGLj_dmYmOcrGbU',
+    y: 'U-YnUr6Jgke9r4OrW3hITqzwKKQHwTwMuPqIwyHwwvY'
+  };
+  var __licPubKey = null;   // cached CryptoKey
+  function licPubKey() {
+    if (!__licPubKey) {
+      __licPubKey = crypto.subtle.importKey('jwk', LICENSE_PUBKEY_JWK,
+        { name: 'ECDSA', namedCurve: 'P-256' }, false, ['verify']);
     }
+    return __licPubKey;
+  }
+  function b64urlToBytes(s) {
+    s = String(s || '').replace(/-/g, '+').replace(/_/g, '/');
+    while (s.length % 4) s += '=';
+    var bin = atob(s), out = new Uint8Array(bin.length);
+    for (var i = 0; i < bin.length; i++) out[i] = bin.charCodeAt(i);
     return out;
-  })();
+  }
 
   /* Nine interactive panels of the car blueprint. */
   var CAR_PANELS = [
@@ -1500,33 +1507,38 @@
     return Math.floor(h / 24) + 'd ago';
   }
 
-  function keyForDate(d) {
-    return CONFIG.LICENSE_PREFIX + '-' + MONTH_CODES[d.getMonth()] + String(d.getFullYear()).slice(-2);
+  /* Licence periods are counted in whole months: ordinal = year*12 + monthIndex.
+     The minter uses the same scheme, so the two always agree. */
+  function dateToOrdinal(d) { return d.getFullYear() * 12 + d.getMonth(); }
+  function currentOrdinal() { return dateToOrdinal(new Date()); }
+  function ordinalLabel(ord) { return MONTH_NAMES[((ord % 12) + 12) % 12] + ' ' + Math.floor(ord / 12); }
+  function periodLabel(startOrd, span) {
+    if (typeof startOrd !== 'number') return '—';
+    if (!span || span <= 1) return ordinalLabel(startOrd);
+    return ordinalLabel(startOrd) + ' – ' + ordinalLabel(startOrd + span - 1);
   }
-  function keyToOrdinal(k) {
-    var m = /([A-Z]{3})(\d{2})$/.exec(k || '');
-    if (!m) return -1;
-    var mi = MONTH_CODES.indexOf(m[1]);
-    if (mi < 0) return -1;
-    return (2000 + parseInt(m[2], 10)) * 12 + mi;
+  /* Parse "PE1.<b64url(payload)>.<b64url(sig)>" without verifying the signature. */
+  function parseKeyString(str) {
+    var parts = String(str || '').trim().split('.');
+    if (parts.length !== 3 || parts[0] !== 'PE1') return null;
+    var payloadBytes, sigBytes;
+    try { payloadBytes = b64urlToBytes(parts[1]); sigBytes = b64urlToBytes(parts[2]); }
+    catch (e) { return null; }
+    var payload;
+    try { payload = new TextDecoder().decode(payloadBytes); } catch (e) { return null; }
+    var f = payload.split('|');
+    if (f.length !== 3) return null;
+    var startOrd = parseInt(f[1], 10), span = parseInt(f[2], 10);
+    if (!f[0] || !isFinite(startOrd) || !isFinite(span) || (span !== 1 && span !== 12)) return null;
+    return { showroomId: f[0], startOrd: startOrd, span: span, payloadBytes: payloadBytes, sigBytes: sigBytes };
   }
-  function isAnnualKey(k) { return /-Y-[A-Z]{3}\d{2}$/.test(k || ''); }
-  function keyStartLabel(k) {
-    var m = /([A-Z]{3})(\d{2})$/.exec(k || '');
-    if (!m) return '—';
-    var mi = MONTH_CODES.indexOf(m[1]);
-    return mi < 0 ? '—' : MONTH_NAMES[mi] + ' 20' + m[2];
-  }
-  function periodLabelFromKey(k) {
-    var m = /([A-Z]{3})(\d{2})$/.exec(k || '');
-    if (!m) return '—';
-    var mi = MONTH_CODES.indexOf(m[1]);
-    if (mi < 0) return '—';
-    var startY = 2000 + parseInt(m[2], 10);
-    if (!isAnnualKey(k)) return MONTH_NAMES[mi] + ' ' + startY;
-    var endMi = (mi + 11) % 12;
-    var endY = startY + (mi + 11 >= 12 ? 1 : 0);
-    return MONTH_NAMES[mi] + ' ' + startY + ' – ' + MONTH_NAMES[endMi] + ' ' + endY;
+  /* Verify the ECDSA signature over the payload. Async. */
+  async function verifyKeySignature(parsed) {
+    if (!parsed) return false;
+    try {
+      var key = await licPubKey();
+      return await crypto.subtle.verify({ name: 'ECDSA', hash: 'SHA-256' }, key, parsed.sigBytes, parsed.payloadBytes);
+    } catch (e) { return false; }
   }
 
   /* ============================================================
@@ -1580,42 +1592,72 @@
   };
 
   /* ============================================================
-   *  LICENSE ENGINE  — the monthly gateway
+   *  LICENSE ENGINE  — signed, per-showroom, verified offline
+   *
+   *  A key is  PE1.<b64url(payload)>.<b64url(ECDSA-P256 sig)>  where
+   *  payload = "<SHOWROOM-ID>|<startOrd>|<span>".  status() is synchronous
+   *  and trusts the parsed fields cached in the stored record; revalidate()
+   *  re-checks the signature and the Showroom ID on every app open and wipes
+   *  a key that no longer holds up (wrong showroom, forged, or corrupted).
    * ========================================================== */
   var License = {
-    expectedKey: function () { return keyForDate(new Date()); },
-    normalize: function (v) { return String(v || '').trim().toUpperCase().replace(/\s+/g, ''); },
-    isValidFormat: function (k) { return /^PAK-ISB-(Y-)?[A-Z]{3}\d{2}$/.test(k); },
-    isAnnual: function (k) { return isAnnualKey(k); },
-    span: function (k) { return isAnnualKey(k) ? 12 : 1; },  // months a key covers
-    isKnown: function (k) {
-      return VALID_LICENSE_KEYS.indexOf(k) !== -1 || VALID_ANNUAL_KEYS.indexOf(k) !== -1;
-    },
+    trim: function (v) { return String(v || '').trim(); },
     stored: function () { return Store.get(CONFIG.STORAGE_KEYS.LICENSE); },
 
+    /* Synchronous: date math over the record's cached startOrd / span. */
     status: function () {
-      var rec = this.stored(), expected = this.expectedKey();
-      if (!rec || !rec.key) return { state: 'missing' };
-      if (!this.isValidFormat(rec.key) || !this.isKnown(rec.key)) return { state: 'invalid', record: rec };
-      var delta = keyToOrdinal(expected) - keyToOrdinal(rec.key);   // months elapsed since the key's start month
+      var rec = this.stored();
+      if (!rec || !rec.key || typeof rec.startOrd !== 'number') {
+        return rec && rec.key ? { state: 'invalid', record: rec } : { state: 'missing' };
+      }
+      var span = rec.span === 12 ? 12 : 1;
+      var delta = currentOrdinal() - rec.startOrd;   // whole months since the key's start month
       if (delta < 0) return { state: 'pending', record: rec };
-      if (delta < this.span(rec.key)) return { state: 'active', record: rec };
+      if (delta < span) return { state: 'active', record: rec };
       return { state: 'expired', record: rec };
     },
 
-    activate: function (input) {
-      var k = this.normalize(input);
-      if (!this.isValidFormat(k)) return { ok: false, reason: 'format' };
-      if (!this.isKnown(k)) return { ok: false, reason: 'unknown' };
-      var delta = keyToOrdinal(this.expectedKey()) - keyToOrdinal(k);
-      if (delta >= this.span(k)) return { ok: false, reason: 'expired' };
+    /* Async: full check of a pasted key against this device's Showroom ID. */
+    activate: async function (input, showroomId) {
+      var parsed = parseKeyString(input);
+      if (!parsed) return { ok: false, reason: 'format' };
+      var sigOk = await verifyKeySignature(parsed);
+      if (!sigOk) return { ok: false, reason: 'signature' };
+      var mine = this.trim(showroomId || (typeof getShowroomId === 'function' ? getShowroomId() : ''));
+      if (mine && parsed.showroomId !== mine) return { ok: false, reason: 'showroom', issuedFor: parsed.showroomId };
+      var delta = currentOrdinal() - parsed.startOrd;
+      if (delta >= parsed.span) return { ok: false, reason: 'expired' };
       var settings = Store.get(CONFIG.STORAGE_KEYS.SETTINGS) || {};
       var record = {
-        key: k, period: k.slice(-5), annual: isAnnualKey(k),
-        activatedAt: new Date().toISOString(), showroom: settings.name || null
+        key: this.trim(input),
+        showroomId: parsed.showroomId,
+        startOrd: parsed.startOrd,
+        span: parsed.span,
+        annual: parsed.span === 12,
+        activatedAt: new Date().toISOString(),
+        showroom: settings.name || null
       };
       Store.set(CONFIG.STORAGE_KEYS.LICENSE, record);
       return { ok: true, state: delta < 0 ? 'pending' : 'active', record: record };
+    },
+
+    /* Async: re-verify the stored key on app open. Drops it if it no longer holds. */
+    revalidate: async function () {
+      var rec = this.stored();
+      if (!rec || !rec.key) return;
+      var parsed = parseKeyString(rec.key);
+      var ok = parsed && await verifyKeySignature(parsed);
+      if (ok) {
+        var mine = this.trim(typeof getShowroomId === 'function' ? getShowroomId() : '');
+        if (mine && parsed.showroomId !== mine) ok = false;
+      }
+      if (!ok) { Store.remove(CONFIG.STORAGE_KEYS.LICENSE); return; }
+      /* Heal any drift between the pasted string and the cached fields. */
+      if (rec.startOrd !== parsed.startOrd || rec.span !== parsed.span || rec.showroomId !== parsed.showroomId) {
+        rec.startOrd = parsed.startOrd; rec.span = parsed.span;
+        rec.showroomId = parsed.showroomId; rec.annual = parsed.span === 12;
+        Store.set(CONFIG.STORAGE_KEYS.LICENSE, rec);
+      }
     }
   };
 
@@ -1767,7 +1809,9 @@
         },
         license: {
           key: rec.key || null,
-          period: rec.key ? periodLabelFromKey(rec.key) : null,
+          showroomId: rec.showroomId || null,
+          plan: rec.span === 12 ? 'annual' : (rec.key ? 'monthly' : null),
+          period: (typeof rec.startOrd === 'number') ? periodLabel(rec.startOrd, rec.span) : null,
           state: lic.state,
           activatedAt: rec.activatedAt || null
         },
@@ -1857,7 +1901,7 @@
     $('#pw-sub').textContent = copy.sub;
     $('#pw-icon').setAttribute('data-lucide', copy.icon);
     $('#pw-icon-wrap').className = 'grid h-11 w-11 shrink-0 place-items-center rounded-xl ring-1 ring-inset ' + TONE_CLASSES[copy.tone];
-    $('#pw-period').textContent = periodLabelFromKey(License.expectedKey());
+    $('#pw-period').textContent = ordinalLabel(currentOrdinal());
     hydrateShowroomId();
     hideTrialBanner();
 
@@ -2065,6 +2109,7 @@
       icons();
       await delay(CONFIG.BOOT_SIMULATION_MS);   // simulate checking the local database
     }
+    try { await License.revalidate(); } catch (e) {}   // re-verify the stored key's signature + Showroom ID
     refreshLicenseUI();
     renderDashboard();
     gateAccess({ silent: true });
@@ -2088,15 +2133,15 @@
     err.className = 'mt-2 min-h-[16px] text-[11.5px] font-medium text-rose-500';
     err.textContent = '';
 
-    if (!License.normalize(input.value)) {
+    if (!License.trim(input.value)) {
       shake(input);
-      err.textContent = 'Enter the activation key sent to your WhatsApp.';
+      err.textContent = 'Paste the activation key sent to your WhatsApp.';
       return;
     }
     btn.dataset.loading = '1';
     btn.disabled = true;
     await delay(CONFIG.VERIFY_SIMULATION_MS);
-    var res = License.activate(input.value);
+    var res = await License.activate(input.value);
     delete btn.dataset.loading;
     btn.disabled = false;
 
@@ -2108,14 +2153,16 @@
       Registration.persist();
     } else if (res.ok && res.state === 'pending') {
       err.className = 'mt-2 min-h-[16px] text-[11.5px] font-medium text-emerald-600';
-      err.textContent = 'Key registered. It unlocks automatically on 1 ' + keyStartLabel(res.record.key) + '.';
+      err.textContent = 'Key registered. It unlocks automatically on 1 ' + ordinalLabel(res.record.startOrd) + '.';
       refreshLicenseUI();
       setStatus('pending');
     } else {
       shake(input);
       err.textContent =
-        res.reason === 'format' ? 'That format looks off. Example: PAK-ISB-SEP26.' :
-        res.reason === 'expired' ? 'That key was for a past month and has expired.' :
+        res.reason === 'format'    ? 'That does not look like a PakEngine key. It should start with "PE1.".' :
+        res.reason === 'signature' ? 'This key could not be verified. Re-check that you copied all of it.' :
+        res.reason === 'showroom'  ? 'This key was issued for a different Showroom ID. Send us the ID shown below.' :
+        res.reason === 'expired'   ? 'This key has expired. Ask us for the current one.' :
         'Key not recognised. Please re-check the key you were sent.';
     }
   }
@@ -2186,18 +2233,18 @@
     var b = map[st.state] || map.missing;
     badge.textContent = b[0];
     badge.className = 'rounded-full px-2 py-0.5 text-[10px] font-bold uppercase tracking-wide ' + b[1];
-    $('#lic-key').textContent = rec.key || '—';
-    $('#lic-period').textContent = rec.key ? periodLabelFromKey(rec.key) : '—';
+    $('#lic-key').textContent = rec.key ? (rec.showroomId || '—') + ' · ' + (rec.span === 12 ? 'annual' : 'monthly') : '—';
+    $('#lic-period').textContent = (typeof rec.startOrd === 'number') ? periodLabel(rec.startOrd, rec.span) : '—';
     $('#lic-since').textContent = rec.activatedAt ? dateShort(rec.activatedAt) : '—';
   }
 
   async function handleDrawerKey() {
     var input = $('#lic-input'), msg = $('#lic-msg'), btn = $('#lic-apply');
     msg.textContent = '';
-    if (!License.normalize(input.value)) { shake(input); return; }
+    if (!License.trim(input.value)) { shake(input); return; }
     btn.dataset.loading = '1'; btn.disabled = true;
     await delay(CONFIG.VERIFY_SIMULATION_MS);
-    var res = License.activate(input.value);
+    var res = await License.activate(input.value);
     delete btn.dataset.loading; btn.disabled = false;
 
     if (res.ok && res.state === 'active') {
@@ -2210,13 +2257,16 @@
       toast('License renewed — thank you');
     } else if (res.ok && res.state === 'pending') {
       msg.className = 'mt-1.5 min-h-[14px] text-[11px] font-medium text-emerald-400';
-      msg.textContent = 'Registered. Unlocks 1 ' + keyStartLabel(res.record.key) + '.';
+      msg.textContent = 'Registered. Unlocks 1 ' + ordinalLabel(res.record.startOrd) + '.';
       refreshLicenseUI();
     } else {
       shake(input);
       msg.className = 'mt-1.5 min-h-[14px] text-[11px] font-medium text-rose-400';
-      msg.textContent = res.reason === 'expired' ? 'That key has expired.' :
-        res.reason === 'format' ? 'Format: PAK-ISB-SEP26.' : 'Key not recognised.';
+      msg.textContent =
+        res.reason === 'expired'   ? 'That key has expired.' :
+        res.reason === 'showroom'  ? 'That key belongs to a different Showroom ID.' :
+        res.reason === 'signature' ? 'That key could not be verified.' :
+        res.reason === 'format'    ? 'Keys start with "PE1.".' : 'Key not recognised.';
     }
   }
 

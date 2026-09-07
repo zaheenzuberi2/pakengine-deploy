@@ -3,3 +3,6 @@
 .netlify
 node_modules
 *.log
+
+# local licence signing key — never commit
+_build/license-private.jwk

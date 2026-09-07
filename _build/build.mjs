@@ -1037,7 +1037,7 @@ ${H1(
   <div class="mx-auto mt-6 max-w-3xl rounded-2xl border border-white/[0.08] bg-white/[0.02] p-6">
     <h2 class="font-display text-[15px] font-bold text-white">How payment works</h2>
     <p class="mt-2 text-[12.5px] leading-relaxed text-slate-400">
-      When the trial ends, the app shows your unique Showroom ID and the bank details. Transfer 4,000 PKR for one month, or 40,000 PKR for a full year, and put the Showroom ID in the reference or memo field so the payment can be matched to your account. Send the transfer screenshot on <a href="${WA}" target="_blank" rel="noopener" class="font-semibold text-emerald-400 underline underline-offset-2 hover:text-emerald-300">WhatsApp</a> and your licence key is issued straight away. A monthly key runs for the calendar month; an annual key runs for twelve months. There is no auto-charge and no card stored anywhere.
+      When the trial ends, the app shows your unique Showroom ID and the bank details. Transfer 4,000 PKR for one month, or 40,000 PKR for a full year, and put the Showroom ID in the reference or memo field so the payment can be matched to your account. Send the transfer screenshot on <a href="${WA}" target="_blank" rel="noopener" class="font-semibold text-emerald-400 underline underline-offset-2 hover:text-emerald-300">WhatsApp</a> and your activation key is issued straight away. Each key is tied to your Showroom ID: a monthly key runs for the calendar month, an annual key for twelve months. There is no auto-charge and no card stored anywhere.
     </p>
   </div>
 </section>
@@ -1168,7 +1168,7 @@ ${H1('Legal', 'Terms &amp; Conditions', 'Last updated ' + UPDATED + '.')}
   <p>New installs receive a 3-day free trial with every feature enabled. The trial begins when you first open your dashboard. When it ends, the app is locked until a valid licence key is entered. Trial data remains on your device and is available again once you upgrade.</p>
 
   <h2 class="font-display text-[16px] font-bold text-white">3. Licence and payment</h2>
-  <p>The licence is 4,000 PKR per calendar month, or 40,000 PKR per year, for one showroom, covering unlimited vehicles, rentals and staff devices. Payment is made by bank transfer with your Showroom ID as the reference. A licence key is issued once the transfer is confirmed: a monthly key is valid for the calendar month it is issued for, and an annual key is valid for twelve consecutive months from its start month. There is no auto-renewal; you repeat the transfer at the end of the period to continue. Part-period use is not pro-rated or refunded.</p>
+  <p>The licence is 4,000 PKR per calendar month, or 40,000 PKR per year, for one showroom, covering unlimited vehicles, rentals and staff devices. Payment is made by bank transfer with your Showroom ID as the reference. An activation key tied to that Showroom ID is issued once the transfer is confirmed: a monthly key is valid for the calendar month it is issued for, and an annual key is valid for twelve consecutive months from its start month. There is no auto-renewal; you repeat the transfer at the end of the period to continue. Part-period use is not pro-rated or refunded.</p>
 
   <h2 class="font-display text-[16px] font-bold text-white">4. Your responsibilities</h2>
   <ul>
