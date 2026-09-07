@@ -1017,6 +1017,19 @@
           class="key-input mt-1.5 w-full rounded-xl border border-slate-200 bg-slate-50 px-3.5 py-2.5 font-mono text-[13px] font-semibold text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-emerald-500 focus:bg-white focus:ring-2 focus:ring-emerald-500/15" />
       </div>
       <div>
+        <label for="veh-color" class="text-[11.5px] font-medium text-slate-500">Colour <span class="text-slate-400">(optional)</span></label>
+        <input id="veh-color" list="veh-color-list" type="text" maxlength="24" autocomplete="off" placeholder="Pick or type a colour"
+          class="mt-1.5 w-full rounded-xl border border-slate-200 bg-slate-50 px-3.5 py-2.5 text-[13.5px] text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-emerald-500 focus:bg-white focus:ring-2 focus:ring-emerald-500/15" />
+        <datalist id="veh-color-list">
+          <option value="White"></option>
+          <option value="Silver"></option>
+          <option value="Black"></option>
+          <option value="Grey"></option>
+          <option value="Blue"></option>
+          <option value="Red"></option>
+        </datalist>
+      </div>
+      <div>
         <label for="veh-rate" class="text-[11.5px] font-medium text-slate-500">Default Per-Day Rental Rate</label>
         <div class="mt-1.5 flex items-center gap-2 rounded-xl border border-slate-200 bg-slate-50 px-3.5 py-2.5 transition focus-within:border-emerald-500 focus-within:bg-white focus-within:ring-2 focus-within:ring-emerald-500/15">
           <span class="text-[13px] font-semibold text-slate-400">Rs.</span>
@@ -1078,10 +1091,24 @@
         </div>
       </div>
 
-      <div class="mt-3">
-        <label for="dsp-days" class="text-[11.5px] font-medium text-slate-500">Rental Days</label>
-        <input id="dsp-days" type="text" inputmode="numeric" value="1"
-          class="mt-1.5 w-full rounded-xl border border-slate-200 bg-slate-50 px-3 py-2.5 text-[13px] font-semibold text-slate-900 outline-none transition focus:border-emerald-500 focus:bg-white focus:ring-2 focus:ring-emerald-500/15" />
+      <div class="mt-3 grid grid-cols-2 gap-3">
+        <div>
+          <label for="dsp-days" class="text-[11.5px] font-medium text-slate-500">Rental Days</label>
+          <input id="dsp-days" type="text" inputmode="numeric" value="1"
+            class="mt-1.5 w-full rounded-xl border border-slate-200 bg-slate-50 px-3 py-2.5 text-[13px] font-semibold text-slate-900 outline-none transition focus:border-emerald-500 focus:bg-white focus:ring-2 focus:ring-emerald-500/15" />
+        </div>
+        <div>
+          <label for="dsp-fuel" class="text-[11.5px] font-medium text-slate-500">Fuel at Dispatch</label>
+          <select id="dsp-fuel"
+            class="mt-1.5 w-full rounded-xl border border-slate-200 bg-slate-50 px-3 py-2.5 text-[13px] font-semibold text-slate-900 outline-none transition focus:border-emerald-500 focus:bg-white focus:ring-2 focus:ring-emerald-500/15">
+            <option value="">Select level…</option>
+            <option value="Empty">Empty</option>
+            <option value="1/4">1/4</option>
+            <option value="1/2">1/2</option>
+            <option value="3/4">3/4</option>
+            <option value="Full">Full</option>
+          </select>
+        </div>
       </div>
 
       <div class="mt-3 grid grid-cols-2 gap-2">
@@ -1408,7 +1435,7 @@
    * ========================================================== */
   var CONFIG = {
     APP_NAME: 'PakEngine Rent Ledger',
-    APP_VERSION: '2.17.0',
+    APP_VERSION: '2.18.0',
     DOMAIN: 'pakengine.com',
     LICENSE_PRICE_PKR: 4000,
     ANNUAL_PRICE_PKR: 40000,
@@ -1696,13 +1723,13 @@
 
     if (Store.get(CONFIG.STORAGE_KEYS.FLEET) === null) {
       Fleet.save([
-        { id: uid('v'), make: 'Toyota Corolla Altis 1.6', plate: 'LEB-19-4471', rate: 6500, status: 'available', rental: null, addedAt: iso(40) },
-        { id: uid('v'), make: 'Honda Civic RS Turbo', plate: 'ISB-21-8890', rate: 9000, status: 'rented', addedAt: iso(60),
-          rental: { renter: 'Bilal Ahmed', phone: '0300-1234567', days: 3, rate: 9000, total: 27000, checkoutAt: iso(1), checkoutDamage: ['Front Bumper'] } },
-        { id: uid('v'), make: 'Suzuki Cultus VXL', plate: 'RIU-20-1123', rate: 4000, status: 'available', rental: null, addedAt: iso(30) },
-        { id: uid('v'), make: 'Toyota Fortuner Sigma 4', plate: 'ISB-22-0007', rate: 18000, status: 'available', rental: null, addedAt: iso(15) },
-        { id: uid('v'), make: 'Kia Sportage AWD', plate: 'LEA-21-5567', rate: 12000, status: 'rented', addedAt: iso(50),
-          rental: { renter: 'Hamza Sheikh', phone: '0321-9876543', days: 5, rate: 12000, total: 60000, checkoutAt: iso(2), checkoutDamage: ['Left Rear Door', 'Boot'] } }
+        { id: uid('v'), make: 'Toyota Corolla Altis 1.6', plate: 'LEB-19-4471', color: 'Silver', rate: 6500, status: 'available', rental: null, addedAt: iso(40) },
+        { id: uid('v'), make: 'Honda Civic RS Turbo', plate: 'ISB-21-8890', color: 'Black', rate: 9000, status: 'rented', addedAt: iso(60),
+          rental: { renter: 'Bilal Ahmed', phone: '0300-1234567', days: 3, rate: 9000, total: 27000, checkoutAt: iso(1), checkoutDamage: ['Front Bumper'], fuelOut: 'Full' } },
+        { id: uid('v'), make: 'Suzuki Cultus VXL', plate: 'RIU-20-1123', color: 'White', rate: 4000, status: 'available', rental: null, addedAt: iso(30) },
+        { id: uid('v'), make: 'Toyota Fortuner Sigma 4', plate: 'ISB-22-0007', color: 'White', rate: 18000, status: 'available', rental: null, addedAt: iso(15) },
+        { id: uid('v'), make: 'Kia Sportage AWD', plate: 'LEA-21-5567', color: 'Grey', rate: 12000, status: 'rented', addedAt: iso(50),
+          rental: { renter: 'Hamza Sheikh', phone: '0321-9876543', days: 5, rate: 12000, total: 60000, checkoutAt: iso(2), checkoutDamage: ['Left Rear Door', 'Boot'], fuelOut: '1/2' } }
       ]);
     }
     if (Store.get(CONFIG.STORAGE_KEYS.LEDGER) === null) {
@@ -2465,7 +2492,10 @@
         badgeHTML(rented) +
       '</div>' +
       '<div class="mt-3 font-display text-[14.5px] font-bold leading-tight text-slate-900">' + esc(v.make) + '</div>' +
-      '<div class="mt-1 inline-flex w-fit items-center rounded-md bg-slate-100 px-1.5 py-0.5 font-mono text-[11px] font-semibold tracking-wide text-slate-600">' + esc(v.plate) + '</div>' +
+      '<div class="mt-1 flex flex-wrap items-center gap-1.5">' +
+        '<span class="inline-flex items-center rounded-md bg-slate-100 px-1.5 py-0.5 font-mono text-[11px] font-semibold tracking-wide text-slate-600">' + esc(v.plate) + '</span>' +
+        (v.color ? '<span class="inline-flex items-center rounded-md bg-slate-100 px-1.5 py-0.5 text-[11px] font-medium text-slate-500">' + esc(v.color) + '</span>' : '') +
+      '</div>' +
       '<div class="mt-3 flex items-end justify-between">' +
         '<div><span class="font-display text-[16px] font-bold text-slate-900">' + money(v.rate) + '</span><span class="text-[11px] font-medium text-slate-400"> / day</span></div>' +
         '<span class="inline-flex items-center gap-1 text-[11px] font-semibold ' + (rented ? 'text-sky-600' : 'text-emerald-600') + '">' +
@@ -2488,7 +2518,7 @@
     var q = ($('#fleet-search').value || '').trim().toLowerCase();
     var all = Fleet.list();
     var filtered = q ? all.filter(function (v) {
-      return (v.make + ' ' + v.plate).toLowerCase().indexOf(q) !== -1;
+      return (v.make + ' ' + v.plate + ' ' + (v.color || '')).toLowerCase().indexOf(q) !== -1;
     }) : all;
 
     $('#fleet-grid').innerHTML = addTileHTML() + filtered.map(cardHTML).join('');
@@ -2571,6 +2601,7 @@
   function openVehicleModal() {
     $('#veh-make').value = '';
     $('#veh-plate').value = '';
+    $('#veh-color').value = '';
     $('#veh-rate').value = '';
     $('#veh-error').textContent = '';
     openModal($('#vehicle-modal'));
@@ -2579,12 +2610,13 @@
   function addVehicle() {
     var make = $('#veh-make').value.trim();
     var plate = $('#veh-plate').value.trim().toUpperCase();
+    var color = $('#veh-color').value.trim();
     var rate = parseNum($('#veh-rate').value);
     var err = $('#veh-error');
     if (!make) { err.textContent = 'Enter the vehicle make and model.'; shake($('#veh-make')); return; }
     if (!plate) { err.textContent = 'Enter the registration plate number.'; shake($('#veh-plate')); return; }
     if (!rate) { err.textContent = 'Enter a valid per-day rate.'; shake($('#veh-rate')); return; }
-    Fleet.add({ id: uid('v'), make: make, plate: plate, rate: rate, status: 'available', rental: null, addedAt: new Date().toISOString() });
+    Fleet.add({ id: uid('v'), make: make, plate: plate, color: color || null, rate: rate, status: 'available', rental: null, addedAt: new Date().toISOString() });
     closeModal($('#vehicle-modal'));
     renderFleet();
     toast(make + ' added to fleet');
@@ -2606,11 +2638,12 @@
   }
 
   function openDispatch(v) {
-    $('#dsp-title-sub').textContent = v.make + ' · ' + v.plate;
+    $('#dsp-title-sub').textContent = v.make + ' · ' + v.plate + (v.color ? ' · ' + v.color : '');
     $('#dsp-renter').value = '';
     $('#dsp-phone').value = '';
     $('#dsp-cnic').value = '';
     $('#dsp-rtime').value = '';
+    $('#dsp-fuel').value = '';
     $('#dsp-advance').value = '0';
     $('#dsp-days').value = '1';
     $('#dsp-rate').textContent = money(v.rate);
@@ -2653,6 +2686,7 @@
     if (!$('#dsp-renter').value.trim()) { err.textContent = 'Enter the renter’s name.'; shake($('#dsp-renter')); return false; }
     var pd = String($('#dsp-phone').value || '').replace(/\D/g, '');
     if (!/^0\d{10}$/.test(pd)) { err.textContent = 'Invalid number — enter an 11-digit phone starting 0 (e.g. 03001234567).'; shake($('#dsp-phone')); return false; }
+    if (!$('#dsp-fuel').value) { err.textContent = 'Select the fuel level the car is going out at.'; shake($('#dsp-fuel')); return false; }
     err.textContent = '';
     return true;
   }
@@ -2666,6 +2700,7 @@
       cnic: $('#dsp-cnic').value.trim(),
       days: days, rate: v.rate, total: total,
       advance: adv, balance: total - adv,
+      fuelOut: $('#dsp-fuel').value || '',
       returnTime: $('#dsp-rtime').value || '',
       dueDate: new Date(Date.now() + days * 86400000).toISOString(),
       checkoutAt: new Date().toISOString(),
@@ -2679,7 +2714,7 @@
   }
   function dispatchSlipText(v, r) {
     var dmg = (r.checkoutDamage && r.checkoutDamage.length) ? r.checkoutDamage.join(', ') : 'None — vehicle clean at check-out';
-    var lines = ['PakEngine — Rental Dispatch Slip', '', 'Vehicle: ' + v.make + ' (' + v.plate + ')', 'Renter: ' + r.renter];
+    var lines = ['PakEngine — Rental Dispatch Slip', '', 'Vehicle: ' + v.make + ' (' + v.plate + (v.color ? ', ' + v.color : '') + ')', 'Renter: ' + r.renter];
     if (r.cnic) lines.push('CNIC: ' + r.cnic);
     lines.push('Rate: ' + money(r.rate) + ' / day');
     lines.push('Rental Days: ' + r.days);
@@ -2687,6 +2722,7 @@
     lines.push('Advance Received: ' + money(r.advance));
     lines.push('Balance Due on Return: ' + money(r.balance));
     lines.push('Return By: ' + dateShort(r.dueDate) + (r.returnTime ? (' at ' + fmt12(r.returnTime)) : ''));
+    if (r.fuelOut) lines.push('Fuel at Dispatch: ' + r.fuelOut);
     lines.push('Noted Pre-Rental Damage: ' + dmg);
     lines.push('', 'Issued via PakEngine · pakengine.com');
     return lines.join('\n');
@@ -2714,10 +2750,11 @@
 
   function openReturn(v) {
     var r = v.rental || {};
-    $('#rtn-title-sub').textContent = v.make + ' · ' + v.plate;
+    $('#rtn-title-sub').textContent = v.make + ' · ' + v.plate + (v.color ? ' · ' + v.color : '');
     $('#rtn-renter').textContent = r.renter || '—';
     $('#rtn-phone').textContent = r.phone || '—';
-    $('#rtn-terms').textContent = (r.days || 0) + ' day' + ((r.days || 0) === 1 ? '' : 's') + ' · ' + money(r.total || 0) + (r.balance ? ' · Balance ' + money(r.balance) : '');
+    $('#rtn-terms').textContent = (r.days || 0) + ' day' + ((r.days || 0) === 1 ? '' : 's') + ' · ' + money(r.total || 0) +
+      (r.balance ? ' · Balance ' + money(r.balance) : '') + (r.fuelOut ? ' · Fuel out: ' + r.fuelOut : '');
     $('#rtn-since').textContent = r.checkoutAt ? dateShort(r.checkoutAt) : '—';
 
     var out = (r.checkoutDamage || []).slice();
@@ -3082,17 +3119,17 @@
     Store.set(CONFIG.STORAGE_KEYS.FIRST_LAUNCH, { launchedAt: iso(120), launchTs: now - 120 * 86400000, trialDays: CONFIG.TRIAL_DAYS, showroomId: 'PES-DEMO01' });
 
     Store.set(CONFIG.STORAGE_KEYS.FLEET, [
-      { id: uid('v'), make: 'Toyota Fortuner Sigma 4', plate: 'ICT-999', rate: 25000, status: 'available', rental: null, addedAt: iso(90) },
-      { id: uid('v'), make: 'Toyota Corolla Altis 1.8', plate: 'LEB-19-4471', rate: 7500, status: 'rented', addedAt: iso(120),
-        rental: { renter: 'Bilal Ahmed', phone: '0301-2345678', days: 4, rate: 7500, total: 30000, checkoutAt: iso(2), checkoutDamage: ['Front Bumper'] } },
-      { id: uid('v'), make: 'Honda Civic RS Turbo', plate: 'ISB-21-8890', rate: 11000, status: 'available', rental: null, addedAt: iso(75) },
-      { id: uid('v'), make: 'Suzuki Cultus VXL', plate: 'RIU-20-1123', rate: 4500, status: 'rented', addedAt: iso(60),
-        rental: { renter: 'Hamza Sheikh', phone: '0321-9876543', days: 7, rate: 4500, total: 31500, checkoutAt: iso(3), checkoutDamage: ['Left Rear Door', 'Boot'] } },
-      { id: uid('v'), make: 'Kia Sportage AWD', plate: 'LEA-21-5567', rate: 14000, status: 'available', rental: null, addedAt: iso(45) },
-      { id: uid('v'), make: 'Toyota Hiace Grand Cabin', plate: 'ICT-455', rate: 18000, status: 'rented', addedAt: iso(150),
-        rental: { renter: 'Usman Tariq', phone: '0345-1112223', days: 3, rate: 18000, total: 54000, checkoutAt: iso(1), checkoutDamage: [] } },
-      { id: uid('v'), make: 'Suzuki Alto VXL AGS', plate: 'LEC-22-7781', rate: 3800, status: 'available', rental: null, addedAt: iso(30) },
-      { id: uid('v'), make: 'Toyota Land Cruiser ZX', plate: 'ISB-23-0001', rate: 45000, status: 'available', rental: null, addedAt: iso(20) }
+      { id: uid('v'), make: 'Toyota Fortuner Sigma 4', plate: 'ICT-999', color: 'White', rate: 25000, status: 'available', rental: null, addedAt: iso(90) },
+      { id: uid('v'), make: 'Toyota Corolla Altis 1.8', plate: 'LEB-19-4471', color: 'Silver', rate: 7500, status: 'rented', addedAt: iso(120),
+        rental: { renter: 'Bilal Ahmed', phone: '0301-2345678', days: 4, rate: 7500, total: 30000, checkoutAt: iso(2), checkoutDamage: ['Front Bumper'], fuelOut: 'Full' } },
+      { id: uid('v'), make: 'Honda Civic RS Turbo', plate: 'ISB-21-8890', color: 'Black', rate: 11000, status: 'available', rental: null, addedAt: iso(75) },
+      { id: uid('v'), make: 'Suzuki Cultus VXL', plate: 'RIU-20-1123', color: 'Grey', rate: 4500, status: 'rented', addedAt: iso(60),
+        rental: { renter: 'Hamza Sheikh', phone: '0321-9876543', days: 7, rate: 4500, total: 31500, checkoutAt: iso(3), checkoutDamage: ['Left Rear Door', 'Boot'], fuelOut: '1/2' } },
+      { id: uid('v'), make: 'Kia Sportage AWD', plate: 'LEA-21-5567', color: 'White', rate: 14000, status: 'available', rental: null, addedAt: iso(45) },
+      { id: uid('v'), make: 'Toyota Hiace Grand Cabin', plate: 'ICT-455', color: 'White', rate: 18000, status: 'rented', addedAt: iso(150),
+        rental: { renter: 'Usman Tariq', phone: '0345-1112223', days: 3, rate: 18000, total: 54000, checkoutAt: iso(1), checkoutDamage: [], fuelOut: '3/4' } },
+      { id: uid('v'), make: 'Suzuki Alto VXL AGS', plate: 'LEC-22-7781', color: 'Blue', rate: 3800, status: 'available', rental: null, addedAt: iso(30) },
+      { id: uid('v'), make: 'Toyota Land Cruiser ZX', plate: 'ISB-23-0001', color: 'Black', rate: 45000, status: 'available', rental: null, addedAt: iso(20) }
     ]);
 
     Store.set(CONFIG.STORAGE_KEYS.LEDGER, [
