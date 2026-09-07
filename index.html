@@ -1435,7 +1435,7 @@
    * ========================================================== */
   var CONFIG = {
     APP_NAME: 'PakEngine Rent Ledger',
-    APP_VERSION: '2.19.0',
+    APP_VERSION: '2.20.0',
     DOMAIN: 'pakengine.com',
     LICENSE_PRICE_PKR: 4000,
     ANNUAL_PRICE_PKR: 40000,
@@ -3126,31 +3126,47 @@
 
   function seedDemoData() {
     var now = Date.now();
-    function iso(d) { return new Date(now - d * 86400000).toISOString(); }
+    function iso(d) { return new Date(now - d * 86400000).toISOString(); }   // d days ago
+    function isoIn(d) { return new Date(now + d * 86400000).toISOString(); } // d days from now
 
     Store.set(CONFIG.STORAGE_KEYS.SETTINGS, { name: 'Karachi Elite Rentals (Demo)', phone: '0300-0000000', updatedAt: iso(0) });
     Store.set(CONFIG.STORAGE_KEYS.FIRST_LAUNCH, { launchedAt: iso(120), launchTs: now - 120 * 86400000, trialDays: CONFIG.TRIAL_DAYS, showroomId: 'PES-DEMO01' });
 
     Store.set(CONFIG.STORAGE_KEYS.FLEET, [
-      { id: uid('v'), make: 'Toyota Fortuner Sigma 4', plate: 'ICT-999', color: 'White', rate: 25000, status: 'available', rental: null, addedAt: iso(90) },
-      { id: uid('v'), make: 'Toyota Corolla Altis 1.8', plate: 'LEB-19-4471', color: 'Silver', rate: 7500, status: 'rented', addedAt: iso(120),
-        rental: { renter: 'Bilal Ahmed', phone: '0301-2345678', days: 4, rate: 7500, total: 30000, checkoutAt: iso(2), checkoutDamage: ['Front Bumper'], fuelOut: 'Full' } },
-      { id: uid('v'), make: 'Honda Civic RS Turbo', plate: 'ISB-21-8890', color: 'Black', rate: 11000, status: 'available', rental: null, addedAt: iso(75) },
-      { id: uid('v'), make: 'Suzuki Cultus VXL', plate: 'RIU-20-1123', color: 'Grey', rate: 4500, status: 'rented', addedAt: iso(60),
-        rental: { renter: 'Hamza Sheikh', phone: '0321-9876543', days: 7, rate: 4500, total: 31500, checkoutAt: iso(3), checkoutDamage: ['Left Rear Door', 'Boot'], fuelOut: '1/2' } },
-      { id: uid('v'), make: 'Kia Sportage AWD', plate: 'LEA-21-5567', color: 'White', rate: 14000, status: 'available', rental: null, addedAt: iso(45) },
-      { id: uid('v'), make: 'Toyota Hiace Grand Cabin', plate: 'ICT-455', color: 'White', rate: 18000, status: 'rented', addedAt: iso(150),
-        rental: { renter: 'Usman Tariq', phone: '0345-1112223', days: 3, rate: 18000, total: 54000, checkoutAt: iso(1), checkoutDamage: [], fuelOut: '3/4' } },
       { id: uid('v'), make: 'Suzuki Alto VXL AGS', plate: 'LEC-22-7781', color: 'Blue', rate: 3800, status: 'available', rental: null, addedAt: iso(30) },
+      { id: uid('v'), make: 'Suzuki Cultus VXL', plate: 'RIU-20-1123', color: 'Grey', rate: 4500, status: 'rented', addedAt: iso(60),
+        rental: { renter: 'Hamza Sheikh', phone: '0321-9876543', cnic: '42101-1234567-1', days: 7, rate: 4500, total: 31500, advance: 15000, balance: 16500, fuelOut: '1/2', returnTime: '18:00', checkoutAt: iso(3), dueDate: isoIn(4), checkoutDamage: ['Left Rear Door', 'Boot'] } },
+      { id: uid('v'), make: 'Suzuki Wagon R AGS', plate: 'KHI-19-3390', color: 'White', rate: 4200, status: 'available', rental: null, addedAt: iso(40) },
+      { id: uid('v'), make: 'Changan Alsvin Lumiere', plate: 'LEC-24-3321', color: 'Red', rate: 5500, status: 'available', rental: null, addedAt: iso(18) },
+      { id: uid('v'), make: 'Toyota Yaris ATIV 1.3', plate: 'LEA-23-1180', color: 'Grey', rate: 6500, status: 'rented', addedAt: iso(55),
+        rental: { renter: 'Kamran Akhtar', phone: '0300-7788990', cnic: '61101-9988776-5', days: 5, rate: 6500, total: 32500, advance: 12000, balance: 20500, fuelOut: 'Full', returnTime: '', checkoutAt: iso(4), dueDate: isoIn(1), checkoutDamage: ['Bonnet'] } },
+      { id: uid('v'), make: 'Toyota Corolla Altis 1.8', plate: 'LEB-19-4471', color: 'Silver', rate: 7500, status: 'rented', addedAt: iso(120),
+        rental: { renter: 'Bilal Ahmed', phone: '0301-2345678', cnic: '35202-7654321-9', days: 4, rate: 7500, total: 30000, advance: 30000, balance: 0, fuelOut: 'Full', returnTime: '', checkoutAt: iso(2), dueDate: isoIn(2), checkoutDamage: ['Front Bumper'] } },
+      { id: uid('v'), make: 'Honda City Aspire 1.5', plate: 'KHI-22-5567', color: 'White', rate: 8000, status: 'available', rental: null, addedAt: iso(70) },
+      { id: uid('v'), make: 'Honda Civic RS Turbo', plate: 'ISB-21-8890', color: 'Black', rate: 11000, status: 'rented', addedAt: iso(75),
+        rental: { renter: 'Sana Malik', phone: '0333-4455667', cnic: '', days: 2, rate: 11000, total: 22000, advance: 10000, balance: 12000, fuelOut: '3/4', returnTime: '20:30', checkoutAt: iso(1), dueDate: isoIn(1), checkoutDamage: [] } },
+      { id: uid('v'), make: 'Hyundai Tucson AWD', plate: 'ISB-22-7788', color: 'Silver', rate: 13500, status: 'rented', addedAt: iso(50),
+        rental: { renter: 'Nadia Iqbal', phone: '0345-6677889', cnic: '', days: 3, rate: 13500, total: 40500, advance: 20000, balance: 20500, fuelOut: '1/2', returnTime: '12:00', checkoutAt: iso(1), dueDate: isoIn(2), checkoutDamage: ['Right Front Door'] } },
+      { id: uid('v'), make: 'Kia Sportage AWD', plate: 'LEA-21-5567', color: 'White', rate: 14000, status: 'available', rental: null, addedAt: iso(45) },
+      { id: uid('v'), make: 'Toyota Hilux Revo G', plate: 'KHI-20-8842', color: 'White', rate: 16000, status: 'available', rental: null, addedAt: iso(100) },
+      { id: uid('v'), make: 'Toyota Hiace Grand Cabin', plate: 'ICT-455', color: 'White', rate: 18000, status: 'rented', addedAt: iso(150),
+        rental: { renter: 'Usman Tariq', phone: '0345-1112223', cnic: '42201-3344556-7', days: 3, rate: 18000, total: 54000, advance: 25000, balance: 29000, fuelOut: '3/4', returnTime: '', checkoutAt: iso(1), dueDate: isoIn(2), checkoutDamage: [] } },
+      { id: uid('v'), make: 'Toyota Fortuner Sigma 4', plate: 'ICT-999', color: 'White', rate: 25000, status: 'available', rental: null, addedAt: iso(90) },
       { id: uid('v'), make: 'Toyota Land Cruiser ZX', plate: 'ISB-23-0001', color: 'Black', rate: 45000, status: 'available', rental: null, addedAt: iso(20) }
     ]);
 
     Store.set(CONFIG.STORAGE_KEYS.LEDGER, [
+      { id: uid('l'), type: 'checkout', make: 'Toyota Yaris ATIV 1.3', plate: 'LEA-23-1180', renter: 'Kamran Akhtar', days: 5, total: 32500, damage: ['Bonnet'], at: iso(0) },
+      { id: uid('l'), type: 'checkin', make: 'Kia Sportage AWD', plate: 'LEA-21-5567', renter: 'Faisal Malik', returnDamage: [], newDamage: [], at: iso(0) },
+      { id: uid('l'), type: 'checkout', make: 'Hyundai Tucson AWD', plate: 'ISB-22-7788', renter: 'Nadia Iqbal', days: 3, total: 40500, damage: ['Right Front Door'], at: iso(1) },
+      { id: uid('l'), type: 'checkout', make: 'Honda Civic RS Turbo', plate: 'ISB-21-8890', renter: 'Sana Malik', days: 2, total: 22000, damage: [], at: iso(1) },
+      { id: uid('l'), type: 'checkin', make: 'Honda City Aspire 1.5', plate: 'KHI-22-5567', renter: 'Ayesha Khan', returnDamage: ['Windscreen'], newDamage: ['Windscreen'], at: iso(1) },
       { id: uid('l'), type: 'checkout', make: 'Toyota Hiace Grand Cabin', plate: 'ICT-455', renter: 'Usman Tariq', days: 3, total: 54000, damage: [], at: iso(1) },
-      { id: uid('l'), type: 'checkin', make: 'Honda Civic RS Turbo', plate: 'ISB-21-8890', renter: 'Ayesha Khan', returnDamage: ['Windscreen'], newDamage: ['Windscreen'], at: iso(1) },
       { id: uid('l'), type: 'checkout', make: 'Toyota Corolla Altis 1.8', plate: 'LEB-19-4471', renter: 'Bilal Ahmed', days: 4, total: 30000, damage: ['Front Bumper'], at: iso(2) },
+      { id: uid('l'), type: 'checkin', make: 'Suzuki Wagon R AGS', plate: 'KHI-19-3390', renter: 'Imran Baig', returnDamage: ['Rear Bumper'], newDamage: ['Rear Bumper'], at: iso(3) },
       { id: uid('l'), type: 'checkout', make: 'Suzuki Cultus VXL', plate: 'RIU-20-1123', renter: 'Hamza Sheikh', days: 7, total: 31500, damage: ['Left Rear Door', 'Boot'], at: iso(3) },
-      { id: uid('l'), type: 'checkin', make: 'Kia Sportage AWD', plate: 'LEA-21-5567', renter: 'Faisal Malik', returnDamage: [], newDamage: [], at: iso(4) }
+      { id: uid('l'), type: 'checkin', make: 'Toyota Fortuner Sigma 4', plate: 'ICT-999', renter: 'Zeeshan Ali', returnDamage: [], newDamage: [], at: iso(5) },
+      { id: uid('l'), type: 'checkout', make: 'Toyota Hilux Revo G', plate: 'KHI-20-8842', renter: 'Arif Nawaz', days: 2, total: 32000, damage: [], at: iso(6) }
     ]);
   }
 
