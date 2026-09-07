@@ -280,7 +280,9 @@ const FAQS = [
   ['Where is my showroom data stored?',
    'PakEngine uses a local-first storage architecture. Your active rentals, client details and revenue sheets stay exclusively on your device’s browser memory. No third party or server can access your business insights.'],
   ['How do I upgrade after the 3-day trial?',
-   'Upon trial completion, transfer the monthly flat rate of 4,000 PKR via bank transfer using your automatically generated Showroom ID as the reference memo to unlock instant activation.'],
+   'Upon trial completion, transfer 4,000 PKR for one month or 40,000 PKR for a full year (two months free) via bank transfer, using your automatically generated Showroom ID as the reference memo to unlock instant activation.'],
+  ['Is there an annual plan?',
+   'Yes. A full year is 40,000 PKR, which is two months free versus paying monthly. You pay once by bank transfer and get a single key that stays active for twelve months, so there is no monthly renewal to remember. The monthly option at 4,000 PKR stays available if you prefer it.'],
   ['Does PakEngine work without an internet connection?',
    'Yes. After the first load, PakEngine runs as an installed app that works fully offline. Every dispatch, return and payment is written to the device the moment you record it, so you never need signal at the gate or in the yard.'],
   ['Can I move my showroom to a new phone or computer?',
@@ -437,7 +439,7 @@ function cityPage(c) {
         offers: { '@type': 'Offer', price: '4000', priceCurrency: 'PKR' },
         url: `${SITE}/${c.slug}`,
       },
-      faqSchema([...c.faqs, FAQS[0], FAQS[2]]),
+      faqSchema([...c.faqs, FAQS[0], FAQS[3]]),
     ],
     body: `
 ${H1(
@@ -478,7 +480,7 @@ ${featureBlock(
 <section class="py-8 sm:py-10">
   <h2 class="text-center font-display text-[20px] font-bold tracking-tight text-white sm:text-[26px]">${c.name} showroom questions</h2>
   <div class="mx-auto mt-6 max-w-3xl">
-    ${faqList([...c.faqs, FAQS[0], FAQS[2]])}
+    ${faqList([...c.faqs, FAQS[0], FAQS[3]])}
   </div>
 </section>
 ${CTA(`Start your ${c.name} showroom on PakEngine.`, 'Three days of full access. No card, no install commitment, and no data leaves your device.')}
@@ -947,9 +949,9 @@ ${CTA('See it on your own fleet.', 'Three days of full access. No card, no insta
     slug: 'pricing',
     title: 'Pricing — PakEngine Rent Ledger (Flat 4,000 PKR / month)',
     description:
-      'One flat plan for car rental showrooms: 4,000 PKR per month for one showroom, unlimited vehicles, rentals and staff devices. 3-day free trial, no card required, pay by bank transfer.',
+      'One flat plan for car rental showrooms: 4,000 PKR per month, or 40,000 PKR per year with two months free. One showroom, unlimited vehicles, rentals and staff devices. 3-day free trial, no card required, pay by bank transfer.',
     ogTitle: 'PakEngine Pricing',
-    ogDesc: 'Flat 4,000 PKR per month. Unlimited vehicles, rentals and staff devices. 3-day free trial, no card required.',
+    ogDesc: 'Flat 4,000 PKR per month, or 40,000 PKR per year (2 months free). Unlimited vehicles, rentals and staff devices. 3-day free trial, no card required.',
     keywords:
       'rent a car software price Pakistan, car rental management cost, PakEngine pricing, fleet software subscription PKR',
     jsonld: [
@@ -963,13 +965,24 @@ ${CTA('See it on your own fleet.', 'Three days of full access. No card, no insta
         image: `${SITE}/og-pricing.jpg`,
         url: `${SITE}/pricing`,
         publisher: { '@type': 'Organization', name: 'PakEngine', url: SITE + '/' },
-        offers: {
-          '@type': 'Offer',
-          price: '4000',
-          priceCurrency: 'PKR',
-          availability: 'https://schema.org/InStock',
-          url: `${SITE}/pricing`,
-        },
+        offers: [
+          {
+            '@type': 'Offer',
+            name: 'Monthly licence',
+            price: '4000',
+            priceCurrency: 'PKR',
+            availability: 'https://schema.org/InStock',
+            url: `${SITE}/pricing`,
+          },
+          {
+            '@type': 'Offer',
+            name: 'Annual licence',
+            price: '40000',
+            priceCurrency: 'PKR',
+            availability: 'https://schema.org/InStock',
+            url: `${SITE}/pricing`,
+          },
+        ],
       },
     ],
     body: `
@@ -996,6 +1009,10 @@ ${H1(
         <span class="font-display text-[34px] font-bold leading-none text-white">Rs.&nbsp;4,000</span>
         <span class="pb-1 text-[12.5px] text-slate-400">/ month</span>
       </div>
+      <div class="mt-2 flex flex-wrap items-center gap-2 text-[12px] text-slate-300">
+        <span>or <span class="font-semibold text-white">Rs.&nbsp;40,000</span> / year</span>
+        <span class="rounded-full bg-emerald-500/15 px-2 py-0.5 text-[10.5px] font-semibold text-emerald-300">2 months free</span>
+      </div>
       <ul class="mt-4 grid gap-2.5">
         ${[
           'One showroom, unlimited vehicles',
@@ -1020,7 +1037,7 @@ ${H1(
   <div class="mx-auto mt-6 max-w-3xl rounded-2xl border border-white/[0.08] bg-white/[0.02] p-6">
     <h2 class="font-display text-[15px] font-bold text-white">How payment works</h2>
     <p class="mt-2 text-[12.5px] leading-relaxed text-slate-400">
-      When the trial ends, the app shows your unique Showroom ID and the bank details. Transfer 4,000 PKR by bank transfer and put the Showroom ID in the reference or memo field so the payment can be matched to your account. Send the transfer screenshot on <a href="${WA}" target="_blank" rel="noopener" class="font-semibold text-emerald-400 underline underline-offset-2 hover:text-emerald-300">WhatsApp</a> and your licence key is issued for the month. Renew the same way each month. There is no auto-charge and no card stored anywhere.
+      When the trial ends, the app shows your unique Showroom ID and the bank details. Transfer 4,000 PKR for one month, or 40,000 PKR for a full year, and put the Showroom ID in the reference or memo field so the payment can be matched to your account. Send the transfer screenshot on <a href="${WA}" target="_blank" rel="noopener" class="font-semibold text-emerald-400 underline underline-offset-2 hover:text-emerald-300">WhatsApp</a> and your licence key is issued straight away. A monthly key runs for the calendar month; an annual key runs for twelve months. There is no auto-charge and no card stored anywhere.
     </p>
   </div>
 </section>
@@ -1137,7 +1154,7 @@ ${H1('Legal', 'Privacy Policy', 'Last updated ' + UPDATED + '.')}
     slug: 'terms',
     title: 'Terms & Conditions — PakEngine Rent Ledger',
     description:
-      'The terms for using PakEngine Rent Ledger: the 3-day trial, the flat 4,000 PKR monthly licence, payment by bank transfer, acceptable use, and the limits of liability for a local-first tool.',
+      'The terms for using PakEngine Rent Ledger: the 3-day trial, the 4,000 PKR monthly or 40,000 PKR annual licence, payment by bank transfer, acceptable use, and the limits of liability for a local-first tool.',
     ogTitle: 'PakEngine Terms & Conditions',
     ogDesc: 'The trial, the flat monthly licence, payment, acceptable use and liability — in plain terms.',
     keywords: 'PakEngine terms and conditions, rental software licence, car rental app terms of service',
@@ -1148,10 +1165,10 @@ ${H1('Legal', 'Terms &amp; Conditions', 'Last updated ' + UPDATED + '.')}
   <p>PakEngine Rent Ledger is a local-first web application for recording car rental showroom operations. It runs in your browser and stores your data on your device. We provide the software; we do not operate your showroom or hold your records.</p>
 
   <h2 class="font-display text-[16px] font-bold text-white">2. Free trial</h2>
-  <p>New installs receive a 3-day free trial with every feature enabled. The trial begins when you first open your dashboard. When it ends, the app is locked until a valid monthly licence key is entered. Trial data remains on your device and is available again once you upgrade.</p>
+  <p>New installs receive a 3-day free trial with every feature enabled. The trial begins when you first open your dashboard. When it ends, the app is locked until a valid licence key is entered. Trial data remains on your device and is available again once you upgrade.</p>
 
   <h2 class="font-display text-[16px] font-bold text-white">3. Licence and payment</h2>
-  <p>The licence is a flat 4,000 PKR per calendar month for one showroom, covering unlimited vehicles, rentals and staff devices. Payment is made by bank transfer with your Showroom ID as the reference. A licence key is issued for the month once the transfer is confirmed. There is no auto-renewal; you repeat the transfer each month to continue. Part-month use is not pro-rated or refunded.</p>
+  <p>The licence is 4,000 PKR per calendar month, or 40,000 PKR per year, for one showroom, covering unlimited vehicles, rentals and staff devices. Payment is made by bank transfer with your Showroom ID as the reference. A licence key is issued once the transfer is confirmed: a monthly key is valid for the calendar month it is issued for, and an annual key is valid for twelve consecutive months from its start month. There is no auto-renewal; you repeat the transfer at the end of the period to continue. Part-period use is not pro-rated or refunded.</p>
 
   <h2 class="font-display text-[16px] font-bold text-white">4. Your responsibilities</h2>
   <ul>

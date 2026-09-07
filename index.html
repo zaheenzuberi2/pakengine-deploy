@@ -78,19 +78,27 @@
         "Overtime and rental charge calculator",
         "One-file encrypted-on-device backup and restore"
       ],
-      "offers": {
-        "@type": "Offer",
-        "price": "4000",
-        "priceCurrency": "PKR",
-        "description": "Flat monthly licence for one showroom. Unlimited vehicles, rentals and staff devices. 3-day free trial, no card required."
-      },
+      "offers": [
+        {
+          "@type": "Offer",
+          "price": "4000",
+          "priceCurrency": "PKR",
+          "description": "Monthly licence for one showroom. Unlimited vehicles, rentals and staff devices. 3-day free trial, no card required."
+        },
+        {
+          "@type": "Offer",
+          "price": "40000",
+          "priceCurrency": "PKR",
+          "description": "Annual licence for one showroom (two months free versus monthly). Unlimited vehicles, rentals and staff devices."
+        }
+      ],
       "publisher": { "@id": "https://pakengine.com/#organization" }
     },
     {
       "@type": "FAQPage",
       "mainEntity": [
         { "@type": "Question", "name": "Where is my showroom data stored?", "acceptedAnswer": { "@type": "Answer", "text": "PakEngine uses a local-first storage architecture. Your active rentals, client details and revenue sheets stay exclusively on your device's browser memory. No third party or server can access your business insights." } },
-        { "@type": "Question", "name": "How do I upgrade after the 3-day trial?", "acceptedAnswer": { "@type": "Answer", "text": "Upon trial completion, transfer the monthly flat rate of 4,000 PKR via bank transfer using your automatically generated Showroom ID as the reference memo to unlock instant activation." } },
+        { "@type": "Question", "name": "How do I upgrade after the 3-day trial?", "acceptedAnswer": { "@type": "Answer", "text": "Upon trial completion, transfer 4,000 PKR for one month or 40,000 PKR for a full year (two months free) via bank transfer, using your automatically generated Showroom ID as the reference memo to unlock instant activation." } },
         { "@type": "Question", "name": "Does PakEngine work without an internet connection?", "acceptedAnswer": { "@type": "Answer", "text": "Yes. After the first load, PakEngine runs as an installed app that works fully offline. Every dispatch, return and payment is written to the device the moment you record it." } },
         { "@type": "Question", "name": "Can I move my showroom to a new phone or computer?", "acceptedAnswer": { "@type": "Answer", "text": "Open Settings and tap Export Fleet Backup to download a single file, then run Import Fleet Backup on the new device. Vehicles, rental history, damage records and settings transfer across exactly." } },
         { "@type": "Question", "name": "Is there a limit on how many vehicles or staff I can add?", "acceptedAnswer": { "@type": "Answer", "text": "No. The flat 4,000 PKR monthly licence covers an unlimited fleet, unlimited rentals and every staff device in one showroom. There are no per-vehicle or per-seat charges." } },
@@ -711,7 +719,7 @@
               <i data-lucide="plus" class="h-4 w-4 shrink-0 text-slate-500 transition group-open:rotate-45"></i>
             </summary>
             <p class="pb-4 pr-8 text-[13px] leading-relaxed text-slate-400">
-              Upon trial completion, simply transfer the monthly flat rate of 4,000 PKR via Bank Transfer using your automatically generated Showroom ID as the reference memo to unlock instant activation.
+              Upon trial completion, transfer the flat rate of 4,000 PKR for one month, or 40,000 PKR for a full year (two months free), via Bank Transfer using your automatically generated Showroom ID as the reference memo to unlock instant activation.
             </p>
           </details>
           <details class="group">
@@ -900,7 +908,8 @@
     <div class="px-6 pb-6 pt-5">
       <p class="text-[13px] leading-relaxed text-slate-600">
         <span class="font-semibold text-slate-800">License Inactive / Expired.</span>
-        Please transfer <span class="font-semibold text-slate-900">4,000&nbsp;PKR</span> via Bank Transfer to the details below.
+        Transfer <span class="font-semibold text-slate-900">4,000&nbsp;PKR</span> for one month, or
+        <span class="font-semibold text-slate-900">40,000&nbsp;PKR</span> for a full year (2 months free), via Bank Transfer to the details below.
         Send the receipt screenshot to receive your instant activation key.
       </p>
 
@@ -969,7 +978,7 @@
           <div class="mt-1 text-[10px] text-slate-400">Include this ID with your transfer receipt.</div>
         </div>
         <p class="text-[11px] leading-relaxed text-slate-400">
-          Keys are issued per showroom and valid for one calendar month.<br />
+          Monthly keys cover one calendar month; annual keys cover 12 months.<br />
           Current period: <span id="pw-period" class="font-semibold text-slate-500">—</span>
         </p>
       </div>
@@ -1238,7 +1247,7 @@
     <div class="space-y-4 px-6 py-5 text-[13px] leading-relaxed text-slate-600">
       <p class="text-[11px] font-medium uppercase tracking-wide text-slate-400">Last updated: September 2026</p>
       <p>By using PakEngine Rent Ledger you agree to the following terms.</p>
-      <div><h3 class="font-semibold text-slate-900">1. Licence</h3><p class="mt-1">PakEngine grants you a non-exclusive, non-transferable right to use the application to operate your own car rental business. A free trial runs for three days from first launch. Continued use after the trial requires an active monthly licence, currently a flat 4,000 PKR per calendar month, paid by bank transfer. A licence key is valid only for the calendar month it is issued for.</p></div>
+      <div><h3 class="font-semibold text-slate-900">1. Licence</h3><p class="mt-1">PakEngine grants you a non-exclusive, non-transferable right to use the application to operate your own car rental business. A free trial runs for three days from first launch. Continued use after the trial requires an active licence, currently 4,000 PKR per calendar month or 40,000 PKR per year, paid by bank transfer. A monthly licence key is valid for the calendar month it is issued for; an annual key is valid for twelve consecutive months from its start month.</p></div>
       <div><h3 class="font-semibold text-slate-900">2. Your responsibilities</h3><p class="mt-1">You are responsible for the accuracy of the records you enter, for keeping your own backups (Settings &rarr; Export Fleet Backup), and for the security of the device the data is stored on. You must not resell, sublicense, or redistribute the application, and must not use it for unlawful activity.</p></div>
       <div><h3 class="font-semibold text-slate-900">3. Data and availability</h3><p class="mt-1">The application stores all data locally in your browser and operates without a server. PakEngine cannot access, restore, or migrate your records. Loss of the device, or clearing of browser data, results in permanent loss of any records you have not exported.</p></div>
       <div><h3 class="font-semibold text-slate-900">4. No warranty</h3><p class="mt-1">The application is provided &ldquo;as is&rdquo;, without warranty of any kind. To the maximum extent permitted by law, PakEngine is not liable for any loss of data, revenue, or business arising from use of, or inability to use, the application.</p></div>
@@ -1399,9 +1408,10 @@
    * ========================================================== */
   var CONFIG = {
     APP_NAME: 'PakEngine Rent Ledger',
-    APP_VERSION: '2.15.0',
+    APP_VERSION: '2.16.0',
     DOMAIN: 'pakengine.com',
     LICENSE_PRICE_PKR: 4000,
+    ANNUAL_PRICE_PKR: 40000,
     TRIAL_DAYS: 3,
     TRIAL_MS: 3 * 24 * 60 * 60 * 1000,   // 72 hours, in milliseconds
     PAYMENT_NUMBER: '03461223692',
@@ -1439,6 +1449,16 @@
     'PAK-ISB-MAY27', 'PAK-ISB-JUN27', 'PAK-ISB-JUL27', 'PAK-ISB-AUG27',
     'PAK-ISB-SEP27', 'PAK-ISB-OCT27', 'PAK-ISB-NOV27', 'PAK-ISB-DEC27'
   ];
+
+  /* Annual keys: PAK-ISB-Y-<MMM><YY>, valid for 12 consecutive months
+     from their start month. Allowlist covers every start month 2026–2029. */
+  var VALID_ANNUAL_KEYS = (function () {
+    var out = [];
+    for (var y = 26; y <= 29; y++) {
+      for (var mi = 0; mi < 12; mi++) out.push('PAK-ISB-Y-' + MONTH_CODES[mi] + y);
+    }
+    return out;
+  })();
 
   /* Nine interactive panels of the car blueprint. */
   var CAR_PANELS = [
@@ -1490,11 +1510,23 @@
     if (mi < 0) return -1;
     return (2000 + parseInt(m[2], 10)) * 12 + mi;
   }
-  function periodLabelFromKey(k) {
+  function isAnnualKey(k) { return /-Y-[A-Z]{3}\d{2}$/.test(k || ''); }
+  function keyStartLabel(k) {
     var m = /([A-Z]{3})(\d{2})$/.exec(k || '');
     if (!m) return '—';
     var mi = MONTH_CODES.indexOf(m[1]);
     return mi < 0 ? '—' : MONTH_NAMES[mi] + ' 20' + m[2];
+  }
+  function periodLabelFromKey(k) {
+    var m = /([A-Z]{3})(\d{2})$/.exec(k || '');
+    if (!m) return '—';
+    var mi = MONTH_CODES.indexOf(m[1]);
+    if (mi < 0) return '—';
+    var startY = 2000 + parseInt(m[2], 10);
+    if (!isAnnualKey(k)) return MONTH_NAMES[mi] + ' ' + startY;
+    var endMi = (mi + 11) % 12;
+    var endY = startY + (mi + 11 >= 12 ? 1 : 0);
+    return MONTH_NAMES[mi] + ' ' + startY + ' – ' + MONTH_NAMES[endMi] + ' ' + endY;
   }
 
   /* ============================================================
@@ -1553,17 +1585,21 @@
   var License = {
     expectedKey: function () { return keyForDate(new Date()); },
     normalize: function (v) { return String(v || '').trim().toUpperCase().replace(/\s+/g, ''); },
-    isValidFormat: function (k) { return /^PAK-ISB-[A-Z]{3}\d{2}$/.test(k); },
-    isKnown: function (k) { return VALID_LICENSE_KEYS.indexOf(k) !== -1; },
+    isValidFormat: function (k) { return /^PAK-ISB-(Y-)?[A-Z]{3}\d{2}$/.test(k); },
+    isAnnual: function (k) { return isAnnualKey(k); },
+    span: function (k) { return isAnnualKey(k) ? 12 : 1; },  // months a key covers
+    isKnown: function (k) {
+      return VALID_LICENSE_KEYS.indexOf(k) !== -1 || VALID_ANNUAL_KEYS.indexOf(k) !== -1;
+    },
     stored: function () { return Store.get(CONFIG.STORAGE_KEYS.LICENSE); },
 
     status: function () {
       var rec = this.stored(), expected = this.expectedKey();
       if (!rec || !rec.key) return { state: 'missing' };
       if (!this.isValidFormat(rec.key) || !this.isKnown(rec.key)) return { state: 'invalid', record: rec };
-      var cmp = keyToOrdinal(rec.key) - keyToOrdinal(expected);
-      if (cmp === 0) return { state: 'active', record: rec };
-      if (cmp > 0) return { state: 'pending', record: rec };
+      var delta = keyToOrdinal(expected) - keyToOrdinal(rec.key);   // months elapsed since the key's start month
+      if (delta < 0) return { state: 'pending', record: rec };
+      if (delta < this.span(rec.key)) return { state: 'active', record: rec };
       return { state: 'expired', record: rec };
     },
 
@@ -1571,12 +1607,15 @@
       var k = this.normalize(input);
       if (!this.isValidFormat(k)) return { ok: false, reason: 'format' };
       if (!this.isKnown(k)) return { ok: false, reason: 'unknown' };
-      var cmp = keyToOrdinal(k) - keyToOrdinal(this.expectedKey());
-      if (cmp < 0) return { ok: false, reason: 'expired' };
+      var delta = keyToOrdinal(this.expectedKey()) - keyToOrdinal(k);
+      if (delta >= this.span(k)) return { ok: false, reason: 'expired' };
       var settings = Store.get(CONFIG.STORAGE_KEYS.SETTINGS) || {};
-      var record = { key: k, period: k.slice(-5), activatedAt: new Date().toISOString(), showroom: settings.name || null };
+      var record = {
+        key: k, period: k.slice(-5), annual: isAnnualKey(k),
+        activatedAt: new Date().toISOString(), showroom: settings.name || null
+      };
       Store.set(CONFIG.STORAGE_KEYS.LICENSE, record);
-      return { ok: true, state: cmp === 0 ? 'active' : 'pending', record: record };
+      return { ok: true, state: delta < 0 ? 'pending' : 'active', record: record };
     }
   };
 
@@ -2069,7 +2108,7 @@
       Registration.persist();
     } else if (res.ok && res.state === 'pending') {
       err.className = 'mt-2 min-h-[16px] text-[11.5px] font-medium text-emerald-600';
-      err.textContent = 'Key registered. It unlocks automatically on 1 ' + periodLabelFromKey(res.record.key) + '.';
+      err.textContent = 'Key registered. It unlocks automatically on 1 ' + keyStartLabel(res.record.key) + '.';
       refreshLicenseUI();
       setStatus('pending');
     } else {
@@ -2171,7 +2210,7 @@
       toast('License renewed — thank you');
     } else if (res.ok && res.state === 'pending') {
       msg.className = 'mt-1.5 min-h-[14px] text-[11px] font-medium text-emerald-400';
-      msg.textContent = 'Registered for ' + periodLabelFromKey(res.record.key) + '.';
+      msg.textContent = 'Registered. Unlocks 1 ' + keyStartLabel(res.record.key) + '.';
       refreshLicenseUI();
     } else {
       shake(input);
