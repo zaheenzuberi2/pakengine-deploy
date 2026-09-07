@@ -1435,7 +1435,7 @@
    * ========================================================== */
   var CONFIG = {
     APP_NAME: 'PakEngine Rent Ledger',
-    APP_VERSION: '2.18.0',
+    APP_VERSION: '2.19.0',
     DOMAIN: 'pakengine.com',
     LICENSE_PRICE_PKR: 4000,
     ANNUAL_PRICE_PKR: 40000,
@@ -1736,6 +1736,18 @@
       Ledger.add({ type: 'checkout', make: 'Kia Sportage AWD', plate: 'LEA-21-5567', renter: 'Hamza Sheikh', days: 5, total: 60000, damage: ['Left Rear Door', 'Boot'], at: iso(2) });
       Ledger.add({ type: 'checkout', make: 'Honda Civic RS Turbo', plate: 'ISB-21-8890', renter: 'Bilal Ahmed', days: 3, total: 27000, damage: ['Front Bumper'], at: iso(1) });
     }
+  }
+
+  /* Common car colours in Pakistan, weighted roughly to what's actually on the road. */
+  function randomCarColour() {
+    var pool = ['White', 'White', 'White', 'Silver', 'Silver', 'Grey', 'Grey', 'Black', 'Black', 'Blue', 'Red'];
+    return pool[Math.floor(Math.random() * pool.length)];
+  }
+  /* One-off backfill: give any vehicle with no colour a plausible one, then persist. Idempotent. */
+  function backfillVehicleColours() {
+    var list = Fleet.list(), changed = false;
+    list.forEach(function (v) { if (!v.color) { v.color = randomCarColour(); changed = true; } });
+    if (changed) Fleet.save(list);
   }
 
   /* ============================================================
@@ -2616,7 +2628,7 @@
     if (!make) { err.textContent = 'Enter the vehicle make and model.'; shake($('#veh-make')); return; }
     if (!plate) { err.textContent = 'Enter the registration plate number.'; shake($('#veh-plate')); return; }
     if (!rate) { err.textContent = 'Enter a valid per-day rate.'; shake($('#veh-rate')); return; }
-    Fleet.add({ id: uid('v'), make: make, plate: plate, color: color || null, rate: rate, status: 'available', rental: null, addedAt: new Date().toISOString() });
+    Fleet.add({ id: uid('v'), make: make, plate: plate, color: color || randomCarColour(), rate: rate, status: 'available', rental: null, addedAt: new Date().toISOString() });
     closeModal($('#vehicle-modal'));
     renderFleet();
     toast(make + ' added to fleet');
@@ -2797,6 +2809,7 @@
   function renderDashboard() {
     hydrateChrome();
     seedIfNew();
+    backfillVehicleColours();
     $('#skeleton').classList.add('hidden');
     $('#dashboard').classList.remove('hidden');
     renderFleet();
