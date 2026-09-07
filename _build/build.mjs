@@ -954,11 +954,15 @@ ${CTA('See it on your own fleet.', 'Three days of full access. No card, no insta
       'rent a car software price Pakistan, car rental management cost, PakEngine pricing, fleet software subscription PKR',
     jsonld: [
       {
-        '@type': 'Product',
+        '@type': 'SoftwareApplication',
         name: 'PakEngine Rent Ledger — Showroom Licence',
         description:
           'Flat monthly licence for one car rental showroom. Unlimited vehicles, rentals and staff devices.',
-        brand: { '@type': 'Brand', name: 'PakEngine' },
+        applicationCategory: 'BusinessApplication',
+        operatingSystem: 'Web browser, Android, iOS',
+        image: `${SITE}/og-pricing.jpg`,
+        url: `${SITE}/pricing`,
+        publisher: { '@type': 'Organization', name: 'PakEngine', url: SITE + '/' },
         offers: {
           '@type': 'Offer',
           price: '4000',
