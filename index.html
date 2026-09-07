@@ -1387,6 +1387,14 @@
   'use strict';
 
   /* ============================================================
+   *  ANALYTICS — Vercel Web Analytics custom events
+   * ========================================================== */
+  window.va = window.va || function () { (window.vaq = window.vaq || []).push(arguments); };
+  function track(name, data) {
+    try { window.va('event', data ? { name: name, data: data } : { name: name }); } catch (e) {}
+  }
+
+  /* ============================================================
    *  CONFIGURATION
    * ========================================================== */
   var CONFIG = {
@@ -1982,6 +1990,7 @@
   }
 
   function startTrialFlow() {
+    track('trial_start');
     Trial.ensure();                     // stamp first launch, start the 72h clock, mint the showroom id
     Registration.persist();
     hideLanding();
@@ -1994,6 +2003,7 @@
     if (!name) { err.textContent = 'Enter your showroom name to continue.'; shake($('#onb-name')); return; }
     if (!phone) { err.textContent = 'Enter a contact phone number — it links your payment to this showroom.'; shake($('#onb-phone')); return; }
     Store.set(CONFIG.STORAGE_KEYS.SETTINGS, { name: name, phone: phone, updatedAt: new Date().toISOString() });
+    track('onboarding_complete');
     Registration.persist();
     hideOnboarding();
     setTimeout(function () { enterApp({ boot: false }); }, 260);
@@ -2607,6 +2617,7 @@
     if (!wa) { $('#dsp-error').textContent = 'Invalid number — enter an 11-digit phone (e.g. 03xxxxxxxxx).'; shake($('#dsp-phone')); return; }
     var r = buildDispatchData(v);
     commitDispatch(v, r);
+    track('dispatch_whatsapp');
     closeModal($('#dispatch-modal'));
     toast('Details sent to ' + r.renter + ' on WhatsApp');
     window.open('https://wa.me/' + wa + '?text=' + encodeURIComponent(dispatchSlipText(v, r)), '_blank', 'noopener');
@@ -2859,6 +2870,8 @@
     setHref('#hero-consult', consultWa);
     setHref('#privacy-contact', supportMail);
     setHref('#terms-contact', supportMail);
+    var _hc = $('#hero-consult'); if (_hc) _hc.addEventListener('click', function () { track('contact_whatsapp', { where: 'hero' }); });
+    var _waf = $('#wa-fab'); if (_waf) _waf.addEventListener('click', function () { track('contact_whatsapp', { where: 'fab' }); });
     var _fp = $('#footer-privacy'); if (_fp) _fp.addEventListener('click', function () { openModal($('#privacy-modal')); });
     var _ft = $('#footer-terms'); if (_ft) _ft.addEventListener('click', function () { openModal($('#terms-modal')); });
     $('#landing').addEventListener('scroll', queueLandingNavShadow, { passive: true });
