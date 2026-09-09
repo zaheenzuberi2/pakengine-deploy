@@ -18,7 +18,7 @@
       ]
     },
     {
-      "source": "/(features|pricing|faq|contact|privacy|terms|guides|islamabad|lahore|karachi|peshawar)",
+      "source": "/(features|pricing|faq|contact|privacy|terms|guides|islamabad|lahore|karachi|peshawar|rawalpindi|faisalabad|multan|sialkot|gujranwala|hyderabad)",
       "headers": [
         { "key": "Cache-Control", "value": "public, max-age=0, must-revalidate" }
       ]

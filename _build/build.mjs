@@ -2,7 +2,7 @@
    Run:  node _build/build.mjs   (also compiles Tailwind -> /styles.css)
    Emits <slug>.html into the deploy root; Vercel cleanUrls serves them at /<slug>. */
 
-import { writeFileSync, mkdirSync } from 'node:fs';
+import { writeFileSync, mkdirSync, existsSync } from 'node:fs';
 import { dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { execFileSync } from 'node:child_process';
@@ -80,7 +80,7 @@ function header(active, back = { href: '/', label: 'Back to home' }) {
 </div>`;
 }
 
-const FOOTER = `
+const FOOTER = () => `
 <footer class="mt-16 border-t border-white/[0.08] bg-charcoal-950">
   <div class="mx-auto w-full max-w-6xl px-5 py-10">
     <div class="flex flex-col gap-6 sm:flex-row sm:items-start sm:justify-between">
@@ -103,10 +103,9 @@ const FOOTER = `
         </nav>
         <nav class="flex flex-col gap-2 text-[12px]" aria-label="Coverage">
           <span class="text-[10px] font-semibold uppercase tracking-wider text-slate-600">Coverage</span>
-          <a href="/islamabad" class="font-medium text-slate-400 transition hover:text-white">Islamabad</a>
-          <a href="/lahore" class="font-medium text-slate-400 transition hover:text-white">Lahore</a>
-          <a href="/karachi" class="font-medium text-slate-400 transition hover:text-white">Karachi</a>
-          <a href="/peshawar" class="font-medium text-slate-400 transition hover:text-white">Peshawar</a>
+          <span class="grid grid-cols-2 gap-x-6 gap-y-2">
+            ${CITIES.map((c) => `<a href="/${c.slug}" class="font-medium text-slate-400 transition hover:text-white">${c.name}</a>`).join('\n            ')}
+          </span>
         </nav>
         <nav class="flex flex-col gap-2 text-[12px]" aria-label="Company">
           <span class="text-[10px] font-semibold uppercase tracking-wider text-slate-600">Company</span>
@@ -159,7 +158,10 @@ const FOOTER = `
 
 function page({ slug, title, description, ogTitle, ogDesc, keywords, jsonld = [], body, noindex = false, ogImage, back, crumbs }) {
   const url = `${SITE}/${slug}`;
-  const og = ogImage || (noindex ? `${SITE}/og.jpg` : `${SITE}/og-${slug}.jpg`);
+  /* Per-page OG art when the file is actually on disk, otherwise the house image.
+     Lets a new page ship before its og-<slug>.jpg exists without emitting a 404. */
+  const hasOwnOg = !noindex && existsSync(resolve(ROOT, `og-${slug}.jpg`));
+  const og = ogImage || (hasOwnOg ? `${SITE}/og-${slug}.jpg` : `${SITE}/og.jpg`);
   const ogT = ogTitle || title;
   const ogD = ogDesc || description;
   const trail = crumbs || [['Home', SITE + '/'], [ogT, url]];
@@ -252,7 +254,7 @@ ${header('/' + slug, back)}
 <main id="main" class="mx-auto w-full max-w-6xl px-5 pb-4">
 ${body}
 </main>
-${FOOTER}
+${FOOTER()}
 </body>
 </html>`;
 }
@@ -402,6 +404,108 @@ const CITIES = [
     ],
   },
   {
+    slug: 'rawalpindi',
+    name: 'Rawalpindi',
+    lead:
+      'Pindi showrooms work two markets at once: airport runs shared with Islamabad, and the summer flow of families and 4x4 parties heading for Murree, the Galiyat and the north. PakEngine keeps the availability board honest when the same vehicle is wanted by a tourist party and a corporate client on one weekend.',
+    reasons: [
+      'Peak summer demand tracked so a vehicle is never promised to two parties',
+      'Multi-day northern hires carry the advance paid and the balance still due',
+      'Every check-out and return written to a local log the next shift can read',
+    ],
+    faqs: [
+      ['We add cars for the Murree season and sell them afterwards. Does that work?',
+       'Yes. Vehicles are added when they arrive and removed from the fleet when they go, so the availability board only ever shows what you actually hold. The activity log keeps the recent dispatches and returns, and a backup taken at the end of the season preserves the state you closed on.'],
+      ['Our counter is manned by different people on different shifts. Will they see the same fleet?',
+       'PakEngine stores everything on the device it runs on, so the simplest arrangement is one shared counter phone or tablet that every shift uses. If you would rather each person had their own device, hand the state over with the one-file backup at the change of shift.'],
+    ],
+  },
+  {
+    slug: 'faisalabad',
+    name: 'Faisalabad',
+    lead:
+      'Faisalabad rental demand runs on the mills. Textile and export houses keep cars on standing monthly arrangements, and visiting buyers need a clean vehicle and a clear record for the run to Lahore or Islamabad airport. PakEngine holds the long contracts and the one-off transfers in the same ledger.',
+    reasons: [
+      'Long corporate hires kept on the due-back list beside the day rentals',
+      'Airport transfer runs logged against the rate agreed with the company',
+      'A dispatch slip formatted the same every time, so a client can file it',
+    ],
+    faqs: [
+      ['Can PakEngine handle a car left with a mill for a whole month?',
+       'Yes. Set the rate and the return date at check-out and the vehicle stays marked as out for the full period, so nobody promises it to a walk-in. At return PakEngine counts the days and any late hours and shows the amount due.'],
+      ['Our corporate clients want something on record. What do they get?',
+       'Every check-out produces a dispatch slip with the vehicle, plate, rate, dates, advance, balance and the damage marks the renter agreed to. It goes to the client on WhatsApp and stays in your local log, so the same record sits on both sides.'],
+    ],
+  },
+  {
+    slug: 'multan',
+    name: 'Multan',
+    lead:
+      'Multan is the turning point for south Punjab, and much of its rental work is long: Dera Ghazi Khan, Bahawalpur, Sukkur and back, often several days with the tank agreed up front. PakEngine records the fuel level and the advance when the car leaves, so a long trip settles without an argument.',
+    reasons: [
+      'Fuel level at check-out recorded and shown again on the return screen',
+      'Multi-day intercity hires carry the advance received and the balance due',
+      'Condition mapped panel by panel before a car leaves for a long run',
+    ],
+    faqs: [
+      ['A car went out full and came back nearly empty. Does PakEngine track that?',
+       'Yes. At check-out the operator picks the level from Empty, a quarter, a half, three quarters or Full. It is stored with the rental, printed on the dispatch slip and shown again on the return screen, so the difference sits on a record you both agreed to.'],
+      ['Does the renter get the agreement before the car leaves Multan?',
+       'The dispatch slip goes to the renter’s WhatsApp at hand-over, so they carry the vehicle, plate, rate, dates and the agreed damage marks with them for the whole trip. Nothing depends on a paper slip surviving several days on the road.'],
+    ],
+  },
+  {
+    slug: 'sialkot',
+    name: 'Sialkot',
+    lead:
+      'Sialkot rents to a different customer. Overseas buyers fly into the international airport for the sports goods and surgical trade, and expatriate families come home for a few weeks. Both expect a written agreement they can read, and PakEngine produces one in plain English at the counter.',
+    reasons: [
+      'A clear English dispatch slip an overseas client can actually read',
+      'Airport arrivals recorded offline, with the copy sent when signal returns',
+      'Every hire kept in the local log, so a returning visitor is easy to check',
+    ],
+    faqs: [
+      ['Many of our clients are foreign nationals. Does the agreement suit them?',
+       'The dispatch slip is written in plain English with the vehicle, plate, rate, dates, charges and the damage marks the renter agreed to, and it goes straight to their phone on WhatsApp. Nothing in it assumes a local renter.'],
+      ['Can we record the hand-over at the airport before we have signal?',
+       'Yes. PakEngine writes the check-out, the damage map and the charges to the device with no connection at all. The WhatsApp copy sends whenever signal returns, and the record is saved either way.'],
+    ],
+  },
+  {
+    slug: 'gujranwala',
+    name: 'Gujranwala',
+    lead:
+      'Gujranwala rental books fill with events. One wedding takes several cars and often a coaster, booked weeks ahead and returned the same night, and the money held against each vehicle has to be tracked. PakEngine keeps every car in the booking on one availability board instead of a page in a diary.',
+    reasons: [
+      'Several vehicles for one event, each with its own record and damage map',
+      'Money taken at check-out subtracted so the balance shows at return',
+      'Same-night returns logged at the gate without waiting for the office',
+    ],
+    faqs: [
+      ['A wedding takes four cars at once. Does each need its own entry?',
+       'Yes, and that is deliberate. Each vehicle gets its own check-out, its own damage record and its own return, so if one comes back with a dent you know exactly which car and which renter, instead of settling it against the booking as a whole.'],
+      ['We hold a deposit on every event car. Where does that go?',
+       'Enter it in the advance received field at check-out. PakEngine subtracts it from the total and carries the balance on the dispatch slip and again at return, so the amount to collect or hand back is on the record rather than in someone’s head.'],
+    ],
+  },
+  {
+    slug: 'hyderabad',
+    name: 'Hyderabad',
+    lead:
+      'Hyderabad works the corridor into interior Sindh and the daily run down to Karachi. Cars go out for Mirpurkhas, Sukkur and Larkana and come back dusty after long hours on rough road, which is precisely when a pre-rental condition record earns its keep.',
+    reasons: [
+      'Condition mapped panel by panel before a car leaves for interior routes',
+      'Long Karachi-corridor hires tracked with a clear due-back date',
+      'Runs on an ordinary Android phone at the counter, with no computer needed',
+    ],
+    faqs: [
+      ['A car comes back dusty and we cannot tell old damage from new. What helps?',
+       'The check-out map. Every panel that already carried a scratch or dent was tapped and agreed before the keys left, and the same diagram is shown at return, so once the car is washed you are comparing against a record you both accepted rather than against memory.'],
+      ['Do we need a computer to run this at the counter?',
+       'No. PakEngine installs as an app on an ordinary Android phone and runs from there, including offline. Most showrooms work entirely from the counter phone and keep a copy elsewhere with the backup file.'],
+    ],
+  },
+  {
     slug: 'peshawar',
     name: 'Peshawar',
     lead:
@@ -421,18 +525,18 @@ const CITIES = [
 ];
 
 function cityPage(c) {
-  const kw = `car rental software ${c.name}, rent a car management ${c.name}, fleet ledger ${c.name}, vehicle damage record app ${c.name}, rent a car software Pakistan`;
+  const kw = `rent a car software ${c.name}, rent a car management software ${c.name}, car rental software ${c.name}, fleet ledger ${c.name}, vehicle damage record app ${c.name}, rent a car software Pakistan`;
   return page({
     slug: c.slug,
-    title: `Car Rental Management Software in ${c.name} — PakEngine`,
-    description: `PakEngine is a local-first fleet ledger for car rental showrooms in ${c.name}: visual pre-rental damage records, 10-second WhatsApp dispatch slips, an offline rental log and an overtime calculator. Flat 4,000 PKR/month, 3-day free trial.`,
+    title: `Rent A Car Software in ${c.name} — PakEngine`,
+    description: `Rent a car software for showrooms in ${c.name}. PakEngine is a local-first fleet ledger for car rental businesses: visual pre-rental damage records, 10-second WhatsApp dispatch slips, an offline rental log and an overtime calculator. Flat 4,000 PKR/month, 3-day free trial.`,
     ogTitle: `PakEngine for ${c.name}`,
-    ogDesc: `Fleet ledger, damage mapping and WhatsApp dispatch slips for car rental showrooms in ${c.name}.`,
+    ogDesc: `Fleet ledger, damage mapping and WhatsApp dispatch slips for rent a car showrooms in ${c.name}.`,
     keywords: kw,
     jsonld: [
       {
         '@type': 'Service',
-        serviceType: 'Car rental management software',
+        serviceType: 'Rent a car management software',
         name: `PakEngine Rent Ledger — ${c.name}`,
         provider: { '@type': 'Organization', name: 'PakEngine', url: SITE + '/' },
         areaServed: { '@type': 'City', name: c.name, containedInPlace: { '@type': 'Country', name: 'Pakistan' } },
@@ -443,12 +547,12 @@ function cityPage(c) {
     ],
     body: `
 ${H1(
-  `Serving car rental showrooms in ${c.name}`,
-  `Run your ${c.name} rental fleet from one local dashboard.`,
+  `Rent a car software for ${c.name}`,
+  `Run your ${c.name} rent a car showroom from one local dashboard.`,
   c.lead
 )}
 <section class="border-b border-white/[0.06] py-10">
-  <h2 class="font-display text-[18px] font-bold tracking-tight text-white sm:text-[22px]">Why showrooms in ${c.name} use PakEngine</h2>
+  <h2 class="font-display text-[18px] font-bold tracking-tight text-white sm:text-[22px]">Why rent a car showrooms in ${c.name} use PakEngine</h2>
   <ul class="mt-5 grid gap-3 sm:grid-cols-3">
     ${c.reasons
       .map(
