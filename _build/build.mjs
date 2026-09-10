@@ -1,4 +1,4 @@
-/* PakEngine Rent Ledger — static marketing page builder
+/* PakEngine Rent Ledger static marketing page builder
    Run:  node _build/build.mjs   (also compiles Tailwind -> /styles.css)
    Emits <slug>.html into the deploy root; Vercel cleanUrls serves them at /<slug>. */
 
@@ -22,9 +22,7 @@ const h = (s) =>
     .replace(/>/g, '&gt;')
     .replace(/"/g, '&quot;');
 
-/* ------------------------------------------------------------------ *
- *  Shared chrome
- * ------------------------------------------------------------------ */
+/* Shared chrome */
 
 const LOGO = (h = 8) => `
 <svg class="h-${h} w-${h} text-emerald-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
@@ -152,9 +150,7 @@ const FOOTER = () => `
   })();
 </script>`;
 
-/* ------------------------------------------------------------------ *
- *  Page template
- * ------------------------------------------------------------------ */
+/* Page template */
 
 function page({ slug, title, description, ogTitle, ogDesc, keywords, jsonld = [], body, noindex = false, ogImage, back, crumbs }) {
   const url = `${SITE}/${slug}`;
@@ -260,7 +256,7 @@ ${FOOTER()}
 </html>`;
 }
 
-/* small helpers for page bodies ----------------------------------- */
+/* small helpers for page bodies */
 const H1 = (eyebrow, title, sub) => `
 <section class="border-b border-white/[0.06] py-10 sm:py-14">
   <div class="max-w-3xl">
@@ -324,9 +320,7 @@ const faqSchema = (items) => ({
   })),
 });
 
-/* ------------------------------------------------------------------ *
- *  Pages
- * ------------------------------------------------------------------ */
+/* Pages */
 
 const featureBlock = (icon, title, copy, points) => `
 <article class="border-b border-white/[0.06] py-10">
@@ -348,9 +342,7 @@ const featureBlock = (icon, title, copy, points) => `
   </ul>
 </article>`;
 
-/* ------------------------------------------------------------------ *
- *  City landing pages
- * ------------------------------------------------------------------ */
+/* City landing pages */
 
 const CITIES = [
   {
@@ -529,7 +521,7 @@ function cityPage(c) {
   const kw = `rent a car software ${c.name}, rent a car management software ${c.name}, car rental software ${c.name}, fleet ledger ${c.name}, vehicle damage record app ${c.name}, rent a car software Pakistan`;
   return page({
     slug: c.slug,
-    title: `Rent A Car Software in ${c.name} — PakEngine`,
+    title: `Rent A Car Software in ${c.name} | PakEngine`,
     description: `Rent a car software for showrooms in ${c.name}. PakEngine is a local-first fleet ledger for car rental businesses: visual pre-rental damage records, 10-second WhatsApp dispatch slips, an offline rental log and an overtime calculator. Flat 4,000 PKR/month, 3-day free trial.`,
     ogTitle: `PakEngine for ${c.name}`,
     ogDesc: `Fleet ledger, damage mapping and WhatsApp dispatch slips for rent a car showrooms in ${c.name}.`,
@@ -538,7 +530,7 @@ function cityPage(c) {
       {
         '@type': 'Service',
         serviceType: 'Rent a car management software',
-        name: `PakEngine Rent Ledger — ${c.name}`,
+        name: `PakEngine Rent Ledger for ${c.name}`,
         provider: { '@type': 'Organization', name: 'PakEngine', url: SITE + '/' },
         areaServed: { '@type': 'City', name: c.name, containedInPlace: { '@type': 'Country', name: 'Pakistan' } },
         offers: { '@type': 'Offer', price: '4000', priceCurrency: 'PKR' },
@@ -593,9 +585,7 @@ ${CTA(`Start your ${c.name} showroom on PakEngine.`, 'Three days of full access.
   });
 }
 
-/* ------------------------------------------------------------------ *
- *  Guides
- * ------------------------------------------------------------------ */
+/* Guides */
 
 const PUBLISHED = '2026-09-06';
 const UPDATED_ISO = '2026-09-06';
@@ -686,8 +676,8 @@ const GUIDES = [
 <h2>Set three numbers, once</h2>
 <ul>
   <li><strong>The daily rate</strong> per vehicle. You already have this.</li>
-  <li><strong>The grace period</strong> — how late is "still on time". One hour is common and fair.</li>
-  <li><strong>The hourly overtime rate</strong> — usually the daily rate divided by a number between 6 and 10. Dividing by 8 is a clean choice: an eight-hour overrun costs a full extra day, which is the right incentive.</li>
+  <li><strong>The grace period.</strong> How late still counts as on time. One hour is common and fair.</li>
+  <li><strong>The hourly overtime rate.</strong> Usually the daily rate divided by a number between 6 and 10. Dividing by 8 is a clean choice: an eight-hour overrun costs a full extra day, which is the right incentive.</li>
 </ul>
 
 <h2>The method</h2>
@@ -696,17 +686,17 @@ const GUIDES = [
   <li>Charge the agreed daily rate for each full 24-hour day.</li>
   <li>If the leftover time is within the grace period, charge nothing extra.</li>
   <li>Otherwise, charge the hourly overtime rate for each leftover hour (round up part-hours).</li>
-  <li>If leftover hours reach a full day's worth, charge a full day instead — never more than a day for a day.</li>
+  <li>If leftover hours reach a full day's worth, charge a full day instead. Never more than a day for a day.</li>
 </ol>
 
 <h2>Worked example</h2>
 <p>Daily rate Rs 8,000. Grace period 1 hour. Hourly rate Rs 8,000 ÷ 8 = Rs 1,000. The car goes out Monday 9:00 a.m. and comes back Wednesday 2:30 p.m.</p>
 <ul>
   <li>Monday 9:00 to Wednesday 9:00 is 2 full days = Rs 16,000.</li>
-  <li>Leftover time is 5.5 hours. Past the 1-hour grace, so 5 hours (rounding 5.5 up to 6, then capping at the sensible whole) — charge 6 × Rs 1,000 = Rs 6,000.</li>
+  <li>Leftover time is 5.5 hours. Past the 1-hour grace, so 5 hours (rounding 5.5 up to 6, then capping at the sensible whole), so charge 6 × Rs 1,000 = Rs 6,000.</li>
   <li>Total: Rs 22,000.</li>
 </ul>
-<p>Six hours of overtime is close to a full day; some showrooms would simply charge the third full day (Rs 24,000). Either is defensible — pick one and stay consistent.</p>
+<p>Six hours of overtime is close to a full day; some showrooms would simply charge the third full day (Rs 24,000). Either is defensible. Pick one and stay consistent.</p>
 
 <h2>Tell the renter first</h2>
 <p>Put the daily rate, the grace period and the hourly overtime rate on the dispatch slip the renter receives at check-out. When the rule was in their hand before they were late, the charge at return is arithmetic, not an argument. PakEngine does this calculation automatically at return and prints the breakdown on the receipt.</p>`,
@@ -823,7 +813,7 @@ Showroom: ____________________   Renter: ____________________</p>
     readMin: 5,
     related: [['/guides/rent-a-car-agreement-template', 'The rent-a-car agreement template'], ['/pricing', 'What PakEngine costs']],
     body: `
-<p>Good records are not about being audited. They are about being able to answer a question — from a renter, an insurer, a bank or the tax office — that arrives three months after the rental ended. If the answer is in a stack of paper or a lost phone, it is not an answer.</p>
+<p>Good records are not about being audited. They are about being able to answer a question that lands three months after the rental ended, from a renter, an insurer, a bank or the tax office. If the answer is in a stack of paper or a lost phone, it is not an answer.</p>
 <p>This is general guidance, not tax or legal advice. Confirm retention periods with your accountant.</p>
 
 <h2>Per-rental records</h2>
@@ -834,7 +824,7 @@ Showroom: ____________________   Renter: ____________________</p>
   <li>Payment record: amount, date, method, and the reference for any bank transfer.</li>
   <li>Any incident notes: accidents, fines, disputes and how they were resolved.</li>
 </ul>
-<p>Keep these for at least as long as a dispute or claim could realistically arise — a few years is a safe default, longer if an incident is unresolved.</p>
+<p>Keep these for at least as long as a dispute or claim could realistically arise. A few years is a safe default, longer if an incident is unresolved.</p>
 
 <h2>Financial records</h2>
 <ul>
@@ -895,7 +885,7 @@ ${CTA('Put this on one screen.', 'PakEngine keeps the damage map, the agreement 
 function guideArticle(g) {
   return page({
     slug: `guides/${g.slug}`,
-    title: `${g.title} — PakEngine Guides`,
+    title: `${g.title} | PakEngine Guides`,
     description: g.description,
     ogTitle: g.title,
     ogImage: `${SITE}/og.jpg`,
@@ -931,7 +921,7 @@ function guideArticle(g) {
 function guidesIndex() {
   return page({
     slug: 'guides',
-    title: 'Guides for Rent-a-Car Showrooms — PakEngine',
+    title: 'Guides for Rent-a-Car Showrooms | PakEngine',
     description:
       'Practical guides for running a car rental showroom in Pakistan: stopping damage disputes, charging overtime, pre-rental inspections, rental agreements and record keeping.',
     ogTitle: 'PakEngine Guides',
@@ -978,11 +968,11 @@ ${CTA('Or just start the trial.', 'See how PakEngine handles all of this on one 
 const PAGES = {
   features: page({
     slug: 'features',
-    title: 'Features — PakEngine Rent Ledger for Car Rental Showrooms',
+    title: 'Features | PakEngine Rent Ledger for Car Rental Showrooms',
     description:
       'Every PakEngine feature for Pakistani rent-a-car showrooms: visual pre-rental damage mapping, 10-second WhatsApp dispatch slips, an offline fleet ledger, an overtime calculator and one-file backup.',
     ogTitle: 'PakEngine Features',
-    ogDesc: 'Visual damage mapping, WhatsApp dispatch slips, an offline fleet ledger and an overtime calculator — built for car rental showrooms.',
+    ogDesc: 'Visual damage mapping, WhatsApp dispatch slips, an offline fleet ledger and an overtime calculator, built for car rental showrooms.',
     keywords:
       'car rental software features, vehicle damage mapping app, rental agreement WhatsApp, offline fleet ledger, overtime calculator rent a car, rent a car software Pakistan',
     body: `
@@ -1052,7 +1042,7 @@ ${CTA('See it on your own fleet.', 'Three days of full access. No card, no insta
 
   pricing: page({
     slug: 'pricing',
-    title: 'Pricing — PakEngine Rent Ledger (Flat 4,000 PKR / month)',
+    title: 'Pricing | PakEngine Rent Ledger (Flat 4,000 PKR / month)',
     description:
       'One flat plan for car rental showrooms: 4,000 PKR per month, or 40,000 PKR per year with two months free. One showroom, unlimited vehicles, rentals and staff devices. 3-day free trial, no card required, pay by bank transfer.',
     ogTitle: 'PakEngine Pricing',
@@ -1062,7 +1052,7 @@ ${CTA('See it on your own fleet.', 'Three days of full access. No card, no insta
     jsonld: [
       {
         '@type': 'SoftwareApplication',
-        name: 'PakEngine Rent Ledger — Showroom Licence',
+        name: 'PakEngine Rent Ledger Showroom Licence',
         description:
           'Flat monthly licence for one car rental showroom. Unlimited vehicles, rentals and staff devices.',
         applicationCategory: 'BusinessApplication',
@@ -1152,11 +1142,11 @@ ${CTA('Try it before you pay a rupee.', 'Full access for three days. Upgrade onl
 
   faq: page({
     slug: 'faq',
-    title: 'FAQ — PakEngine Rent Ledger for Car Rental Showrooms',
+    title: 'FAQ | PakEngine Rent Ledger for Car Rental Showrooms',
     description:
       'Answers about PakEngine for rent-a-car showrooms: where data is stored, offline use, upgrading after the trial, moving devices, vehicle and staff limits, backups and the visual damage map.',
     ogTitle: 'PakEngine FAQ',
-    ogDesc: 'Data storage, offline use, upgrading, device transfers, limits, backups and the damage map — answered.',
+    ogDesc: 'Data storage, offline use, upgrading, device transfers, limits, backups and the damage map, all answered.',
     keywords:
       'PakEngine FAQ, rent a car software questions, offline rental app, car rental data privacy, showroom software help',
     jsonld: [faqSchema(FAQS)],
@@ -1173,11 +1163,11 @@ ${CTA('Ready when you are.', 'Start the free trial and see how it fits your coun
 
   contact: page({
     slug: 'contact',
-    title: 'Contact PakEngine — Sales and Support for Car Rental Showrooms',
+    title: 'Contact PakEngine | Sales and Support for Car Rental Showrooms',
     description:
       'Reach the PakEngine team. Sales and onboarding at sales@pakengine.com, existing-customer help at support@pakengine.com, or message us on WhatsApp for the fastest reply.',
     ogTitle: 'Contact PakEngine',
-    ogDesc: 'Sales, onboarding and support for car rental showrooms — by email or WhatsApp.',
+    ogDesc: 'Sales, onboarding and support for car rental showrooms, by email or WhatsApp.',
     keywords: 'contact PakEngine, rent a car software support Pakistan, PakEngine sales, showroom software help',
     jsonld: [
       {
@@ -1219,7 +1209,7 @@ ${CTA('Or just start the trial.', 'You do not need to talk to us first. Three da
 
   privacy: page({
     slug: 'privacy',
-    title: 'Privacy Policy — PakEngine Rent Ledger',
+    title: 'Privacy Policy | PakEngine Rent Ledger',
     description:
       'How PakEngine handles data. Your showroom records never leave your device. No cookies, no cross-site tracking, no accounts. This page covers the only data that touches a network: CDN request logs and cookieless page-visit counts.',
     ogTitle: 'PakEngine Privacy Policy',
@@ -1232,7 +1222,7 @@ ${H1('Legal', 'Privacy Policy', 'Last updated ' + UPDATED + '.')}
   <p>PakEngine is a local-first application. Your fleet list, rentals, client details, damage records and revenue figures are written only to the browser storage on the device you use them on. They are never transmitted to us or to any server, and we have no ability to read them.</p>
 
   <h2 class="font-display text-[16px] font-bold text-white">Data you enter</h2>
-  <p>Everything you type into PakEngine — showroom name, contact number, vehicles, renters, dates, notes, damage marks and amounts — stays on your device. Removing the app, clearing browser data, or using a private window will erase it. You are responsible for your own backups using Export Fleet Backup in Settings.</p>
+  <p>Everything you type into PakEngine stays on your device: showroom name, contact number, vehicles, renters, dates, notes, damage marks and amounts. Removing the app, clearing browser data, or using a private window will erase it. You are responsible for your own backups using Export Fleet Backup in Settings.</p>
 
   <h2 class="font-display text-[16px] font-bold text-white">Data that touches a network</h2>
   <ul>
@@ -1257,11 +1247,11 @@ ${H1('Legal', 'Privacy Policy', 'Last updated ' + UPDATED + '.')}
 
   terms: page({
     slug: 'terms',
-    title: 'Terms & Conditions — PakEngine Rent Ledger',
+    title: 'Terms & Conditions | PakEngine Rent Ledger',
     description:
       'The terms for using PakEngine Rent Ledger: the 3-day trial, the 4,000 PKR monthly or 40,000 PKR annual licence, payment by bank transfer, acceptable use, and the limits of liability for a local-first tool.',
     ogTitle: 'PakEngine Terms & Conditions',
-    ogDesc: 'The trial, the flat monthly licence, payment, acceptable use and liability — in plain terms.',
+    ogDesc: 'The trial, the flat monthly licence, payment, acceptable use and liability, in plain terms.',
     keywords: 'PakEngine terms and conditions, rental software licence, car rental app terms of service',
     body: `
 ${H1('Legal', 'Terms &amp; Conditions', 'Last updated ' + UPDATED + '.')}
@@ -1302,7 +1292,7 @@ ${H1('Legal', 'Terms &amp; Conditions', 'Last updated ' + UPDATED + '.')}
   404: page({
     slug: '404',
     noindex: true,
-    title: 'Page not found — PakEngine Rent Ledger',
+    title: 'Page not found | PakEngine Rent Ledger',
     description: 'That page could not be found on pakengine.com.',
     keywords: '',
     body: `
@@ -1329,9 +1319,7 @@ ${H1('Legal', 'Terms &amp; Conditions', 'Last updated ' + UPDATED + '.')}
   }),
 };
 
-/* ------------------------------------------------------------------ *
- *  Emit
- * ------------------------------------------------------------------ */
+/* Emit */
 
 const slugs = Object.keys(PAGES);
 for (const slug of slugs) {
@@ -1341,8 +1329,8 @@ for (const slug of slugs) {
   console.log('wrote', `${slug}.html`, `(${PAGES[slug].length} bytes)`);
 }
 
-/* sitemap ---------------------------------------------------------- */
-// /demo is intentionally excluded — it is a noindex redirect stub, not a rankable page.
+/* sitemap */
+// /demo is intentionally excluded. It is a noindex redirect stub, not a rankable page.
 const sm = [
   ['/', 'weekly', '1.0'],
   ['/features', 'monthly', '0.8'],

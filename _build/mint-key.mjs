@@ -1,9 +1,9 @@
-/* PakEngine — offline licence key minter
+/* PakEngine offline licence key minter
  *
  * Keys are ECDSA P-256 signatures over "<SHOWROOM-ID>|<startOrd>|<span>".
  * The app carries only the PUBLIC key and verifies offline. The private key
- * lives in _build/license-private.jwk on this machine and is gitignored —
- * without it nobody can forge or guess a valid key.
+ * lives in _build/license-private.jwk on this machine and is gitignored.
+ * Without it nobody can forge or guess a valid key.
  *
  *   One-time setup:
  *     node _build/mint-key.mjs --init
@@ -51,7 +51,7 @@ async function init() {
     "    x: '" + pub.x + "',\n" +
     "    y: '" + pub.y + "'\n" +
     '  };';
-  console.log('\nWrote ' + PRIV_PATH + ' (gitignored — never commit it).\n');
+  console.log('\nWrote ' + PRIV_PATH + ' (gitignored, never commit it).\n');
   console.log('Paste this into index.html, replacing the existing LICENSE_PUBKEY_JWK:\n');
   console.log(pubLiteral + '\n');
 }
@@ -93,7 +93,7 @@ async function mint(showroomId, plan, startArg) {
 
   const endOrd = startOrd + span - 1;
   const coverage = span === 1 ? labelFromOrd(startOrd)
-                              : labelFromOrd(startOrd) + ' – ' + labelFromOrd(endOrd);
+                              : labelFromOrd(startOrd) + ' to ' + labelFromOrd(endOrd);
   console.log('\n  Showroom : ' + showroomId);
   console.log('  Plan     : ' + (span === 12 ? 'Annual (12 months)' : 'Monthly'));
   console.log('  Covers   : ' + coverage);

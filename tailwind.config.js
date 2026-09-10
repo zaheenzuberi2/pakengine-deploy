@@ -26,7 +26,7 @@ module.exports = {
       },
     },
   },
-  // Classes assembled at runtime in JS (setStatus() status pill) — the scanner
+  // Classes assembled at runtime in JS (setStatus() status pill). The scanner
   // sees them as string literals in index.html, but safelist guarantees them.
   safelist: [
     'bg-slate-400', 'bg-sky-400', 'bg-emerald-400', 'bg-amber-400',

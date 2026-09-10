@@ -8,7 +8,7 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
 <meta name="apple-mobile-web-app-title" content="PakEngine" />
 <meta name="description" content="Rent a car software for Pakistani showrooms. PakEngine is a local-first fleet ledger with visual pre-rental damage records, 10-second WhatsApp dispatch slips, an offline rental log and an overtime calculator. Flat 4,000 PKR/month, 3-day free trial." />
-<title>Rent A Car Software in Pakistan — PakEngine Rent Ledger</title>
+<title>Rent A Car Software in Pakistan | PakEngine Rent Ledger</title>
 
 <link rel="icon" href="/favicon.ico" sizes="32x32" />
 <link rel="icon" type="image/png" sizes="192x192" href="/icon-192.png" />
@@ -26,7 +26,7 @@
 <meta property="og:image:type" content="image/jpeg" />
 <meta property="og:image:width" content="1200" />
 <meta property="og:image:height" content="630" />
-<meta property="og:image:alt" content="PakEngine Rent Ledger — Stop Showroom Leakage. Automate Your Rental Ledger." />
+<meta property="og:image:alt" content="PakEngine Rent Ledger. Stop showroom leakage, automate your rental ledger." />
 <meta name="twitter:card" content="summary_large_image" />
 <meta name="twitter:title" content="Stop Showroom Leakage. Automate Your Rental Ledger." />
 <meta name="twitter:description" content="Local-first operations and fleet ledger for car rental showrooms. 3-day free trial, zero server overhead." />
@@ -130,7 +130,7 @@
     touch-action: manipulation;
   }
 
-  /* Ambient luxury glow ------------------------------------------------ */
+  /* Ambient luxury glow */
   #ambient {
     position: fixed;
     inset: 0;
@@ -141,7 +141,7 @@
       linear-gradient(180deg, #0B0D10 0%, #0A0C0F 100%);
   }
 
-  /* Shimmer skeleton -------------------------------------------------- */
+  /* Shimmer skeleton */
   .shimmer { position: relative; overflow: hidden; background: #14181E; }
   .shimmer::after {
     content: '';
@@ -153,7 +153,7 @@
   }
   @keyframes shimmer { 100% { transform: translateX(100%); } }
 
-  /* App shell blur when licensing gate is active -------------------- */
+  /* App shell blur when licensing gate is active */
   #app-shell { transition: filter .55s cubic-bezier(.16, 1, .3, 1), transform .55s cubic-bezier(.16, 1, .3, 1); }
   #app-shell.blurred {
     filter: blur(7px) saturate(.85) brightness(.8);
@@ -162,7 +162,7 @@
     user-select: none;
   }
 
-  /* Generic modal (paywall + fleet dialogs) ------------------------ */
+  /* Generic modal (paywall + fleet dialogs) */
   .modal { opacity: 0; transition: opacity .28s ease; }
   .modal.is-open { opacity: 1; }
   .modal .modal-card {
@@ -172,7 +172,7 @@
   }
   .modal.is-open .modal-card { opacity: 1; transform: none; }
 
-  /* Settings drawer ---------------------------------------------------- */
+  /* Settings drawer */
   #drawer-root { visibility: hidden; }
   #drawer-root.is-open { visibility: visible; }
   #drawer-backdrop { opacity: 0; transition: opacity .35s ease; }
@@ -180,7 +180,7 @@
   #drawer-panel { transform: translateX(100%); transition: transform .42s cubic-bezier(.16, 1, .3, 1); }
   #drawer-root.is-open #drawer-panel { transform: none; }
 
-  /* Interactive SVG scratch mapper -------------------------------- */
+  /* Interactive SVG scratch mapper */
   .scratch-panel { cursor: pointer; }
   .scratch-panel rect, .scratch-panel path {
     fill: #F8FAFC; stroke: #CBD5E1; stroke-width: 1.5;
@@ -197,7 +197,7 @@
   .scratch-panel.is-hit rect, .scratch-panel.is-hit path { fill: rgba(220, 20, 60, .26); stroke: #DC143C; stroke-width: 2; }
   .scratch-panel.is-hit text { fill: #B91C1C; }
 
-  /* Micro-interactions ---------------------------------------------- */
+  /* Micro-interactions */
   @keyframes shake {
     10%, 90% { transform: translateX(-1px); }
     20%, 80% { transform: translateX(2px); }
@@ -219,7 +219,7 @@
   @keyframes spin { to { transform: rotate(360deg); } }
   .spin { animation: spin .7s linear infinite; }
 
-  /* Inputs ---------------------------------------------------------- */
+  /* Inputs */
   input { -webkit-appearance: none; appearance: none; }
   input:-webkit-autofill { -webkit-text-fill-color: #0f172a; transition: background-color 9999s ease-in-out 0s; }
   input[type='search']::-webkit-search-decoration,
@@ -230,7 +230,7 @@
   #drawer-panel::-webkit-scrollbar, .modal-card::-webkit-scrollbar { width: 6px; }
   #drawer-panel::-webkit-scrollbar-thumb, .modal-card::-webkit-scrollbar-thumb { background: rgba(148, 163, 184, .25); border-radius: 99px; }
 
-  /* Public landing + onboarding — screen transitions ---------------- */
+  /* Public landing and onboarding screen transitions */
   #landing, #onboarding {
     opacity: 0;
     transition: opacity .5s ease, transform .55s cubic-bezier(.16, 1, .3, 1);
@@ -239,7 +239,7 @@
   #landing:not(.is-in) { transform: translateY(-10px); pointer-events: none; }
   #onboarding:not(.is-in) { transform: translateY(14px); pointer-events: none; }
 
-  /* Sticky marketing navigation — premium shadow on scroll -------- */
+  /* Sticky marketing navigation, premium shadow on scroll */
   #landing-nav { transition: background-color .25s ease, box-shadow .25s ease, border-color .25s ease; }
   #landing-nav.is-scrolled {
     background-color: rgba(11, 13, 16, 0.82);
@@ -271,7 +271,7 @@
 <!-- ============================ APP COLUMN ============================ -->
 <div id="app-root" class="hidden relative mx-auto flex min-h-screen w-full max-w-[480px] flex-col border-white/[0.06] sm:border-x lg:max-w-5xl">
 
-  <!-- --------------------------- DEMO MODE BAR --------------------------- -->
+  <!-- DEMO MODE BAR -->
   <div id="demo-bar" class="hidden">
     <div class="flex flex-wrap items-center justify-center gap-x-3 gap-y-1 border-b border-emerald-500/25 bg-emerald-500/[0.09] px-4 py-2 text-center text-[11.5px]">
       <span class="inline-flex items-center gap-1.5 font-bold uppercase tracking-wider text-emerald-300">
@@ -283,7 +283,7 @@
     </div>
   </div>
 
-  <!-- --------------------------- TOP NAVIGATION --------------------------- -->
+  <!-- TOP NAVIGATION -->
   <header class="sticky top-0 z-40 border-b border-white/[0.06] bg-charcoal-950/80 backdrop-blur-xl">
     <div class="flex h-[60px] items-center justify-between px-4" style="padding-top: env(safe-area-inset-top);">
       <div class="flex items-center space-x-3 select-none">
@@ -309,7 +309,7 @@
     </div>
   </header>
 
-  <!-- ------------------------------ APP SHELL ------------------------------ -->
+  <!-- APP SHELL -->
   <div id="app-shell" class="flex flex-1 flex-col">
     <main class="flex-1 px-4 pb-8 pt-5">
 
@@ -552,7 +552,7 @@
       <!-- Product preview -->
       <div class="mx-auto mt-12 max-w-sm rounded-2xl border border-white/[0.08] bg-charcoal-900 p-4 shadow-[0_40px_110px_-40px_rgba(0,0,0,0.85)]">
         <div class="flex items-center justify-between px-1 pb-3">
-          <span class="text-[10.5px] font-semibold uppercase tracking-[0.14em] text-slate-500">Vehicle condition — check-out</span>
+          <span class="text-[10.5px] font-semibold uppercase tracking-[0.14em] text-slate-500">Vehicle condition at check-out</span>
           <span class="inline-flex items-center gap-1 rounded-full bg-emerald-500/[0.12] px-2 py-0.5 text-[9.5px] font-bold uppercase tracking-wide text-emerald-400">
             <span class="h-1 w-1 rounded-full bg-emerald-400"></span> Recording
           </span>
@@ -615,10 +615,10 @@
       <div class="mx-auto max-w-3xl text-center">
         <div class="text-[10.5px] font-semibold uppercase tracking-[0.16em] text-emerald-400">Interactive prototype</div>
         <h2 class="mt-3 font-display text-[22px] font-bold tracking-tight text-white [text-wrap:balance] sm:text-[32px]">
-          Experience PakEngine Live — Interactive Prototype
+          See PakEngine running in an interactive prototype
         </h2>
         <p class="mx-auto mt-3 max-w-xl text-[13px] leading-relaxed text-slate-400">
-          A working slice of the operator console. Nothing here is saved &mdash; it runs on an isolated demo state that never touches a real showroom ledger.
+          A working slice of the operator console. Nothing here is saved. It runs on an isolated demo state that never touches a real showroom ledger.
         </p>
       </div>
 
@@ -659,7 +659,7 @@
           <!-- Sandbox reveal (isolated demo state) -->
           <div id="sandbox-panel" class="hidden">
             <div class="mt-4 border-t border-white/[0.06] pt-4">
-              <div class="text-[10px] font-semibold uppercase tracking-[0.14em] text-slate-500">Check-out condition &mdash; tap panels with existing damage</div>
+              <div class="text-[10px] font-semibold uppercase tracking-[0.14em] text-slate-500">Check-out condition. Tap panels with existing damage</div>
               <div class="mt-3 rounded-xl border border-slate-200 bg-slate-50 p-3">
                 <div id="sandbox-map"></div>
               </div>
@@ -987,13 +987,13 @@
           <div class="mt-1 text-[10px] text-slate-400">Include this ID with your transfer receipt.</div>
         </div>
         <p class="text-[11px] leading-relaxed text-slate-400">
-          Each key is issued for the Showroom ID above &mdash; monthly keys cover one calendar month, annual keys cover 12.<br />
+          Each key is issued for the Showroom ID above. Monthly keys cover one calendar month, annual keys cover 12.<br />
           Current period: <span id="pw-period" class="font-semibold text-slate-500">—</span>
         </p>
       </div>
 
       <button id="pw-dismiss" class="mt-2 hidden w-full rounded-xl px-4 py-2 text-[12px] font-semibold text-slate-400 transition hover:text-slate-600">
-        Not now — continue my free trial
+        Not now, continue my free trial
       </button>
     </div>
   </div>
@@ -1213,7 +1213,7 @@
       </div>
 
       <div class="mt-3 rounded-xl bg-rose-50 px-3 py-2 text-[11.5px] text-rose-700">
-        New damage vs check-out: <span id="rtn-new" class="font-semibold">None — matches check-out condition</span>
+        New damage vs check-out: <span id="rtn-new" class="font-semibold">None, matches check-out condition</span>
       </div>
 
       <div class="mt-4 flex gap-2">
@@ -1241,7 +1241,7 @@
       <p>PakEngine Rent Ledger (&ldquo;PakEngine&rdquo;, &ldquo;we&rdquo;) is a local-first web application. This policy explains what data the application handles and where it is kept.</p>
       <div>
         <h3 class="font-semibold text-slate-900">1. Data stored on your device</h3>
-        <p class="mt-1">Everything you enter &mdash; showroom name and contact number, vehicle records, rental and return logs, damage notes, revenue figures, and your licence key &mdash; is written only to your browser&rsquo;s local storage on the device you are using. It is never transmitted to PakEngine or to any server we operate. We keep no database and have no ability to read your records.</p>
+        <p class="mt-1">Everything you enter is written only to your browser&rsquo;s local storage on the device you are using: showroom name and contact number, vehicle records, rental and return logs, damage notes, revenue figures, and your licence key. It is never transmitted to PakEngine or to any server we operate. We keep no database and have no ability to read your records.</p>
       </div>
       <div>
         <h3 class="font-semibold text-slate-900">2. Your Showroom ID</h3>
@@ -1398,7 +1398,7 @@
             </span>
           </button>
           <p class="px-1 pt-1 text-[11px] leading-relaxed text-slate-600">
-            Backups are plain JSON stored on this device only. Zero server, zero monthly fees — your data never leaves the showroom.
+            Backups are plain JSON stored on this device only. Zero server, zero monthly fees, and your data never leaves the showroom.
           </p>
         </div>
       </section>
@@ -1432,7 +1432,7 @@
   'use strict';
 
   /* ============================================================
-   *  ANALYTICS — Vercel Web Analytics custom events
+   *  ANALYTICS: Vercel Web Analytics custom events
    * ========================================================== */
   window.va = window.va || function () { (window.vaq = window.vaq || []).push(arguments); };
   function track(name, data) {
@@ -1444,7 +1444,7 @@
    * ========================================================== */
   var CONFIG = {
     APP_NAME: 'PakEngine Rent Ledger',
-    APP_VERSION: '2.23.0',
+    APP_VERSION: '2.24.0',
     DOMAIN: 'pakengine.com',
     LICENSE_PRICE_PKR: 4000,
     ANNUAL_PRICE_PKR: 40000,
@@ -1459,7 +1459,7 @@
     },
     BANK: {
       TITLE: 'Muhammad Zaheen Zubairi',
-      NAME: 'Meezan Bank — Meezan Digital Centre',
+      NAME: 'Meezan Bank, Meezan Digital Centre',
       ACCOUNT: '00300114712815',
       IBAN: 'PK15MEZN0000300114712815'
     },
@@ -1551,7 +1551,7 @@
   function periodLabel(startOrd, span) {
     if (typeof startOrd !== 'number') return '—';
     if (!span || span <= 1) return ordinalLabel(startOrd);
-    return ordinalLabel(startOrd) + ' – ' + ordinalLabel(startOrd + span - 1);
+    return ordinalLabel(startOrd) + ' to ' + ordinalLabel(startOrd + span - 1);
   }
   /* Parse "PE1.<b64url(payload)>.<b64url(sig)>" without verifying the signature. */
   function parseKeyString(str) {
@@ -1578,7 +1578,7 @@
   }
 
   /* ============================================================
-   *  STORAGE  — localStorage with an in-memory fallback
+   *  STORAGE: localStorage with an in-memory fallback
    *  (private mode / sandboxed contexts where storage throws)
    * ========================================================== */
   var __mem = {};
@@ -1628,7 +1628,7 @@
   };
 
   /* ============================================================
-   *  LICENSE ENGINE  — signed, per-showroom, verified offline
+   *  LICENSE ENGINE: signed, per-showroom, verified offline
    *
    *  A key is  PE1.<b64url(payload)>.<b64url(ECDSA-P256 sig)>  where
    *  payload = "<SHOWROOM-ID>|<startOrd>|<span>".  status() is synchronous
@@ -1698,7 +1698,7 @@
   };
 
   /* ============================================================
-   *  FLEET  — vehicle persistence engine
+   *  FLEET: vehicle persistence engine
    * ========================================================== */
   var Fleet = {
     list: function () { return Store.get(CONFIG.STORAGE_KEYS.FLEET, []) || []; },
@@ -1760,7 +1760,7 @@
   }
 
   /* ============================================================
-   *  SHOWROOM IDENTITY  — stable per-device id for automation
+   *  SHOWROOM IDENTITY: stable per-device id for automation
    * ========================================================== */
   function genShowroomId() {
     var chars = 'ABCDEFGHJKMNPQRSTUVWXYZ23456789';   // no ambiguous 0/O/1/I/L
@@ -1768,7 +1768,7 @@
     for (var i = 0; i < 6; i++) s += chars.charAt(Math.floor(Math.random() * chars.length));
     return 'PES-' + s;
   }
-  /* Read-only: never stamps a first launch — the trial starts only from the CTA. */
+  /* Read-only: never stamps a first launch: the trial starts only from the CTA. */
   function getShowroomId() {
     var rec = Trial.record();
     if (!rec) return null;
@@ -1780,7 +1780,7 @@
   }
 
   /* ============================================================
-   *  TRIAL ENGINE  — automated 3-day free trial
+   *  TRIAL ENGINE: automated 3-day free trial
    *  All timing is plain epoch-ms arithmetic (O(1), no loops).
    * ========================================================== */
   var Trial = {
@@ -1822,7 +1822,7 @@
   };
 
   /* ============================================================
-   *  REGISTRATION  — automation-ready payload (webhook / email parser)
+   *  REGISTRATION: automation-ready payload (webhook / email parser)
    *  Cleanly maps Showroom ID -> registered phone number.
    * ========================================================== */
   var Registration = {
@@ -1883,7 +1883,7 @@
   };
 
   /* ============================================================
-   *  UI  — status indicator
+   *  UI: status indicator
    * ========================================================== */
   function setStatus(mode) {
     var text = $('#status-text'), core = $('#status-core'), ping = $('#status-ping');
@@ -1902,7 +1902,7 @@
   }
 
   /* ============================================================
-   *  UI  — generic modal open / close
+   *  UI: generic modal open / close
    * ========================================================== */
   function anyOverlayOpen() {
     return $('#drawer-root').classList.contains('is-open') ||
@@ -1926,7 +1926,7 @@
   function shake(el) { el.classList.remove('shake'); void el.offsetWidth; el.classList.add('shake'); }
 
   /* ============================================================
-   *  UI  — paywall
+   *  UI: paywall
    * ========================================================== */
   var PW_COPY = {
     missing:         { title: 'License Inactive',  sub: 'Activate PakEngine Premium to open your showroom ledger.', icon: 'lock', tone: 'emerald' },
@@ -1934,7 +1934,7 @@
     invalid:         { title: 'License Invalid',   sub: 'The key stored on this device could not be verified.', icon: 'shield-alert', tone: 'rose' },
     pending:         { title: 'License Pending',   sub: 'Your key is registered for an upcoming period and will activate automatically.', icon: 'calendar-clock', tone: 'sky' },
     'trial-expired': { title: 'Free Trial Ended',  sub: 'Your 3-day trial has ended. Activate Premium to keep your showroom data protected.', icon: 'hourglass', tone: 'amber' },
-    upgrade:         { title: 'Activate Premium',  sub: 'Lock in PakEngine Premium for your showroom — no need to wait for the trial to end.', icon: 'crown', tone: 'emerald' }
+    upgrade:         { title: 'Activate Premium',  sub: 'Lock in PakEngine Premium for your showroom. No need to wait for the trial to end.', icon: 'crown', tone: 'emerald' }
   };
   var TONE_CLASSES = {
     emerald: 'bg-emerald-500/15 text-emerald-400 ring-emerald-400/30',
@@ -1956,11 +1956,11 @@
     var hasProfile = !!Trial.record();
     var d = $('#pw-dismiss');
     if (state === 'upgrade' || (Trial.isActive() && License.status().state !== 'active')) {
-      d.textContent = 'Not now — continue my free trial';
+      d.textContent = 'Not now, continue my free trial';
       d.dataset.mode = 'trial';
       d.classList.remove('hidden');
     } else if (!hasProfile) {
-      /* Arrived via "Showroom Login" on a device with no profile — let them go back. */
+      /* Arrived via "Showroom Login" on a device with no profile: let them go back. */
       d.textContent = '← Back to home';
       d.dataset.mode = 'home';
       d.classList.remove('hidden');
@@ -2000,7 +2000,7 @@
   }
 
   /* ============================================================
-   *  SCREEN ROUTER  — landing → onboarding → app
+   *  SCREEN ROUTER: landing → onboarding → app
    * ========================================================== */
   function paintLandingPreview() {
     var m = $('#landing-map');
@@ -2033,11 +2033,11 @@
   var _sandboxSelected = [];
   function renderSandboxSlip() {
     var ordered = CAR_PANELS.filter(function (p) { return _sandboxSelected.indexOf(p) !== -1; });
-    var dmg = ordered.length ? ordered.join(', ') : 'None — vehicle clean at check-out';
+    var dmg = ordered.length ? ordered.join(', ') : 'None, vehicle clean at check-out';
     var el = $('#sandbox-slip-text');
     if (el) {
       el.textContent =
-        'PakEngine — Rental Dispatch Slip\n' +
+        'PakEngine Rental Dispatch Slip\n' +
         'Vehicle: Toyota Fortuner (ICT-999)\n' +
         'Rate: Rs. 25,000 / day\n' +
         '*Noted Pre-Rental Damage: ' + dmg + '*';
@@ -2132,7 +2132,7 @@
     var phone = $('#onb-phone').value.trim();
     var err = $('#onb-error');
     if (!name) { err.textContent = 'Enter your showroom name to continue.'; shake($('#onb-name')); return; }
-    if (!phone) { err.textContent = 'Enter a contact phone number — it links your payment to this showroom.'; shake($('#onb-phone')); return; }
+    if (!phone) { err.textContent = 'Enter a contact phone number. It links your payment to this showroom.'; shake($('#onb-phone')); return; }
     Store.set(CONFIG.STORAGE_KEYS.SETTINGS, { name: name, phone: phone, updatedAt: new Date().toISOString() });
     track('onboarding_complete');
     Registration.persist();
@@ -2173,7 +2173,7 @@
     $('#gear-btn').classList.remove('hidden');
     if (!anyOverlayOpen()) document.body.style.overflow = '';
     setStatus('active');
-    if (!silent) toast('Premium activated — welcome aboard');
+    if (!silent) toast('Premium activated. Welcome aboard');
   }
 
   async function handleVerify() {
@@ -2216,7 +2216,7 @@
   }
 
   /* ============================================================
-   *  UI  — settings drawer
+   *  UI: settings drawer
    * ========================================================== */
   function openDrawer() {
     hydrateSettingsForm();
@@ -2302,7 +2302,7 @@
       unlockApp(true);
       closeDrawer();
       Registration.persist();
-      toast('License renewed — thank you');
+      toast('License renewed. Thank you');
     } else if (res.ok && res.state === 'pending') {
       msg.className = 'mt-1.5 min-h-[14px] text-[11px] font-medium text-emerald-400';
       msg.textContent = 'Registered. Unlocks 1 ' + ordinalLabel(res.record.startOrd) + '.';
@@ -2319,7 +2319,7 @@
   }
 
   /* ============================================================
-   *  DATA  — export / import backup
+   *  DATA: export / import backup
    * ========================================================== */
   function stamp() {
     var d = new Date();
@@ -2356,7 +2356,7 @@
         known.forEach(function (k) {
           if (Object.prototype.hasOwnProperty.call(bag, k)) Store.set(k, bag[k]);
         });
-        toast('Backup imported — reloading');
+        toast('Backup imported. Reloading');
         setTimeout(function () { location.reload(); }, 700);
       } catch (e) {
         toast('That file is not a valid PakEngine backup');
@@ -2380,7 +2380,7 @@
   }
 
   /* ============================================================
-   *  BRAND  — reusable inline-SVG logo lockup
+   *  BRAND: reusable inline-SVG logo lockup
    *  (used in the top nav, landing hero, paywall + onboarding;
    *   call this from the invoice / WhatsApp-slip module when built)
    * ========================================================== */
@@ -2393,7 +2393,7 @@
   }
 
   /* ============================================================
-   *  SVG  — symmetrical top-down car blueprint
+   *  SVG: symmetrical top-down car blueprint
    * ========================================================== */
   function carBlueprintSVG() {
     return '' +
@@ -2467,7 +2467,7 @@
 
     function paint() {
       if (!selected.length) {
-        pillsEl.innerHTML = '<span class="text-[11.5px] italic text-slate-400">No scratches noted — vehicle recorded as clean.</span>';
+        pillsEl.innerHTML = '<span class="text-[11.5px] italic text-slate-400">No scratches noted. Vehicle recorded as clean.</span>';
       } else {
         var ordered = CAR_PANELS.filter(function (p) { return selected.indexOf(p) !== -1; });
         pillsEl.innerHTML =
@@ -2706,7 +2706,7 @@
     var err = $('#dsp-error');
     if (!$('#dsp-renter').value.trim()) { err.textContent = 'Enter the renter’s name.'; shake($('#dsp-renter')); return false; }
     var pd = String($('#dsp-phone').value || '').replace(/\D/g, '');
-    if (!/^0\d{10}$/.test(pd)) { err.textContent = 'Invalid number — enter an 11-digit phone starting 0 (e.g. 03001234567).'; shake($('#dsp-phone')); return false; }
+    if (!/^0\d{10}$/.test(pd)) { err.textContent = 'Invalid number. Enter an 11-digit phone starting 0 (e.g. 03001234567).'; shake($('#dsp-phone')); return false; }
     if (!$('#dsp-fuel').value) { err.textContent = 'Select the fuel level the car is going out at.'; shake($('#dsp-fuel')); return false; }
     err.textContent = '';
     return true;
@@ -2734,8 +2734,8 @@
     renderFleet();
   }
   function dispatchSlipText(v, r) {
-    var dmg = (r.checkoutDamage && r.checkoutDamage.length) ? r.checkoutDamage.join(', ') : 'None — vehicle clean at check-out';
-    var lines = ['PakEngine — Rental Dispatch Slip', '', 'Vehicle: ' + v.make + ' (' + v.plate + (v.color ? ', ' + v.color : '') + ')', 'Renter: ' + r.renter];
+    var dmg = (r.checkoutDamage && r.checkoutDamage.length) ? r.checkoutDamage.join(', ') : 'None, vehicle clean at check-out';
+    var lines = ['PakEngine Rental Dispatch Slip', '', 'Vehicle: ' + v.make + ' (' + v.plate + (v.color ? ', ' + v.color : '') + ')', 'Renter: ' + r.renter];
     if (r.cnic) lines.push('CNIC: ' + r.cnic);
     lines.push('Rate: ' + money(r.rate) + ' / day');
     lines.push('Rental Days: ' + r.days);
@@ -2760,7 +2760,7 @@
     if (!validateDispatch()) return;
     var v = Fleet.get(activeVehicleId); if (!v) return;
     var wa = renterWaNumber();
-    if (!wa) { $('#dsp-error').textContent = 'Invalid number — enter an 11-digit phone (e.g. 03xxxxxxxxx).'; shake($('#dsp-phone')); return; }
+    if (!wa) { $('#dsp-error').textContent = 'Invalid number. Enter an 11-digit phone (e.g. 03xxxxxxxxx).'; shake($('#dsp-phone')); return; }
     var r = buildDispatchData(v);
     commitDispatch(v, r);
     track('dispatch_whatsapp');
@@ -2787,7 +2787,7 @@
 
     returnMapper = mountScratchMapper($('#rtn-map'), $('#rtn-pills'), out, function (sel) {
       var neu = sel.filter(function (n) { return out.indexOf(n) === -1; });
-      $('#rtn-new').textContent = neu.length ? neu.join(', ') : 'None — matches check-out condition';
+      $('#rtn-new').textContent = neu.length ? neu.join(', ') : 'None, matches check-out condition';
     });
     openModal($('#return-modal'));
   }
@@ -2916,7 +2916,7 @@
   }
 
   /* ============================================================
-   *  PAYWALL  — bank transfer details
+   *  PAYWALL: bank transfer details
    * ========================================================== */
   function hydrateBankDetails() {
     setBankRow('#bank-title', CONFIG.BANK.TITLE);
@@ -2963,7 +2963,7 @@
       });
     });
 
-    /* Showroom ID copy — paywall + settings */
+    /* Showroom ID copy: paywall + settings */
     $('#pw-showroom-id').addEventListener('click', function () { copyText(getShowroomId()); });
     $('#set-showroom-id').addEventListener('click', function () { copyText(getShowroomId()); });
 
@@ -2996,7 +2996,7 @@
     });
     $('#m-login').addEventListener('click', function () { setMenu(false); loginFromLanding(); });
 
-    /* Homepage sandbox — isolated demo, opens on card tap / keyboard */
+    /* Homepage sandbox: isolated demo, opens on card tap / keyboard */
     $('#sandbox-card').addEventListener('click', openSandbox);
     $('#sandbox-card').addEventListener('keydown', function (e) {
       if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openSandbox(); }
@@ -3007,7 +3007,7 @@
     $('#onb-phone').addEventListener('keydown', function (e) { if (e.key === 'Enter') completeOnboarding(); });
 
     /* Marketing: contact routing, legal modals, sticky-nav shadow, footer year */
-    var supportMail = 'mailto:' + CONFIG.CONTACT.SUPPORT + '?subject=' + encodeURIComponent('PakEngine — Support request');
+    var supportMail = 'mailto:' + CONFIG.CONTACT.SUPPORT + '?subject=' + encodeURIComponent('PakEngine Support request');
     var consultWa = CONFIG.WHATSAPP_URL + '?text=' + encodeURIComponent('Assalam-o-Alaikum, I run a car rental showroom and would like a PakEngine fleet consultation.');
     var setHref = function (id, href) {
       var el = $(id);
@@ -3106,7 +3106,7 @@
   /* ============================================================
    *  BOOT
    * ========================================================== */
-  /* Automation hook — the structured payload a webhook / email parser would consume. */
+  /* Automation hook: the structured payload a webhook / email parser would consume. */
   window.PakEngineData = {
     registration: function () { return Registration.snapshot(); },
     persistRegistration: function () { return Registration.persist(); },
@@ -3123,7 +3123,7 @@
   };
 
   /* ============================================================
-   *  DEMO MODE  — /demo route: full dashboard on a throwaway store
+   *  DEMO MODE: /demo route: full dashboard on a throwaway store
    * ========================================================== */
   function isDemoRoute() {
     try {
@@ -3213,13 +3213,13 @@
     icons();
 
     if (isDemoRoute()) {
-      /* /demo — full working dashboard on an isolated in-memory store. */
+      /* /demo: full working dashboard on an isolated in-memory store. */
       startDemo();
     } else if (Trial.record()) {
-      /* Returning showroom (trial or premium) — straight into the app with the boot skeleton. */
+      /* Returning showroom (trial or premium): straight into the app with the boot skeleton. */
       enterApp({ boot: true });
     } else {
-      /* Brand-new visitor — show the public marketing page. The trial clock
+      /* Brand-new visitor: show the public marketing page. The trial clock
          starts only when they tap "Start Your 3-Day Free Trial". */
       showLanding();
     }
