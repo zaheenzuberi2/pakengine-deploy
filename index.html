@@ -915,6 +915,21 @@
     </div>
 
     <div class="px-6 pb-6 pt-5">
+      <div id="pw-nodevice-block" class="hidden text-center">
+        <p class="text-[13px] leading-relaxed text-slate-600">
+          PakEngine keeps your showroom's data on the device where you set it up &mdash; nothing is stored on a server. This browser doesn't have a showroom on it, so there's nothing to log in to.
+        </p>
+        <p class="mt-2.5 text-[12px] leading-relaxed text-slate-500">
+          If you're on a different phone or computer than usual, or recently cleared your browser, that showroom's data can't be recovered on this device.
+        </p>
+        <button id="pw-nodevice-home" class="mt-5 flex w-full items-center justify-center gap-2 rounded-xl bg-emerald-600 px-4 py-3 text-[13.5px] font-semibold text-white shadow-[0_8px_20px_-6px_rgba(5,150,105,0.6)] transition hover:bg-emerald-500 active:scale-[0.985]">
+          <i data-lucide="arrow-left" class="h-4 w-4"></i> Back to home
+        </button>
+        <button id="pw-nodevice-trial" class="mt-2 w-full rounded-xl px-4 py-2 text-[12px] font-semibold text-slate-400 transition hover:text-slate-600">
+          Set up a new showroom instead
+        </button>
+      </div>
+      <div id="pw-payment-block">
       <p class="text-[13px] leading-relaxed text-slate-600">
         <span class="font-semibold text-slate-800">License Inactive / Expired.</span>
         Transfer <span class="font-semibold text-slate-900">4,000&nbsp;PKR</span> for one month, or
@@ -995,6 +1010,7 @@
       <button id="pw-dismiss" class="mt-2 hidden w-full rounded-xl px-4 py-2 text-[12px] font-semibold text-slate-400 transition hover:text-slate-600">
         Not now, continue my free trial
       </button>
+      </div>
     </div>
   </div>
 </div>
@@ -1930,6 +1946,7 @@
    * ========================================================== */
   var PW_COPY = {
     missing:         { title: 'License Inactive',  sub: 'Activate PakEngine Premium to open your showroom ledger.', icon: 'lock', tone: 'emerald' },
+    'not-this-device': { title: 'No Showroom On This Device', sub: 'This browser has no showroom set up on it.', icon: 'monitor-x', tone: 'sky' },
     expired:         { title: 'License Expired',   sub: 'Your PakEngine Premium period has ended. Renew to continue.', icon: 'alert-triangle', tone: 'amber' },
     invalid:         { title: 'License Invalid',   sub: 'The key stored on this device could not be verified.', icon: 'shield-alert', tone: 'rose' },
     pending:         { title: 'License Pending',   sub: 'Your key is registered for an upcoming period and will activate automatically.', icon: 'calendar-clock', tone: 'sky' },
@@ -1954,15 +1971,17 @@
     hideTrialBanner();
 
     var hasProfile = !!Trial.record();
+    var isNoDevice = state === 'not-this-device';
+    $('#pw-nodevice-block').classList.toggle('hidden', !isNoDevice);
+    $('#pw-payment-block').classList.toggle('hidden', isNoDevice);
+
     var d = $('#pw-dismiss');
-    if (state === 'upgrade' || (Trial.isActive() && License.status().state !== 'active')) {
+    if (isNoDevice) {
+      d.classList.add('hidden');
+      d.removeAttribute('data-mode');
+    } else if (state === 'upgrade' || (Trial.isActive() && License.status().state !== 'active')) {
       d.textContent = 'Not now, continue my free trial';
       d.dataset.mode = 'trial';
-      d.classList.remove('hidden');
-    } else if (!hasProfile) {
-      /* Arrived via "Showroom Login" on a device with no profile: let them go back. */
-      d.textContent = '← Back to home';
-      d.dataset.mode = 'home';
       d.classList.remove('hidden');
     } else {
       d.classList.add('hidden');
@@ -2892,7 +2911,7 @@
     hideTrialBanner();
     var hadProfile = !!Trial.record();
     var pwState = (lic.state === 'missing' || lic.state === 'invalid')
-      ? (hadProfile ? 'trial-expired' : 'missing')
+      ? (hadProfile ? 'trial-expired' : 'not-this-device')
       : lic.state;
     if (!paywallOpen || !silent) {
       renderDashboard();
@@ -2973,6 +2992,8 @@
       if (this.dataset.mode === 'home') { hardHidePaywall(); showLanding(); }
       else dismissPaywall();
     });
+    $('#pw-nodevice-home').addEventListener('click', function () { hardHidePaywall(); showLanding(); });
+    $('#pw-nodevice-trial').addEventListener('click', function () { hardHidePaywall(); startTrialFlow(); });
 
     /* Public landing + onboarding routing */
     $('#cta-start-trial').addEventListener('click', startTrialFlow);
