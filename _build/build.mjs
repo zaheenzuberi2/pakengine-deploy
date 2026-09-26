@@ -32,11 +32,17 @@ const LOGO = (h = 8) => `
 const NAV_LINKS = [
   ['/features', 'Features'],
   ['/pricing', 'Pricing'],
+  ['/marketplace', 'Marketplace'],
   ['/guides', 'Guides'],
   ['/faq', 'FAQ'],
   ['/demo', 'Live Demo'],
   ['/contact', 'Contact'],
 ];
+
+/* Supabase (marketplace pages only — the main app in index.html stays 100% local-storage). */
+const MP_SCRIPTS = `
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.112.3/dist/umd/supabase.min.js" integrity="sha384-l8ah+VgaWtk1mvOe9VC+OirC6qHFF4yH7l7mKRidV9MSti3E9F463bMp6ZVN4kuC" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="/assets/js/supabase-client.js"></script>`;
 
 function header(active, back = { href: '/', label: 'Back to home' }) {
   const link = ([href, label], cls) =>
@@ -95,6 +101,7 @@ const FOOTER = () => `
           <span class="text-[10px] font-semibold uppercase tracking-wider text-slate-600">Product</span>
           <a href="/features" class="font-medium text-slate-400 transition hover:text-white">Features</a>
           <a href="/pricing" class="font-medium text-slate-400 transition hover:text-white">Pricing</a>
+          <a href="/marketplace" class="font-medium text-slate-400 transition hover:text-white">Marketplace</a>
           <a href="/guides" class="font-medium text-slate-400 transition hover:text-white">Guides</a>
           <a href="/faq" class="font-medium text-slate-400 transition hover:text-white">FAQ</a>
           <a href="/demo" class="font-medium text-slate-400 transition hover:text-white">Live demo</a>
@@ -1289,6 +1296,440 @@ ${H1('Legal', 'Terms &amp; Conditions', 'Last updated ' + UPDATED + '.')}
   guides: guidesIndex(),
   ...Object.fromEntries(GUIDES.map((g) => [`guides/${g.slug}`, guideArticle(g)])),
 
+  marketplace: page({
+    slug: 'marketplace',
+    title: 'Car Marketplace Pakistan | Buy, Sell or Rent a Car | PakEngine',
+    description:
+      'Browse cars for sale and for rent from individual owners and PakEngine showrooms across Pakistan. Every listing is reviewed before it goes live. Contact sellers directly on WhatsApp.',
+    ogTitle: 'PakEngine Marketplace',
+    ogDesc: 'Buy, sell or rent a car in Pakistan. Listed by owners and showrooms, reviewed before going live.',
+    keywords:
+      'car for sale Pakistan, car for rent Pakistan, buy sell car Pakistan, used cars Pakistan, rent a car marketplace',
+    body: `
+<section class="border-b border-white/[0.06] py-10 sm:py-14">
+  <div class="max-w-3xl">
+    <div class="text-[10.5px] font-semibold uppercase tracking-[0.16em] text-emerald-400">PakEngine Marketplace</div>
+    <h1 class="mt-3 font-display text-[26px] font-bold leading-[1.15] tracking-tight text-white [text-wrap:balance] sm:text-[36px]">Buy, sell or rent a car in Pakistan.</h1>
+    <p class="mt-4 max-w-2xl text-[14px] leading-relaxed text-slate-400 sm:text-[15px]">Individual owners and PakEngine showrooms list cars here directly. Every listing is reviewed before it goes live, and you contact the seller straight on WhatsApp &mdash; no account needed to browse.</p>
+  </div>
+</section>
+
+<section class="py-8">
+  <div class="flex flex-wrap items-end gap-3">
+    <div>
+      <label class="mb-1 block text-[11px] font-semibold text-slate-400" for="mp-f-type">Listing type</label>
+      <select id="mp-f-type" class="rounded-lg border border-white/10 bg-white/5 px-3 py-2 text-[13px] text-white">
+        <option value="">All</option>
+        <option value="sale">For sale</option>
+        <option value="rent">For rent</option>
+      </select>
+    </div>
+    <div>
+      <label class="mb-1 block text-[11px] font-semibold text-slate-400" for="mp-f-city">City</label>
+      <input id="mp-f-city" type="text" placeholder="e.g. Lahore" class="rounded-lg border border-white/10 bg-white/5 px-3 py-2 text-[13px] text-white placeholder:text-slate-500" />
+    </div>
+    <div>
+      <label class="mb-1 block text-[11px] font-semibold text-slate-400" for="mp-f-make">Make / model</label>
+      <input id="mp-f-make" type="text" placeholder="e.g. Corolla" class="rounded-lg border border-white/10 bg-white/5 px-3 py-2 text-[13px] text-white placeholder:text-slate-500" />
+    </div>
+    <button id="mp-f-apply" class="rounded-lg bg-emerald-600 px-4 py-2.5 text-[13px] font-semibold text-white transition hover:bg-emerald-500">Search</button>
+    <a href="#mp-post" class="ml-auto inline-flex items-center gap-1.5 rounded-lg border border-white/15 bg-white/5 px-4 py-2.5 text-[13px] font-semibold text-white transition hover:border-emerald-500/50 hover:bg-emerald-500/10">
+      <i data-lucide="plus" class="h-4 w-4"></i> Post your car
+    </a>
+  </div>
+
+  <p id="mp-status" class="mt-4 hidden rounded-lg border border-white/10 bg-white/5 px-4 py-3 text-[12.5px] text-slate-400"></p>
+  <div id="mp-grid" class="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-3"></div>
+</section>
+
+<section id="mp-post" class="border-t border-white/[0.06] py-14">
+  <h2 class="font-display text-[20px] font-bold tracking-tight text-white sm:text-[24px]">Post your car</h2>
+  <p class="mt-2 max-w-xl text-[13px] leading-relaxed text-slate-400">Sign up free with an email and password, then list your car. New listings go live after a quick manual review, usually the same day.</p>
+
+  <div id="mp-auth-box" class="mt-6 max-w-md">
+    <div class="flex gap-2 text-[12.5px] font-semibold">
+      <button id="mp-tab-login" type="button" class="rounded-lg bg-white/10 px-3 py-1.5 text-white">Log in</button>
+      <button id="mp-tab-signup" type="button" class="rounded-lg px-3 py-1.5 text-slate-400">Sign up</button>
+    </div>
+
+    <form id="mp-login-form" class="mt-4 grid gap-3">
+      <input required type="email" id="mp-login-email" placeholder="Email" class="rounded-lg border border-white/10 bg-white/5 px-3 py-2.5 text-[13px] text-white placeholder:text-slate-500" />
+      <input required type="password" id="mp-login-pass" placeholder="Password" class="rounded-lg border border-white/10 bg-white/5 px-3 py-2.5 text-[13px] text-white placeholder:text-slate-500" />
+      <button type="submit" class="rounded-lg bg-emerald-600 px-4 py-2.5 text-[13px] font-semibold text-white transition hover:bg-emerald-500">Log in</button>
+      <p id="mp-login-err" class="hidden text-[12px] text-red-400"></p>
+    </form>
+
+    <form id="mp-signup-form" class="mt-4 hidden grid gap-3">
+      <input required type="text" id="mp-su-name" placeholder="Your name" class="rounded-lg border border-white/10 bg-white/5 px-3 py-2.5 text-[13px] text-white placeholder:text-slate-500" />
+      <input required type="tel" id="mp-su-phone" placeholder="WhatsApp number, e.g. 923001234567" class="rounded-lg border border-white/10 bg-white/5 px-3 py-2.5 text-[13px] text-white placeholder:text-slate-500" />
+      <input type="text" id="mp-su-city" placeholder="City" class="rounded-lg border border-white/10 bg-white/5 px-3 py-2.5 text-[13px] text-white placeholder:text-slate-500" />
+      <select id="mp-su-type" class="rounded-lg border border-white/10 bg-white/5 px-3 py-2.5 text-[13px] text-white">
+        <option value="individual">Individual owner</option>
+        <option value="showroom">PakEngine showroom</option>
+      </select>
+      <input type="text" id="mp-su-showroom" placeholder="Showroom ID, e.g. PES-ABC234" class="hidden rounded-lg border border-white/10 bg-white/5 px-3 py-2.5 text-[13px] text-white placeholder:text-slate-500" />
+      <input required type="email" id="mp-su-email" placeholder="Email" class="rounded-lg border border-white/10 bg-white/5 px-3 py-2.5 text-[13px] text-white placeholder:text-slate-500" />
+      <input required minlength="6" type="password" id="mp-su-pass" placeholder="Password (min 6 characters)" class="rounded-lg border border-white/10 bg-white/5 px-3 py-2.5 text-[13px] text-white placeholder:text-slate-500" />
+      <button type="submit" class="rounded-lg bg-emerald-600 px-4 py-2.5 text-[13px] font-semibold text-white transition hover:bg-emerald-500">Create account</button>
+      <p id="mp-signup-err" class="hidden text-[12px] text-red-400"></p>
+      <p id="mp-signup-ok" class="hidden text-[12px] text-emerald-400"></p>
+    </form>
+  </div>
+
+  <div id="mp-dash" class="mt-6 hidden max-w-2xl">
+    <div class="flex items-center justify-between">
+      <p class="text-[13px] text-slate-300">Signed in as <span id="mp-dash-email" class="font-semibold text-white"></span></p>
+      <button id="mp-logout" type="button" class="text-[12px] font-semibold text-slate-400 hover:text-white">Log out</button>
+    </div>
+
+    <h3 class="mt-6 font-display text-[16px] font-bold text-white">New listing</h3>
+    <form id="mp-listing-form" class="mt-3 grid gap-3 sm:grid-cols-2">
+      <select required id="mp-l-type" class="rounded-lg border border-white/10 bg-white/5 px-3 py-2.5 text-[13px] text-white">
+        <option value="sale">For sale</option>
+        <option value="rent">For rent</option>
+      </select>
+      <select id="mp-l-priceunit" class="rounded-lg border border-white/10 bg-white/5 px-3 py-2.5 text-[13px] text-white">
+        <option value="total">Total price</option>
+        <option value="per_day">Price per day</option>
+      </select>
+      <input required type="text" id="mp-l-make" placeholder="Make, e.g. Toyota" class="rounded-lg border border-white/10 bg-white/5 px-3 py-2.5 text-[13px] text-white placeholder:text-slate-500" />
+      <input required type="text" id="mp-l-model" placeholder="Model, e.g. Corolla" class="rounded-lg border border-white/10 bg-white/5 px-3 py-2.5 text-[13px] text-white placeholder:text-slate-500" />
+      <input type="number" id="mp-l-year" placeholder="Year" class="rounded-lg border border-white/10 bg-white/5 px-3 py-2.5 text-[13px] text-white placeholder:text-slate-500" />
+      <input required type="number" id="mp-l-price" placeholder="Price (PKR)" class="rounded-lg border border-white/10 bg-white/5 px-3 py-2.5 text-[13px] text-white placeholder:text-slate-500" />
+      <input required type="text" id="mp-l-city" placeholder="City" class="rounded-lg border border-white/10 bg-white/5 px-3 py-2.5 text-[13px] text-white placeholder:text-slate-500" />
+      <input required type="tel" id="mp-l-wa" placeholder="WhatsApp number for buyers" class="rounded-lg border border-white/10 bg-white/5 px-3 py-2.5 text-[13px] text-white placeholder:text-slate-500" />
+      <textarea id="mp-l-desc" placeholder="Description" rows="3" class="rounded-lg border border-white/10 bg-white/5 px-3 py-2.5 text-[13px] text-white placeholder:text-slate-500 sm:col-span-2"></textarea>
+      <input type="file" id="mp-l-photos" accept="image/png,image/jpeg,image/webp" multiple class="text-[12.5px] text-slate-400 sm:col-span-2" />
+      <p class="text-[11px] text-slate-500 sm:col-span-2">Up to 5 photos, 5MB each (JPG, PNG or WebP).</p>
+      <button type="submit" class="rounded-lg bg-emerald-600 px-4 py-2.5 text-[13px] font-semibold text-white transition hover:bg-emerald-500 sm:col-span-2">Submit for review</button>
+      <p id="mp-listing-err" class="hidden text-[12px] text-red-400 sm:col-span-2"></p>
+      <p id="mp-listing-ok" class="hidden text-[12px] text-emerald-400 sm:col-span-2"></p>
+    </form>
+
+    <h3 class="mt-8 font-display text-[16px] font-bold text-white">Your listings</h3>
+    <div id="mp-my-listings" class="mt-3 grid gap-2"></div>
+  </div>
+</section>
+${MP_SCRIPTS}
+<script>
+(function () {
+  "use strict";
+  function $(sel) { return document.querySelector(sel); }
+  function el(tag, cls, html) { var e = document.createElement(tag); if (cls) e.className = cls; if (html != null) e.innerHTML = html; return e; }
+  function statusPill(status) {
+    var map = { pending: 'bg-amber-500/15 text-amber-400', active: 'bg-emerald-500/15 text-emerald-400', sold: 'bg-slate-500/15 text-slate-400', rented: 'bg-slate-500/15 text-slate-400', rejected: 'bg-red-500/15 text-red-400' };
+    return '<span class="rounded-full px-2 py-0.5 text-[10.5px] font-semibold ' + (map[status] || map.pending) + '">' + status + '</span>';
+  }
+  function priceLabel(row) { return 'PKR ' + Number(row.price).toLocaleString() + (row.price_unit === 'per_day' ? ' / day' : ''); }
+
+  function renderGrid(rows) {
+    var grid = $('#mp-grid'); grid.innerHTML = '';
+    if (!rows.length) { $('#mp-status').textContent = 'No listings match yet. Try clearing a filter.'; $('#mp-status').classList.remove('hidden'); return; }
+    $('#mp-status').classList.add('hidden');
+    rows.forEach(function (row) {
+      var photos = (row.listing_photos || []).slice().sort(function (a, b) { return a.sort_order - b.sort_order; });
+      var photoUrl = photos.length ? photos[0].storage_path : null;
+      var card = el('a', 'block overflow-hidden rounded-xl border border-white/[0.08] bg-white/[0.03] transition hover:border-emerald-500/40');
+      card.href = '/marketplace-listing?id=' + row.id;
+      var media = photoUrl
+        ? '<img src="' + photoUrl + '" alt="' + row.make + ' ' + row.model + '" class="h-40 w-full object-cover" />'
+        : '<div class="grid h-40 w-full place-items-center bg-white/[0.04] text-slate-600"><i data-lucide="car" class="h-8 w-8"></i></div>';
+      card.innerHTML = media +
+        '<div class="p-4">' +
+        '<div class="flex items-center justify-between"><span class="text-[10px] font-semibold uppercase tracking-wide text-emerald-400">' + (row.listing_type === 'rent' ? 'For rent' : 'For sale') + '</span><span class="text-[11px] text-slate-500">' + row.city + '</span></div>' +
+        '<h3 class="mt-1 text-[14.5px] font-bold text-white">' + row.make + ' ' + row.model + (row.year ? ' &middot; ' + row.year : '') + '</h3>' +
+        '<p class="mt-1 text-[13px] font-semibold text-emerald-400">' + priceLabel(row) + '</p>' +
+        '</div>';
+      grid.appendChild(card);
+    });
+    try { window.lucide && window.lucide.createIcons(); } catch (e) {}
+  }
+
+  function loadListings() {
+    if (!window.sbClient) return;
+    var q = window.sbClient.from('listings').select('id,listing_type,make,model,year,price,price_unit,city,listing_photos(storage_path,sort_order)').eq('status', 'active').order('created_at', { ascending: false });
+    var type = $('#mp-f-type').value, city = $('#mp-f-city').value.trim(), make = $('#mp-f-make').value.trim();
+    if (type) q = q.eq('listing_type', type);
+    if (city) q = q.ilike('city', '%' + city + '%');
+    if (make) q = q.or('make.ilike.%' + make + '%,model.ilike.%' + make + '%');
+    q.then(function (res) {
+      if (res.error) { $('#mp-status').textContent = 'Could not load listings right now.'; $('#mp-status').classList.remove('hidden'); return; }
+      renderGrid(res.data || []);
+    });
+  }
+
+  $('#mp-f-apply').addEventListener('click', loadListings);
+  loadListings();
+
+  /* Auth tabs */
+  $('#mp-tab-login').addEventListener('click', function () {
+    $('#mp-tab-login').classList.add('bg-white/10', 'text-white'); $('#mp-tab-login').classList.remove('text-slate-400');
+    $('#mp-tab-signup').classList.remove('bg-white/10', 'text-white'); $('#mp-tab-signup').classList.add('text-slate-400');
+    $('#mp-login-form').classList.remove('hidden'); $('#mp-signup-form').classList.add('hidden');
+  });
+  $('#mp-tab-signup').addEventListener('click', function () {
+    $('#mp-tab-signup').classList.add('bg-white/10', 'text-white'); $('#mp-tab-signup').classList.remove('text-slate-400');
+    $('#mp-tab-login').classList.remove('bg-white/10', 'text-white'); $('#mp-tab-login').classList.add('text-slate-400');
+    $('#mp-signup-form').classList.remove('hidden'); $('#mp-login-form').classList.add('hidden');
+  });
+  $('#mp-su-type').addEventListener('change', function () {
+    $('#mp-su-showroom').classList.toggle('hidden', $('#mp-su-type').value !== 'showroom');
+  });
+
+  $('#mp-login-form').addEventListener('submit', function (e) {
+    e.preventDefault();
+    $('#mp-login-err').classList.add('hidden');
+    window.sbClient.auth.signInWithPassword({ email: $('#mp-login-email').value.trim(), password: $('#mp-login-pass').value }).then(function (res) {
+      if (res.error) { $('#mp-login-err').textContent = res.error.message; $('#mp-login-err').classList.remove('hidden'); return; }
+      onAuthed();
+    });
+  });
+
+  $('#mp-signup-form').addEventListener('submit', function (e) {
+    e.preventDefault();
+    $('#mp-signup-err').classList.add('hidden'); $('#mp-signup-ok').classList.add('hidden');
+    var name = $('#mp-su-name').value.trim(), phone = $('#mp-su-phone').value.trim();
+    window.sbClient.auth.signUp({
+      email: $('#mp-su-email').value.trim(),
+      password: $('#mp-su-pass').value,
+      options: { data: { name: name, phone: phone } }
+    }).then(function (res) {
+      if (res.error) { $('#mp-signup-err').textContent = res.error.message; $('#mp-signup-err').classList.remove('hidden'); return; }
+      var user = res.data.user;
+      var patch = { city: $('#mp-su-city').value.trim(), seller_type: $('#mp-su-type').value };
+      if ($('#mp-su-type').value === 'showroom') patch.showroom_id = $('#mp-su-showroom').value.trim();
+      if (user) {
+        window.sbClient.from('profiles').update(patch).eq('id', user.id).then(function () { onAuthed(); });
+      } else {
+        $('#mp-signup-ok').textContent = 'Check your email to confirm your account, then log in.';
+        $('#mp-signup-ok').classList.remove('hidden');
+      }
+    });
+  });
+
+  $('#mp-logout').addEventListener('click', function () {
+    window.sbClient.auth.signOut().then(function () {
+      $('#mp-dash').classList.add('hidden'); $('#mp-auth-box').classList.remove('hidden');
+    });
+  });
+
+  function loadMyListings(userId) {
+    window.sbClient.from('listings').select('id,make,model,listing_type,status,created_at').eq('seller_id', userId).order('created_at', { ascending: false }).then(function (res) {
+      var box = $('#mp-my-listings'); box.innerHTML = '';
+      (res.data || []).forEach(function (row) {
+        var line = el('div', 'flex items-center justify-between rounded-lg border border-white/10 bg-white/5 px-3 py-2 text-[12.5px] text-slate-300');
+        line.innerHTML = '<span>' + row.make + ' ' + row.model + ' &middot; ' + (row.listing_type === 'rent' ? 'rent' : 'sale') + '</span>' + statusPill(row.status);
+        box.appendChild(line);
+      });
+      if (!(res.data || []).length) box.innerHTML = '<p class="text-[12.5px] text-slate-500">No listings yet.</p>';
+    });
+  }
+
+  function onAuthed() {
+    window.sbClient.auth.getUser().then(function (res) {
+      var user = res.data && res.data.user;
+      if (!user) return;
+      $('#mp-auth-box').classList.add('hidden');
+      $('#mp-dash').classList.remove('hidden');
+      $('#mp-dash-email').textContent = user.email;
+      loadMyListings(user.id);
+    });
+  }
+
+  $('#mp-listing-form').addEventListener('submit', function (e) {
+    e.preventDefault();
+    $('#mp-listing-err').classList.add('hidden'); $('#mp-listing-ok').classList.add('hidden');
+    window.sbClient.auth.getUser().then(function (res) {
+      var user = res.data && res.data.user;
+      if (!user) return;
+      var payload = {
+        seller_id: user.id,
+        listing_type: $('#mp-l-type').value,
+        price_unit: $('#mp-l-priceunit').value,
+        make: $('#mp-l-make').value.trim(),
+        model: $('#mp-l-model').value.trim(),
+        year: $('#mp-l-year').value ? Number($('#mp-l-year').value) : null,
+        price: Number($('#mp-l-price').value),
+        city: $('#mp-l-city').value.trim(),
+        whatsapp_number: $('#mp-l-wa').value.trim(),
+        description: $('#mp-l-desc').value.trim()
+      };
+      window.sbClient.from('listings').insert(payload).select().single().then(function (ins) {
+        if (ins.error) { $('#mp-listing-err').textContent = ins.error.message; $('#mp-listing-err').classList.remove('hidden'); return; }
+        var listingId = ins.data.id;
+        var files = Array.prototype.slice.call($('#mp-l-photos').files || []).slice(0, 5);
+        var uploads = files.map(function (file, i) {
+          var path = user.id + '/' + listingId + '/' + i + '-' + Date.now() + '-' + file.name.replace(/[^a-zA-Z0-9._-]/g, '');
+          return window.sbClient.storage.from('marketplace-photos').upload(path, file).then(function (up) {
+            if (up.error) return null;
+            var url = window.sbClient.storage.from('marketplace-photos').getPublicUrl(path).data.publicUrl;
+            return window.sbClient.from('listing_photos').insert({ listing_id: listingId, storage_path: url, sort_order: i });
+          });
+        });
+        Promise.all(uploads).then(function () {
+          $('#mp-listing-ok').textContent = 'Submitted. Your listing will appear here once it is reviewed.';
+          $('#mp-listing-ok').classList.remove('hidden');
+          $('#mp-listing-form').reset();
+          loadMyListings(user.id);
+        });
+      });
+    });
+  });
+
+  window.sbClient && window.sbClient.auth.getUser().then(function (res) { if (res.data && res.data.user) onAuthed(); });
+})();
+</script>
+`,
+  }),
+
+  'marketplace-listing': page({
+    slug: 'marketplace-listing',
+    noindex: true,
+    title: 'Listing | PakEngine Marketplace',
+    description: 'View a car listing on the PakEngine Marketplace.',
+    keywords: '',
+    body: `
+<section class="py-10 sm:py-14">
+  <a href="/marketplace" class="inline-flex items-center gap-1.5 text-[12px] font-semibold text-slate-400 transition hover:text-white">
+    <i data-lucide="arrow-left" class="h-3.5 w-3.5"></i> Back to marketplace
+  </a>
+  <p id="mpl-loading" class="mt-6 text-[13px] text-slate-400">Loading listing&hellip;</p>
+  <p id="mpl-notfound" class="mt-6 hidden text-[13px] text-slate-400">This listing isn't available anymore. It may have been sold, removed, or the link is wrong.</p>
+  <div id="mpl-content" class="mt-6 hidden">
+    <div class="text-[10.5px] font-semibold uppercase tracking-[0.16em] text-emerald-400" id="mpl-type"></div>
+    <h1 class="mt-2 font-display text-[24px] font-bold tracking-tight text-white sm:text-[30px]" id="mpl-title"></h1>
+    <div class="mt-2 text-[14px] text-slate-400" id="mpl-city"></div>
+    <div id="mpl-photos" class="mt-6 grid grid-cols-2 gap-2 sm:grid-cols-3"></div>
+    <div class="mt-6 flex flex-wrap items-center gap-4">
+      <span class="font-display text-[22px] font-bold text-white" id="mpl-price"></span>
+      <a id="mpl-wa" href="#" target="_blank" rel="noopener" class="inline-flex items-center gap-2 rounded-lg bg-emerald-600 px-5 py-3 text-[13.5px] font-semibold text-white transition hover:bg-emerald-500">
+        <i data-lucide="message-circle" class="h-4 w-4"></i> Contact seller on WhatsApp
+      </a>
+    </div>
+    <p class="mt-6 max-w-2xl whitespace-pre-line text-[13.5px] leading-relaxed text-slate-300" id="mpl-desc"></p>
+  </div>
+</section>
+${MP_SCRIPTS}
+<script>
+(function () {
+  "use strict";
+  function $(sel) { return document.querySelector(sel); }
+  var id = new URLSearchParams(window.location.search).get('id');
+  if (!id || !window.sbClient) { $('#mpl-loading').classList.add('hidden'); $('#mpl-notfound').classList.remove('hidden'); }
+  else {
+    window.sbClient.from('listings').select('*, listing_photos(storage_path,sort_order)').eq('id', id).single().then(function (res) {
+      $('#mpl-loading').classList.add('hidden');
+      if (res.error || !res.data) { $('#mpl-notfound').classList.remove('hidden'); return; }
+      var row = res.data;
+      $('#mpl-type').textContent = row.listing_type === 'rent' ? 'For rent' : 'For sale';
+      $('#mpl-title').textContent = row.make + ' ' + row.model + (row.year ? ' (' + row.year + ')' : '');
+      $('#mpl-city').textContent = row.city;
+      $('#mpl-price').textContent = 'PKR ' + Number(row.price).toLocaleString() + (row.price_unit === 'per_day' ? ' / day' : '');
+      $('#mpl-desc').textContent = row.description || '';
+      var photos = (row.listing_photos || []).slice().sort(function (a, b) { return a.sort_order - b.sort_order; });
+      var wrap = $('#mpl-photos');
+      photos.forEach(function (p) {
+        var img = document.createElement('img');
+        img.src = p.storage_path; img.alt = row.make + ' ' + row.model;
+        img.className = 'h-40 w-full rounded-lg object-cover';
+        wrap.appendChild(img);
+      });
+      var waNum = (row.whatsapp_number || '').replace(/\\D/g, '');
+      var text = 'Hi, I saw your ' + row.make + ' ' + row.model + ' listed on PakEngine Marketplace. Is it still available?';
+      $('#mpl-wa').href = 'https://wa.me/' + waNum + '?text=' + encodeURIComponent(text);
+      $('#mpl-content').classList.remove('hidden');
+      try { window.lucide && window.lucide.createIcons(); } catch (e) {}
+    });
+  }
+})();
+</script>
+`,
+  }),
+
+  'marketplace-admin': page({
+    slug: 'marketplace-admin',
+    noindex: true,
+    title: 'Marketplace Moderation | PakEngine',
+    description: 'PakEngine Marketplace listing moderation.',
+    keywords: '',
+    body: `
+<section class="py-10 sm:py-14">
+  <h1 class="font-display text-[22px] font-bold text-white">Marketplace moderation</h1>
+  <div id="mpa-login" class="mt-6 grid max-w-sm gap-3">
+    <input type="email" id="mpa-email" placeholder="Admin email" class="rounded-lg border border-white/10 bg-white/5 px-3 py-2.5 text-[13px] text-white placeholder:text-slate-500" />
+    <input type="password" id="mpa-pass" placeholder="Password" class="rounded-lg border border-white/10 bg-white/5 px-3 py-2.5 text-[13px] text-white placeholder:text-slate-500" />
+    <button id="mpa-login-btn" type="button" class="rounded-lg bg-emerald-600 px-4 py-2.5 text-[13px] font-semibold text-white transition hover:bg-emerald-500">Log in</button>
+    <p id="mpa-err" class="hidden text-[12px] text-red-400"></p>
+  </div>
+  <p id="mpa-denied" class="mt-6 hidden text-[13px] text-slate-400">This account isn't an admin.</p>
+  <div id="mpa-panel" class="mt-6 hidden">
+    <div class="flex items-center justify-between">
+      <p class="text-[13px] text-slate-400">Pending listings</p>
+      <button id="mpa-logout" type="button" class="text-[12px] font-semibold text-slate-400 hover:text-white">Log out</button>
+    </div>
+    <div id="mpa-list" class="mt-4 grid gap-3"></div>
+  </div>
+</section>
+${MP_SCRIPTS}
+<script>
+(function () {
+  "use strict";
+  function $(sel) { return document.querySelector(sel); }
+  function el(tag, cls, html) { var e = document.createElement(tag); if (cls) e.className = cls; if (html != null) e.innerHTML = html; return e; }
+
+  function loadPending() {
+    window.sbClient.from('listings').select('id,make,model,year,price,price_unit,city,listing_type,description,whatsapp_number,profiles(name,phone)').eq('status', 'pending').order('created_at', { ascending: true }).then(function (res) {
+      var box = $('#mpa-list'); box.innerHTML = '';
+      (res.data || []).forEach(function (row) {
+        var card = el('div', 'rounded-lg border border-white/10 bg-white/5 p-4 text-[13px] text-slate-300');
+        var seller = row.profiles ? (row.profiles.name + ' &middot; ' + row.profiles.phone) : 'unknown seller';
+        card.innerHTML = '<div class="font-semibold text-white">' + row.make + ' ' + row.model + (row.year ? ' (' + row.year + ')' : '') + '</div>' +
+          '<div class="mt-1 text-[12px] text-slate-400">' + row.city + ' &middot; ' + (row.listing_type === 'rent' ? 'rent' : 'sale') + ' &middot; PKR ' + Number(row.price).toLocaleString() + (row.price_unit === 'per_day' ? '/day' : '') + '</div>' +
+          '<div class="mt-1 text-[12px] text-slate-500">Seller: ' + seller + '</div>' +
+          '<p class="mt-2 text-[12.5px] text-slate-400">' + (row.description || '') + '</p>' +
+          '<div class="mt-3 flex gap-2"><button data-approve="' + row.id + '" class="rounded-lg bg-emerald-600 px-3 py-1.5 text-[12px] font-semibold text-white">Approve</button>' +
+          '<button data-reject="' + row.id + '" class="rounded-lg border border-white/15 px-3 py-1.5 text-[12px] font-semibold text-slate-300">Reject</button></div>';
+        box.appendChild(card);
+      });
+      if (!(res.data || []).length) box.innerHTML = '<p class="text-[12.5px] text-slate-500">Nothing pending.</p>';
+      box.addEventListener('click', function (e) {
+        var approveId = e.target.getAttribute && e.target.getAttribute('data-approve');
+        var rejectId = e.target.getAttribute && e.target.getAttribute('data-reject');
+        if (approveId) window.sbClient.from('listings').update({ status: 'active' }).eq('id', approveId).then(loadPending);
+        if (rejectId) window.sbClient.from('listings').update({ status: 'rejected' }).eq('id', rejectId).then(loadPending);
+      }, { once: true });
+    });
+  }
+
+  function checkAdmin() {
+    window.sbClient.auth.getUser().then(function (res) {
+      var user = res.data && res.data.user;
+      if (!user) return;
+      window.sbClient.from('profiles').select('is_admin').eq('id', user.id).single().then(function (p) {
+        $('#mpa-login').classList.add('hidden');
+        if (p.data && p.data.is_admin) { $('#mpa-panel').classList.remove('hidden'); loadPending(); }
+        else { $('#mpa-denied').classList.remove('hidden'); }
+      });
+    });
+  }
+
+  $('#mpa-login-btn').addEventListener('click', function () {
+    $('#mpa-err').classList.add('hidden');
+    window.sbClient.auth.signInWithPassword({ email: $('#mpa-email').value.trim(), password: $('#mpa-pass').value }).then(function (res) {
+      if (res.error) { $('#mpa-err').textContent = res.error.message; $('#mpa-err').classList.remove('hidden'); return; }
+      checkAdmin();
+    });
+  });
+  $('#mpa-logout').addEventListener('click', function () {
+    window.sbClient.auth.signOut().then(function () { window.location.reload(); });
+  });
+
+  window.sbClient && checkAdmin();
+})();
+</script>
+`,
+  }),
+
   404: page({
     slug: '404',
     noindex: true,
@@ -1335,6 +1776,7 @@ const sm = [
   ['/', 'weekly', '1.0'],
   ['/features', 'monthly', '0.8'],
   ['/pricing', 'monthly', '0.8'],
+  ['/marketplace', 'daily', '0.8'],
   ['/guides', 'weekly', '0.7'],
   ...GUIDES.map((g) => [`/guides/${g.slug}`, 'monthly', '0.6']),
   ['/faq', 'monthly', '0.7'],
