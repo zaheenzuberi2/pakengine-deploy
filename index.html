@@ -523,49 +523,66 @@
   <main class="relative mx-auto w-full max-w-6xl px-5">
     <!-- ─────────────────────────  HERO  ───────────────────────── -->
     <section id="landing-hero" class="scroll-mt-20 border-b border-white/[0.06] py-14 sm:py-20 lg:py-24">
-      <div class="mx-auto max-w-3xl text-center">
-        <div class="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.03] px-3 py-1 text-[10.5px] font-semibold uppercase tracking-[0.16em] text-slate-400">
-          <span class="h-1.5 w-1.5 rounded-full bg-emerald-400"></span> Engineered for the Pakistani automotive ecosystem
+      <div class="grid items-center gap-12 lg:grid-cols-[1.05fr_0.95fr] lg:gap-10">
+        <div class="text-center lg:text-left">
+          <div class="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.03] px-3 py-1 text-[10.5px] font-semibold uppercase tracking-[0.16em] text-slate-400">
+            <span class="h-1.5 w-1.5 rounded-full bg-emerald-400"></span> Built for rent-a-car showrooms in Pakistan
+          </div>
+
+          <h1 class="mt-6 font-display text-[28px] font-bold leading-[1.14] tracking-tight text-white [text-wrap:balance] sm:text-[40px] lg:text-[48px]">
+            Run the whole fleet from
+            <span class="text-emerald-400">one screen, not one register.</span>
+          </h1>
+
+          <p class="mx-auto mt-5 max-w-xl text-[14px] leading-relaxed text-slate-400 sm:text-[15.5px] lg:mx-0">
+            PakEngine replaces the paper register with a local dashboard your staff can run from any phone at the gate: pre-rental damage recorded on a visual map, a WhatsApp dispatch slip out in seconds, and an overtime calculator that never loses a late fee. Nothing leaves your device.
+          </p>
+
+          <div class="mt-8 flex flex-col items-stretch justify-center gap-3 sm:flex-row sm:items-center lg:justify-start">
+            <button id="cta-start-trial" class="inline-flex items-center justify-center gap-2 rounded-lg bg-emerald-600 px-6 py-3.5 text-[14px] font-semibold text-white transition hover:bg-emerald-500 active:scale-[0.98]">
+              Deploy Free 3-Day Trial
+              <i data-lucide="arrow-right" class="h-4 w-4"></i>
+            </button>
+            <a id="hero-consult" href="#" class="inline-flex items-center justify-center gap-2 rounded-lg border border-white/25 px-6 py-3.5 text-[14px] font-semibold text-white transition hover:border-white/45 hover:bg-white/5 active:scale-[0.98]">
+              <i data-lucide="calendar-clock" class="h-4 w-4"></i>
+              Schedule Fleet Consultation
+            </a>
+          </div>
+
+          <p class="mt-4 text-[11.5px] text-slate-500">No credit card &middot; Data stays on-device &middot; Works fully offline</p>
+
+          <div class="mx-auto mt-8 grid max-w-sm grid-cols-3 gap-4 border-t border-white/[0.06] pt-6 lg:mx-0 lg:max-w-md">
+            <div>
+              <div class="font-display text-[19px] font-bold text-white">4,000<span class="ml-1 text-[11px] font-semibold text-slate-500">PKR/mo</span></div>
+              <div class="mt-0.5 text-[10.5px] leading-tight text-slate-500">Flat rate, unlimited fleet</div>
+            </div>
+            <div>
+              <div class="font-display text-[19px] font-bold text-white">~10 sec</div>
+              <div class="mt-0.5 text-[10.5px] leading-tight text-slate-500">To send a dispatch slip</div>
+            </div>
+            <div>
+              <div class="font-display text-[19px] font-bold text-white">Zero</div>
+              <div class="mt-0.5 text-[10.5px] leading-tight text-slate-500">Servers holding your data</div>
+            </div>
+          </div>
         </div>
 
-        <h1 class="mt-6 font-display text-[27px] font-bold leading-[1.14] tracking-tight text-white [text-wrap:balance] sm:text-[38px] lg:text-[46px]">
-          Rent A Car Software That
-          <span class="text-emerald-400">Stops Showroom Leakage.</span>
-        </h1>
-
-        <p class="mx-auto mt-5 max-w-2xl text-[14px] leading-relaxed text-slate-400 sm:text-[15.5px]">
-          Move your entire fleet operations from vulnerable paper registers to an ironclad local digital dashboard. Lock in bulletproof pre-rental damage records visually, compute overtime charges instantly, and protect your showroom&rsquo;s daily cash flow with zero server overhead.
-        </p>
-
-        <div class="mt-8 flex flex-col items-stretch justify-center gap-3 sm:flex-row sm:items-center">
-          <button id="cta-start-trial" class="inline-flex items-center justify-center gap-2 rounded-lg bg-emerald-600 px-6 py-3.5 text-[14px] font-semibold text-white transition hover:bg-emerald-500 active:scale-[0.98]">
-            Deploy Free 3-Day Trial
-            <i data-lucide="arrow-right" class="h-4 w-4"></i>
-          </button>
-          <a id="hero-consult" href="#" class="inline-flex items-center justify-center gap-2 rounded-lg border border-white/25 px-6 py-3.5 text-[14px] font-semibold text-white transition hover:border-white/45 hover:bg-white/5 active:scale-[0.98]">
-            <i data-lucide="calendar-clock" class="h-4 w-4"></i>
-            Schedule Fleet Consultation
-          </a>
-        </div>
-
-        <p class="mt-4 text-[11.5px] text-slate-500">No credit card &middot; Data stays on-device &middot; Works fully offline</p>
-      </div>
-
-      <!-- Product preview -->
-      <div class="mx-auto mt-12 max-w-sm rounded-2xl border border-white/[0.08] bg-charcoal-900 p-4 shadow-[0_40px_110px_-40px_rgba(0,0,0,0.85)]">
-        <div class="flex items-center justify-between px-1 pb-3">
-          <span class="text-[10.5px] font-semibold uppercase tracking-[0.14em] text-slate-500">Vehicle condition at check-out</span>
-          <span class="inline-flex items-center gap-1 rounded-full bg-emerald-500/[0.12] px-2 py-0.5 text-[9.5px] font-bold uppercase tracking-wide text-emerald-400">
-            <span class="h-1 w-1 rounded-full bg-emerald-400"></span> Recording
-          </span>
-        </div>
-        <div class="rounded-xl border border-slate-200 bg-slate-50 p-3">
-          <div id="landing-map"></div>
-        </div>
-        <div class="mt-3 flex flex-wrap items-center gap-1.5">
-          <span class="mr-0.5 text-[9.5px] font-semibold uppercase tracking-wide text-slate-500">Logged blemishes</span>
-          <span class="inline-flex items-center rounded-full bg-slate-100 px-2 py-0.5 text-[10.5px] font-semibold text-rose-700 ring-1 ring-rose-200">Left Rear Door</span>
-          <span class="inline-flex items-center rounded-full bg-slate-100 px-2 py-0.5 text-[10.5px] font-semibold text-rose-700 ring-1 ring-rose-200">Front Bumper</span>
+        <!-- Product preview -->
+        <div class="mx-auto w-full max-w-sm rounded-2xl border border-white/[0.08] bg-charcoal-900 p-4 shadow-[0_40px_110px_-40px_rgba(0,0,0,0.85)] lg:mx-0 lg:ml-auto">
+          <div class="flex items-center justify-between px-1 pb-3">
+            <span class="text-[10.5px] font-semibold uppercase tracking-[0.14em] text-slate-500">Vehicle condition at check-out</span>
+            <span class="inline-flex items-center gap-1 rounded-full bg-emerald-500/[0.12] px-2 py-0.5 text-[9.5px] font-bold uppercase tracking-wide text-emerald-400">
+              <span class="h-1 w-1 rounded-full bg-emerald-400"></span> Recording
+            </span>
+          </div>
+          <div class="rounded-xl border border-slate-200 bg-slate-50 p-3">
+            <div id="landing-map"></div>
+          </div>
+          <div class="mt-3 flex flex-wrap items-center gap-1.5">
+            <span class="mr-0.5 text-[9.5px] font-semibold uppercase tracking-wide text-slate-500">Logged blemishes</span>
+            <span class="inline-flex items-center rounded-full bg-slate-100 px-2 py-0.5 text-[10.5px] font-semibold text-rose-700 ring-1 ring-rose-200">Left Rear Door</span>
+            <span class="inline-flex items-center rounded-full bg-slate-100 px-2 py-0.5 text-[10.5px] font-semibold text-rose-700 ring-1 ring-rose-200">Front Bumper</span>
+          </div>
         </div>
       </div>
     </section>
@@ -575,40 +592,68 @@
       <div class="mx-auto max-w-3xl text-center">
         <div class="text-[10.5px] font-semibold uppercase tracking-[0.16em] text-emerald-400">Core capabilities</div>
         <h2 class="mt-3 font-display text-[23px] font-bold tracking-tight text-white [text-wrap:balance] sm:text-[32px]">
-          Engineered to Protect Your Fleet and Your Profits.
+          Three problems the paper register can&rsquo;t solve.
         </h2>
       </div>
 
       <div class="mx-auto mt-10 grid max-w-5xl gap-4 sm:grid-cols-2 lg:grid-cols-3">
-        <article class="flex flex-col rounded-xl border border-white/[0.08] bg-white/[0.02] p-5">
-          <span class="grid h-10 w-10 place-items-center rounded-lg border border-emerald-500/25 bg-emerald-500/10 text-emerald-400">
-            <i data-lucide="shield-check" class="h-5 w-5"></i>
+        <article class="flex flex-col rounded-xl border border-white/[0.08] bg-white/[0.02] p-6 transition hover:border-emerald-500/25 hover:bg-white/[0.03]">
+          <span class="grid h-12 w-12 place-items-center rounded-xl border border-emerald-500/25 bg-emerald-500/10 text-emerald-400">
+            <i data-lucide="shield-check" class="h-6 w-6"></i>
           </span>
-          <h3 class="mt-4 text-[14px] font-semibold text-white">Visual Asset Protection</h3>
+          <h3 class="mt-5 text-[15px] font-bold text-white">Damage disputes at return</h3>
           <p class="mt-2 text-[12.5px] leading-relaxed text-slate-400">
-            Symmetrical vector wireframe mapping allows operators to log pre-existing chassis blemishes instantly, halting returned-vehicle damage disputes permanently.
+            Tap every panel that already carries a scratch or dent on a symmetrical vehicle map before the keys go out. That record is shown again at check-in, so new damage is unmistakable.
           </p>
         </article>
 
-        <article class="flex flex-col rounded-xl border border-white/[0.08] bg-white/[0.02] p-5">
-          <span class="grid h-10 w-10 place-items-center rounded-lg border border-emerald-500/25 bg-emerald-500/10 text-emerald-400">
-            <i data-lucide="file-text" class="h-5 w-5"></i>
+        <article class="flex flex-col rounded-xl border border-white/[0.08] bg-white/[0.02] p-6 transition hover:border-emerald-500/25 hover:bg-white/[0.03]">
+          <span class="grid h-12 w-12 place-items-center rounded-xl border border-emerald-500/25 bg-emerald-500/10 text-emerald-400">
+            <i data-lucide="file-text" class="h-6 w-6"></i>
           </span>
-          <h3 class="mt-4 text-[14px] font-semibold text-white">Instant Digital Agreements</h3>
+          <h3 class="mt-5 text-[15px] font-bold text-white">Agreements written by hand</h3>
           <p class="mt-2 text-[12.5px] leading-relaxed text-slate-400">
-            Generates automated, perfectly formatted legal dispatch slips natively routed to the renter&rsquo;s WhatsApp in under 10 seconds.
+            PakEngine builds a correctly formatted dispatch slip from the vehicle and rental record, then sends it straight to the renter&rsquo;s WhatsApp in under 10 seconds.
           </p>
         </article>
 
-        <article class="flex flex-col rounded-xl border border-white/[0.08] bg-white/[0.02] p-5 sm:col-span-2 lg:col-span-1">
-          <span class="grid h-10 w-10 place-items-center rounded-lg border border-emerald-500/25 bg-emerald-500/10 text-emerald-400">
-            <i data-lucide="hard-drive" class="h-5 w-5"></i>
+        <article class="flex flex-col rounded-xl border border-white/[0.08] bg-white/[0.02] p-6 transition hover:border-emerald-500/25 hover:bg-white/[0.03] sm:col-span-2 lg:col-span-1">
+          <span class="grid h-12 w-12 place-items-center rounded-xl border border-emerald-500/25 bg-emerald-500/10 text-emerald-400">
+            <i data-lucide="hard-drive" class="h-6 w-6"></i>
           </span>
-          <h3 class="mt-4 text-[14px] font-semibold text-white">Offline Local-First Ledger</h3>
+          <h3 class="mt-5 text-[15px] font-bold text-white">Records leaving the showroom</h3>
           <p class="mt-2 text-[12.5px] leading-relaxed text-slate-400">
-            Zero cloud databases. Entire fleet availability timelines and cash logs reside strictly inside browser hardware memory, guaranteeing absolute data privacy.
+            There is no cloud database to breach or subscribe to. Your fleet list, rental history and revenue sheets stay in the browser on the device you set up.
           </p>
         </article>
+      </div>
+    </section>
+
+    <!-- ─────────────────────  HOW IT WORKS  ───────────────────── -->
+    <section id="how-it-works" class="scroll-mt-20 border-b border-white/[0.06] py-14 sm:py-20">
+      <div class="mx-auto max-w-3xl text-center">
+        <div class="text-[10.5px] font-semibold uppercase tracking-[0.16em] text-emerald-400">How it works</div>
+        <h2 class="mt-3 font-display text-[23px] font-bold tracking-tight text-white [text-wrap:balance] sm:text-[32px]">
+          From a bare phone to a running showroom in three steps.
+        </h2>
+      </div>
+
+      <div class="mx-auto mt-10 grid max-w-5xl gap-6 sm:grid-cols-3">
+        <div class="relative">
+          <div class="flex h-9 w-9 items-center justify-center rounded-full border border-emerald-500/30 bg-emerald-500/10 font-display text-[13px] font-bold text-emerald-400">1</div>
+          <h3 class="mt-4 text-[14px] font-semibold text-white">Set up your showroom</h3>
+          <p class="mt-2 text-[12.5px] leading-relaxed text-slate-400">Add your fleet once: make, plate and daily rate per vehicle. Takes minutes, works on the phone at the counter.</p>
+        </div>
+        <div class="relative">
+          <div class="flex h-9 w-9 items-center justify-center rounded-full border border-emerald-500/30 bg-emerald-500/10 font-display text-[13px] font-bold text-emerald-400">2</div>
+          <h3 class="mt-4 text-[14px] font-semibold text-white">Dispatch with a WhatsApp slip</h3>
+          <p class="mt-2 text-[12.5px] leading-relaxed text-slate-400">Mark existing damage, confirm the rate and dates, and send the renter a formatted agreement before they leave the yard.</p>
+        </div>
+        <div class="relative">
+          <div class="flex h-9 w-9 items-center justify-center rounded-full border border-emerald-500/30 bg-emerald-500/10 font-display text-[13px] font-bold text-emerald-400">3</div>
+          <h3 class="mt-4 text-[14px] font-semibold text-white">Return and reconcile</h3>
+          <p class="mt-2 text-[12.5px] leading-relaxed text-slate-400">Check the same vehicle map, let PakEngine total the days and any overtime, and close the rental with the amount already worked out.</p>
+        </div>
       </div>
     </section>
 
