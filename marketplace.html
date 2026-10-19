@@ -143,39 +143,43 @@
 </div>
 <main id="main" class="mx-auto w-full max-w-6xl px-5 pb-4">
 
-<section class="border-b border-white/[0.06] py-10 sm:py-14">
-  <div class="max-w-3xl">
-    <div class="text-[10.5px] font-semibold uppercase tracking-[0.16em] text-emerald-400">PakEngine Marketplace</div>
-    <h1 class="mt-3 font-display text-[26px] font-bold leading-[1.15] tracking-tight text-white [text-wrap:balance] sm:text-[36px]">Buy, sell or rent a car in Pakistan.</h1>
-    <p class="mt-4 max-w-2xl text-[14px] leading-relaxed text-slate-400 sm:text-[15px]">Individual owners and PakEngine showrooms list cars here directly. Every listing is reviewed before it goes live, and you contact the seller straight on WhatsApp &mdash; no account needed to browse.</p>
+<section class="border-b border-white/[0.06] py-12 sm:py-16">
+  <div class="max-w-2xl">
+    <h1 class="font-display text-[28px] font-bold leading-[1.15] tracking-tight text-white [text-wrap:balance] sm:text-[38px]">Buy, sell or rent a car in Pakistan.</h1>
+    <p class="mt-4 max-w-xl text-[14px] leading-relaxed text-slate-400 sm:text-[15px]">Individual owners and PakEngine showrooms list cars here directly. Every listing is checked by hand before it goes live, and you reach the seller straight on WhatsApp.</p>
+    <ul class="mt-6 flex flex-wrap gap-x-6 gap-y-2.5 text-[12.5px] font-medium text-slate-400">
+      <li class="flex items-center gap-1.5"><i data-lucide="check" class="h-3.5 w-3.5 shrink-0 text-emerald-400"></i>Free to list</li>
+      <li class="flex items-center gap-1.5"><i data-lucide="check" class="h-3.5 w-3.5 shrink-0 text-emerald-400"></i>Manually reviewed</li>
+      <li class="flex items-center gap-1.5"><i data-lucide="check" class="h-3.5 w-3.5 shrink-0 text-emerald-400"></i>No account needed to browse</li>
+    </ul>
   </div>
 </section>
 
 <section class="py-8">
-  <div class="flex flex-wrap items-end gap-3">
+  <div class="flex flex-wrap items-end gap-4 rounded-2xl border border-white/[0.07] bg-white/[0.02] p-4 sm:p-5">
     <div>
-      <label class="mb-1 block text-[11px] font-semibold text-slate-400" for="mp-f-type">Listing type</label>
-      <select id="mp-f-type" class="rounded-lg border border-white/10 bg-white/5 px-3 py-2 text-[13px] text-white">
+      <label class="mb-1.5 block text-[11px] font-semibold text-slate-400" for="mp-f-type">Listing type</label>
+      <select id="mp-f-type" class="rounded-lg border border-white/10 bg-white/5 px-3 py-2.5 text-[13px] text-white transition focus:border-emerald-500/50">
         <option value="">All</option>
         <option value="sale">For sale</option>
         <option value="rent">For rent</option>
       </select>
     </div>
     <div>
-      <label class="mb-1 block text-[11px] font-semibold text-slate-400" for="mp-f-city">City</label>
-      <input id="mp-f-city" type="text" placeholder="e.g. Lahore" class="rounded-lg border border-white/10 bg-white/5 px-3 py-2 text-[13px] text-white placeholder:text-slate-500" />
+      <label class="mb-1.5 block text-[11px] font-semibold text-slate-400" for="mp-f-city">City</label>
+      <input id="mp-f-city" type="text" placeholder="e.g. Lahore" class="rounded-lg border border-white/10 bg-white/5 px-3 py-2.5 text-[13px] text-white placeholder:text-slate-500 transition focus:border-emerald-500/50" />
     </div>
     <div>
-      <label class="mb-1 block text-[11px] font-semibold text-slate-400" for="mp-f-make">Make / model</label>
-      <input id="mp-f-make" type="text" placeholder="e.g. Corolla" class="rounded-lg border border-white/10 bg-white/5 px-3 py-2 text-[13px] text-white placeholder:text-slate-500" />
+      <label class="mb-1.5 block text-[11px] font-semibold text-slate-400" for="mp-f-make">Make / model</label>
+      <input id="mp-f-make" type="text" placeholder="e.g. Corolla" class="rounded-lg border border-white/10 bg-white/5 px-3 py-2.5 text-[13px] text-white placeholder:text-slate-500 transition focus:border-emerald-500/50" />
     </div>
     <button id="mp-f-apply" class="rounded-lg bg-emerald-600 px-4 py-2.5 text-[13px] font-semibold text-white transition hover:bg-emerald-500">Search</button>
-    <a href="#mp-post" class="ml-auto inline-flex items-center gap-1.5 rounded-lg border border-white/15 bg-white/5 px-4 py-2.5 text-[13px] font-semibold text-white transition hover:border-emerald-500/50 hover:bg-emerald-500/10">
+    <a href="#mp-post" class="inline-flex w-full items-center justify-center gap-1.5 rounded-lg border border-white/15 bg-white/5 px-4 py-2.5 text-[13px] font-semibold text-white transition hover:border-emerald-500/50 hover:bg-emerald-500/10 sm:ml-auto sm:w-auto">
       <i data-lucide="plus" class="h-4 w-4"></i> Post your car
     </a>
   </div>
 
-  <p id="mp-status" class="mt-4 hidden rounded-lg border border-white/10 bg-white/5 px-4 py-3 text-[12.5px] text-slate-400"></p>
+  <p id="mp-status" class="mt-5 hidden rounded-lg border border-white/10 bg-white/5 px-4 py-3 text-[12.5px] text-slate-400"></p>
   <div id="mp-grid" class="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-3"></div>
 </section>
 
@@ -183,62 +187,91 @@
   <h2 class="font-display text-[20px] font-bold tracking-tight text-white sm:text-[24px]">Post your car</h2>
   <p class="mt-2 max-w-xl text-[13px] leading-relaxed text-slate-400">Sign up free with an email and password, then list your car. New listings go live after a quick manual review, usually the same day.</p>
 
-  <div id="mp-auth-box" class="mt-6 max-w-md">
-    <div class="flex gap-2 text-[12.5px] font-semibold">
-      <button id="mp-tab-login" type="button" class="rounded-lg bg-white/10 px-3 py-1.5 text-white">Log in</button>
-      <button id="mp-tab-signup" type="button" class="rounded-lg px-3 py-1.5 text-slate-400">Sign up</button>
+  <div id="mp-auth-box" class="mt-6 max-w-md rounded-2xl border border-white/[0.07] bg-white/[0.02] p-5 sm:p-6">
+    <div class="flex gap-1 rounded-full bg-white/5 p-1 text-[12.5px] font-semibold">
+      <button id="mp-tab-login" type="button" class="flex-1 rounded-full px-3 py-1.5 transition bg-white/10 text-white">Log in</button>
+      <button id="mp-tab-signup" type="button" class="flex-1 rounded-full px-3 py-1.5 transition text-slate-400">Sign up</button>
     </div>
 
-    <form id="mp-login-form" class="mt-4 grid gap-3">
-      <input required type="email" id="mp-login-email" placeholder="Email" class="rounded-lg border border-white/10 bg-white/5 px-3 py-2.5 text-[13px] text-white placeholder:text-slate-500" />
-      <input required type="password" id="mp-login-pass" placeholder="Password" class="rounded-lg border border-white/10 bg-white/5 px-3 py-2.5 text-[13px] text-white placeholder:text-slate-500" />
-      <button type="submit" class="rounded-lg bg-emerald-600 px-4 py-2.5 text-[13px] font-semibold text-white transition hover:bg-emerald-500">Log in</button>
+    <form id="mp-login-form" class="mt-5 grid gap-3">
+      <div>
+        <label class="mb-1.5 block text-[11px] font-semibold text-slate-400" for="mp-login-email">Email</label>
+        <input required type="email" id="mp-login-email" placeholder="you@example.com" class="w-full rounded-lg border border-white/10 bg-white/5 px-3 py-2.5 text-[13px] text-white placeholder:text-slate-500 transition focus:border-emerald-500/50" />
+      </div>
+      <div>
+        <label class="mb-1.5 block text-[11px] font-semibold text-slate-400" for="mp-login-pass">Password</label>
+        <input required type="password" id="mp-login-pass" placeholder="&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;" class="w-full rounded-lg border border-white/10 bg-white/5 px-3 py-2.5 text-[13px] text-white placeholder:text-slate-500 transition focus:border-emerald-500/50" />
+      </div>
+      <button type="submit" class="mt-1 rounded-lg bg-emerald-600 px-4 py-2.5 text-[13px] font-semibold text-white transition hover:bg-emerald-500">Log in</button>
       <p id="mp-login-err" class="hidden text-[12px] text-red-400"></p>
     </form>
 
-    <form id="mp-signup-form" class="mt-4 hidden grid gap-3">
-      <input required type="text" id="mp-su-name" placeholder="Your name" class="rounded-lg border border-white/10 bg-white/5 px-3 py-2.5 text-[13px] text-white placeholder:text-slate-500" />
-      <input required type="tel" id="mp-su-phone" placeholder="WhatsApp number, e.g. 923001234567" class="rounded-lg border border-white/10 bg-white/5 px-3 py-2.5 text-[13px] text-white placeholder:text-slate-500" />
-      <input type="text" id="mp-su-city" placeholder="City" class="rounded-lg border border-white/10 bg-white/5 px-3 py-2.5 text-[13px] text-white placeholder:text-slate-500" />
-      <select id="mp-su-type" class="rounded-lg border border-white/10 bg-white/5 px-3 py-2.5 text-[13px] text-white">
-        <option value="individual">Individual owner</option>
-        <option value="showroom">PakEngine showroom</option>
-      </select>
-      <input type="text" id="mp-su-showroom" placeholder="Showroom ID, e.g. PES-ABC234" class="hidden rounded-lg border border-white/10 bg-white/5 px-3 py-2.5 text-[13px] text-white placeholder:text-slate-500" />
-      <input required type="email" id="mp-su-email" placeholder="Email" class="rounded-lg border border-white/10 bg-white/5 px-3 py-2.5 text-[13px] text-white placeholder:text-slate-500" />
-      <input required minlength="6" type="password" id="mp-su-pass" placeholder="Password (min 6 characters)" class="rounded-lg border border-white/10 bg-white/5 px-3 py-2.5 text-[13px] text-white placeholder:text-slate-500" />
-      <button type="submit" class="rounded-lg bg-emerald-600 px-4 py-2.5 text-[13px] font-semibold text-white transition hover:bg-emerald-500">Create account</button>
+    <form id="mp-signup-form" class="mt-5 hidden grid gap-3">
+      <div>
+        <label class="mb-1.5 block text-[11px] font-semibold text-slate-400" for="mp-su-name">Your name</label>
+        <input required type="text" id="mp-su-name" placeholder="Full name" class="w-full rounded-lg border border-white/10 bg-white/5 px-3 py-2.5 text-[13px] text-white placeholder:text-slate-500 transition focus:border-emerald-500/50" />
+      </div>
+      <div>
+        <label class="mb-1.5 block text-[11px] font-semibold text-slate-400" for="mp-su-phone">WhatsApp number</label>
+        <input required type="tel" id="mp-su-phone" placeholder="923001234567" class="w-full rounded-lg border border-white/10 bg-white/5 px-3 py-2.5 text-[13px] text-white placeholder:text-slate-500 transition focus:border-emerald-500/50" />
+      </div>
+      <div>
+        <label class="mb-1.5 block text-[11px] font-semibold text-slate-400" for="mp-su-city">City</label>
+        <input type="text" id="mp-su-city" placeholder="e.g. Lahore" class="w-full rounded-lg border border-white/10 bg-white/5 px-3 py-2.5 text-[13px] text-white placeholder:text-slate-500 transition focus:border-emerald-500/50" />
+      </div>
+      <div>
+        <label class="mb-1.5 block text-[11px] font-semibold text-slate-400" for="mp-su-type">Account type</label>
+        <select id="mp-su-type" class="w-full rounded-lg border border-white/10 bg-white/5 px-3 py-2.5 text-[13px] text-white transition focus:border-emerald-500/50">
+          <option value="individual">Individual owner</option>
+          <option value="showroom">PakEngine showroom</option>
+        </select>
+      </div>
+      <input type="text" id="mp-su-showroom" placeholder="Showroom ID, e.g. PES-ABC234" class="hidden w-full rounded-lg border border-white/10 bg-white/5 px-3 py-2.5 text-[13px] text-white placeholder:text-slate-500 transition focus:border-emerald-500/50" />
+      <div>
+        <label class="mb-1.5 block text-[11px] font-semibold text-slate-400" for="mp-su-email">Email</label>
+        <input required type="email" id="mp-su-email" placeholder="you@example.com" class="w-full rounded-lg border border-white/10 bg-white/5 px-3 py-2.5 text-[13px] text-white placeholder:text-slate-500 transition focus:border-emerald-500/50" />
+      </div>
+      <div>
+        <label class="mb-1.5 block text-[11px] font-semibold text-slate-400" for="mp-su-pass">Password</label>
+        <input required minlength="6" type="password" id="mp-su-pass" placeholder="Minimum 6 characters" class="w-full rounded-lg border border-white/10 bg-white/5 px-3 py-2.5 text-[13px] text-white placeholder:text-slate-500 transition focus:border-emerald-500/50" />
+      </div>
+      <button type="submit" class="mt-1 rounded-lg bg-emerald-600 px-4 py-2.5 text-[13px] font-semibold text-white transition hover:bg-emerald-500">Create account</button>
       <p id="mp-signup-err" class="hidden text-[12px] text-red-400"></p>
       <p id="mp-signup-ok" class="hidden text-[12px] text-emerald-400"></p>
     </form>
   </div>
 
   <div id="mp-dash" class="mt-6 hidden max-w-2xl">
-    <div class="flex items-center justify-between">
+    <div class="flex items-center justify-between rounded-xl border border-white/[0.07] bg-white/[0.02] px-4 py-3">
       <p class="text-[13px] text-slate-300">Signed in as <span id="mp-dash-email" class="font-semibold text-white"></span></p>
-      <button id="mp-logout" type="button" class="text-[12px] font-semibold text-slate-400 hover:text-white">Log out</button>
+      <button id="mp-logout" type="button" class="text-[12px] font-semibold text-slate-400 transition hover:text-white">Log out</button>
     </div>
 
-    <h3 class="mt-6 font-display text-[16px] font-bold text-white">New listing</h3>
-    <form id="mp-listing-form" class="mt-3 grid gap-3 sm:grid-cols-2">
-      <select required id="mp-l-type" class="rounded-lg border border-white/10 bg-white/5 px-3 py-2.5 text-[13px] text-white">
+    <h3 class="mt-8 font-display text-[16px] font-bold text-white">New listing</h3>
+    <form id="mp-listing-form" class="mt-3 grid gap-3 rounded-2xl border border-white/[0.07] bg-white/[0.02] p-5 sm:grid-cols-2 sm:p-6">
+      <select required id="mp-l-type" class="rounded-lg border border-white/10 bg-white/5 px-3 py-2.5 text-[13px] text-white transition focus:border-emerald-500/50">
         <option value="sale">For sale</option>
         <option value="rent">For rent</option>
       </select>
-      <select id="mp-l-priceunit" class="rounded-lg border border-white/10 bg-white/5 px-3 py-2.5 text-[13px] text-white">
+      <select id="mp-l-priceunit" class="rounded-lg border border-white/10 bg-white/5 px-3 py-2.5 text-[13px] text-white transition focus:border-emerald-500/50">
         <option value="total">Total price</option>
         <option value="per_day">Price per day</option>
       </select>
-      <input required type="text" id="mp-l-make" placeholder="Make, e.g. Toyota" class="rounded-lg border border-white/10 bg-white/5 px-3 py-2.5 text-[13px] text-white placeholder:text-slate-500" />
-      <input required type="text" id="mp-l-model" placeholder="Model, e.g. Corolla" class="rounded-lg border border-white/10 bg-white/5 px-3 py-2.5 text-[13px] text-white placeholder:text-slate-500" />
-      <input type="number" id="mp-l-year" placeholder="Year" class="rounded-lg border border-white/10 bg-white/5 px-3 py-2.5 text-[13px] text-white placeholder:text-slate-500" />
-      <input required type="number" id="mp-l-price" placeholder="Price (PKR)" class="rounded-lg border border-white/10 bg-white/5 px-3 py-2.5 text-[13px] text-white placeholder:text-slate-500" />
-      <input required type="text" id="mp-l-city" placeholder="City" class="rounded-lg border border-white/10 bg-white/5 px-3 py-2.5 text-[13px] text-white placeholder:text-slate-500" />
-      <input required type="tel" id="mp-l-wa" placeholder="WhatsApp number for buyers" class="rounded-lg border border-white/10 bg-white/5 px-3 py-2.5 text-[13px] text-white placeholder:text-slate-500" />
-      <textarea id="mp-l-desc" placeholder="Description" rows="3" class="rounded-lg border border-white/10 bg-white/5 px-3 py-2.5 text-[13px] text-white placeholder:text-slate-500 sm:col-span-2"></textarea>
-      <input type="file" id="mp-l-photos" accept="image/png,image/jpeg,image/webp" multiple class="text-[12.5px] text-slate-400 sm:col-span-2" />
-      <p class="text-[11px] text-slate-500 sm:col-span-2">Up to 5 photos, 5MB each (JPG, PNG or WebP).</p>
-      <button type="submit" class="rounded-lg bg-emerald-600 px-4 py-2.5 text-[13px] font-semibold text-white transition hover:bg-emerald-500 sm:col-span-2">Submit for review</button>
+      <input required type="text" id="mp-l-make" placeholder="Make, e.g. Toyota" class="rounded-lg border border-white/10 bg-white/5 px-3 py-2.5 text-[13px] text-white placeholder:text-slate-500 transition focus:border-emerald-500/50" />
+      <input required type="text" id="mp-l-model" placeholder="Model, e.g. Corolla" class="rounded-lg border border-white/10 bg-white/5 px-3 py-2.5 text-[13px] text-white placeholder:text-slate-500 transition focus:border-emerald-500/50" />
+      <input type="number" id="mp-l-year" placeholder="Year" class="rounded-lg border border-white/10 bg-white/5 px-3 py-2.5 text-[13px] text-white placeholder:text-slate-500 transition focus:border-emerald-500/50" />
+      <input required type="number" id="mp-l-price" placeholder="Price (PKR)" class="rounded-lg border border-white/10 bg-white/5 px-3 py-2.5 text-[13px] text-white placeholder:text-slate-500 transition focus:border-emerald-500/50" />
+      <input required type="text" id="mp-l-city" placeholder="City" class="rounded-lg border border-white/10 bg-white/5 px-3 py-2.5 text-[13px] text-white placeholder:text-slate-500 transition focus:border-emerald-500/50" />
+      <input required type="tel" id="mp-l-wa" placeholder="WhatsApp number for buyers" class="rounded-lg border border-white/10 bg-white/5 px-3 py-2.5 text-[13px] text-white placeholder:text-slate-500 transition focus:border-emerald-500/50" />
+      <textarea id="mp-l-desc" placeholder="Description" rows="3" class="rounded-lg border border-white/10 bg-white/5 px-3 py-2.5 text-[13px] text-white placeholder:text-slate-500 transition focus:border-emerald-500/50 sm:col-span-2"></textarea>
+      <div class="sm:col-span-2">
+        <label for="mp-l-photos" class="block text-[11px] font-semibold text-slate-400">Photos</label>
+        <input type="file" id="mp-l-photos" accept="image/png,image/jpeg,image/webp" multiple class="mt-1.5 block w-full text-[12.5px] text-slate-400 file:mr-3 file:rounded-lg file:border-0 file:bg-white/10 file:px-3 file:py-1.5 file:text-[12px] file:font-semibold file:text-white hover:file:bg-white/[0.15]" />
+        <p class="mt-1.5 text-[11px] text-slate-500">Up to 5 photos, 5MB each (JPG, PNG or WebP).</p>
+      </div>
+      <button type="submit" class="mt-1 inline-flex items-center justify-center gap-1.5 rounded-lg bg-emerald-600 px-4 py-2.5 text-[13px] font-semibold text-white transition hover:bg-emerald-500 sm:col-span-2">
+        <i data-lucide="send" class="h-4 w-4"></i> Submit for review
+      </button>
       <p id="mp-listing-err" class="hidden text-[12px] text-red-400 sm:col-span-2"></p>
       <p id="mp-listing-ok" class="hidden text-[12px] text-emerald-400 sm:col-span-2"></p>
     </form>
@@ -261,6 +294,12 @@
   }
   function priceLabel(row) { return 'PKR ' + Number(row.price).toLocaleString() + (row.price_unit === 'per_day' ? ' / day' : ''); }
 
+  function typeBadge(listingType) {
+    return listingType === 'rent'
+      ? '<span class="text-[10px] font-semibold uppercase tracking-wide text-sky-400">For rent</span>'
+      : '<span class="text-[10px] font-semibold uppercase tracking-wide text-emerald-400">For sale</span>';
+  }
+
   function renderGrid(rows) {
     var grid = $('#mp-grid'); grid.innerHTML = '';
     if (!rows.length) { $('#mp-status').textContent = 'No listings match yet. Try clearing a filter.'; $('#mp-status').classList.remove('hidden'); return; }
@@ -268,15 +307,15 @@
     rows.forEach(function (row) {
       var photos = (row.listing_photos || []).slice().sort(function (a, b) { return a.sort_order - b.sort_order; });
       var photoUrl = photos.length ? photos[0].storage_path : null;
-      var card = el('a', 'block overflow-hidden rounded-xl border border-white/[0.08] bg-white/[0.03] transition hover:border-emerald-500/40');
+      var card = el('a', 'group block overflow-hidden rounded-xl border border-white/[0.08] bg-white/[0.03] shadow-[0_1px_0_rgba(255,255,255,0.03)] transition hover:border-emerald-500/40 hover:shadow-[0_8px_24px_-8px_rgba(16,185,129,0.25)]');
       card.href = '/marketplace-listing?id=' + row.id;
       var media = photoUrl
-        ? '<img src="' + photoUrl + '" alt="' + row.make + ' ' + row.model + '" class="h-40 w-full object-cover" />'
+        ? '<img src="' + photoUrl + '" alt="' + row.make + ' ' + row.model + '" class="h-40 w-full object-cover transition duration-300 group-hover:scale-[1.03]" />'
         : '<div class="grid h-40 w-full place-items-center bg-white/[0.04] text-slate-600"><i data-lucide="car" class="h-8 w-8"></i></div>';
       card.innerHTML = media +
         '<div class="p-4">' +
-        '<div class="flex items-center justify-between"><span class="text-[10px] font-semibold uppercase tracking-wide text-emerald-400">' + (row.listing_type === 'rent' ? 'For rent' : 'For sale') + '</span><span class="text-[11px] text-slate-500">' + row.city + '</span></div>' +
-        '<h3 class="mt-1 text-[14.5px] font-bold text-white">' + row.make + ' ' + row.model + (row.year ? ' &middot; ' + row.year : '') + '</h3>' +
+        '<div class="flex items-center justify-between">' + typeBadge(row.listing_type) + '<span class="text-[11px] text-slate-500">' + row.city + '</span></div>' +
+        '<h3 class="mt-1.5 text-[14.5px] font-bold text-white">' + row.make + ' ' + row.model + (row.year ? ' &middot; ' + row.year : '') + '</h3>' +
         '<p class="mt-1 text-[13px] font-semibold text-emerald-400">' + priceLabel(row) + '</p>' +
         '</div>';
       grid.appendChild(card);
@@ -286,6 +325,8 @@
 
   function loadListings() {
     if (!window.sbClient) return;
+    $('#mp-status').textContent = 'Loading listings…';
+    $('#mp-status').classList.remove('hidden');
     var q = window.sbClient.from('listings').select('id,listing_type,make,model,year,price,price_unit,city,listing_photos(storage_path,sort_order)').eq('status', 'active').order('created_at', { ascending: false });
     var type = $('#mp-f-type').value, city = $('#mp-f-city').value.trim(), make = $('#mp-f-make').value.trim();
     if (type) q = q.eq('listing_type', type);
@@ -356,11 +397,11 @@
     window.sbClient.from('listings').select('id,make,model,listing_type,status,created_at').eq('seller_id', userId).order('created_at', { ascending: false }).then(function (res) {
       var box = $('#mp-my-listings'); box.innerHTML = '';
       (res.data || []).forEach(function (row) {
-        var line = el('div', 'flex items-center justify-between rounded-lg border border-white/10 bg-white/5 px-3 py-2 text-[12.5px] text-slate-300');
-        line.innerHTML = '<span>' + row.make + ' ' + row.model + ' &middot; ' + (row.listing_type === 'rent' ? 'rent' : 'sale') + '</span>' + statusPill(row.status);
+        var line = el('div', 'flex items-center justify-between rounded-lg border border-white/[0.07] bg-white/[0.02] px-3.5 py-2.5 text-[12.5px] text-slate-300');
+        line.innerHTML = '<span>' + row.make + ' ' + row.model + ' &middot; ' + (row.listing_type === 'rent' ? '<span class="text-sky-400">rent</span>' : '<span class="text-emerald-400">sale</span>') + '</span>' + statusPill(row.status);
         box.appendChild(line);
       });
-      if (!(res.data || []).length) box.innerHTML = '<p class="text-[12.5px] text-slate-500">No listings yet.</p>';
+      if (!(res.data || []).length) box.innerHTML = '<p class="text-[12.5px] text-slate-500">No listings yet. The form above goes live once you submit one for review.</p>';
     });
   }
 

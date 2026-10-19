@@ -124,16 +124,18 @@
   <a href="/marketplace" class="inline-flex items-center gap-1.5 text-[12px] font-semibold text-slate-400 transition hover:text-white">
     <i data-lucide="arrow-left" class="h-3.5 w-3.5"></i> Back to marketplace
   </a>
-  <p id="mpl-loading" class="mt-6 text-[13px] text-slate-400">Loading listing&hellip;</p>
+  <p id="mpl-loading" class="mt-6 animate-pulse text-[13px] text-slate-400">Loading listing&hellip;</p>
   <p id="mpl-notfound" class="mt-6 hidden text-[13px] text-slate-400">This listing isn't available anymore. It may have been sold, removed, or the link is wrong.</p>
   <div id="mpl-content" class="mt-6 hidden">
-    <div class="text-[10.5px] font-semibold uppercase tracking-[0.16em] text-emerald-400" id="mpl-type"></div>
-    <h1 class="mt-2 font-display text-[24px] font-bold tracking-tight text-white sm:text-[30px]" id="mpl-title"></h1>
-    <div class="mt-2 text-[14px] text-slate-400" id="mpl-city"></div>
+    <div class="flex flex-wrap items-center gap-2 text-[11px] font-semibold uppercase tracking-wide">
+      <span id="mpl-type" class="rounded-full bg-white/5 px-2.5 py-1"></span>
+      <span class="text-slate-500" id="mpl-city"></span>
+    </div>
+    <h1 class="mt-3 font-display text-[24px] font-bold tracking-tight text-white sm:text-[30px]" id="mpl-title"></h1>
     <div id="mpl-photos" class="mt-6 grid grid-cols-2 gap-2 sm:grid-cols-3"></div>
-    <div class="mt-6 flex flex-wrap items-center gap-4">
+    <div class="mt-6 flex flex-wrap items-center gap-4 rounded-xl border border-white/[0.07] bg-white/[0.02] p-4 sm:p-5">
       <span class="font-display text-[22px] font-bold text-white" id="mpl-price"></span>
-      <a id="mpl-wa" href="#" target="_blank" rel="noopener" class="inline-flex items-center gap-2 rounded-lg bg-emerald-600 px-5 py-3 text-[13.5px] font-semibold text-white transition hover:bg-emerald-500">
+      <a id="mpl-wa" href="#" target="_blank" rel="noopener" class="ml-auto inline-flex items-center gap-2 rounded-lg bg-emerald-600 px-5 py-3 text-[13.5px] font-semibold text-white transition hover:bg-emerald-500">
         <i data-lucide="message-circle" class="h-4 w-4"></i> Contact seller on WhatsApp
       </a>
     </div>
@@ -154,7 +156,9 @@
       $('#mpl-loading').classList.add('hidden');
       if (res.error || !res.data) { $('#mpl-notfound').classList.remove('hidden'); return; }
       var row = res.data;
-      $('#mpl-type').textContent = row.listing_type === 'rent' ? 'For rent' : 'For sale';
+      var isRent = row.listing_type === 'rent';
+      $('#mpl-type').textContent = isRent ? 'For rent' : 'For sale';
+      $('#mpl-type').className = 'rounded-full px-2.5 py-1 ' + (isRent ? 'bg-sky-500/10 text-sky-400' : 'bg-emerald-500/10 text-emerald-400');
       $('#mpl-title').textContent = row.make + ' ' + row.model + (row.year ? ' (' + row.year + ')' : '');
       $('#mpl-city').textContent = row.city;
       $('#mpl-price').textContent = 'PKR ' + Number(row.price).toLocaleString() + (row.price_unit === 'per_day' ? ' / day' : '');
@@ -164,7 +168,7 @@
       photos.forEach(function (p) {
         var img = document.createElement('img');
         img.src = p.storage_path; img.alt = row.make + ' ' + row.model;
-        img.className = 'h-40 w-full rounded-lg object-cover';
+        img.className = 'h-40 w-full rounded-xl border border-white/[0.07] object-cover';
         wrap.appendChild(img);
       });
       var waNum = (row.whatsapp_number || '').replace(/\D/g, '');
