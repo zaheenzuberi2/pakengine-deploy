@@ -1063,6 +1063,9 @@
       <button id="pw-dismiss" class="mt-2 hidden w-full rounded-xl px-4 py-2 text-[12px] font-semibold text-slate-400 transition hover:text-slate-600">
         Not now, continue my free trial
       </button>
+      <a id="pw-back-home" href="/" class="mt-2 flex w-full items-center justify-center gap-1.5 rounded-xl px-4 py-2 text-[12px] font-semibold text-slate-400 transition hover:text-slate-600">
+        <i data-lucide="arrow-left" class="h-3.5 w-3.5"></i> Back to pakengine.com
+      </a>
       </div>
     </div>
   </div>
@@ -3047,6 +3050,7 @@
     });
     $('#pw-nodevice-home').addEventListener('click', function () { hardHidePaywall(); showLanding(); });
     $('#pw-nodevice-trial').addEventListener('click', function () { hardHidePaywall(); startTrialFlow(); });
+    $('#pw-back-home').addEventListener('click', function (e) { e.preventDefault(); hardHidePaywall(); showLanding(); });
 
     /* Public landing + onboarding routing */
     $('#cta-start-trial').addEventListener('click', startTrialFlow);
